@@ -15,7 +15,7 @@
                     </li>
                     @else
                     <li>
-                        <a href="{{ route('client.profile') }}">
+                        <a href="{{ route('client.user.show', auth()->id()) }}">
                             <strong>{{ Auth::user()->name }}</strong>
                         </a>
                     </li>
@@ -38,11 +38,6 @@
             </div>
         </div>
     </div>
-    @if (session('status'))
-    <div class="alert alert-success" role="alert" style="text-align: center;">
-        {{ session('status') }}
-    </div>
-    @endif
     <div class="main_menu">
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">

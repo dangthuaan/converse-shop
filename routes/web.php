@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,4 +25,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/admin', function() {
         return view('admin.dashboard');
     })->name('dashboard');
+});
+
+Route::middleware(['auth', 'verified'])
+    ->name('client.')
+    ->namespace('Client')
+    ->group(function () {
+
+    Route::resource('user', 'UserController');
+    Route::get('user/{user}/password', 'UserController@showPassword')->name('user.showPassword');
+    Route::get('user/{user}/delete', 'UserController@confirmDestroy')->name('user.confirmDestroy');
+    Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
 });
