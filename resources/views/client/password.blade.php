@@ -22,25 +22,25 @@
                         @csrf
                         @method('put')
                         <div class="col-md-12 form-group">
-                            <input id="current-password" type="password" class="form-control @error('current-password') is-invalid @enderror" name="current-password" placeholder="Current Password" required>
+                            <input id="current_password" type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" placeholder="Current Password" required>
 
-                            @error('current-password')
+                            @error('current_password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
                         <div class="col-md-12 form-group">
-                            <input id="new-password" type="password" class="form-control @error('new-password') is-invalid @enderror" name="new-password" placeholder="New Password" required>
+                            <input id="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" name="new_password" placeholder="New Password" required>
 
-                            @error('new-password')
+                            @error('new_password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
                         </div>
                         <div class="col-md-12 form-group">
-                            <input id="new-password-confirm" type="password" class="form-control @error('new-password-confirm') is-invalid @enderror" name="new-password_confirmation" placeholder="Confirm new Password" required>
+                            <input id="new_password_confirm" type="password" class="form-control @error('new_password_confirm') is-invalid @enderror" name="new_password_confirmation" placeholder="Confirm new Password" required>
                         </div>
                         <div class="col-md-12 form-group">
                             <button type="submit" value="submit" class="btn submit_btn" style="padding: 0px; font-size: 0.9em;">{{ __('Update Password') }}</button>
