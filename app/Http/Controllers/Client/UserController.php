@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Client;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PasswordRequest;
+use App\Http\Requests\UserRequest;
 use App\User;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
@@ -13,38 +15,9 @@ class UserController extends Controller
 {
     protected $userService;
 
-    public function __construct(UserService $userService) { //injection
+    public function __construct(UserService $userService)
+    { //injection
         $this->userService = $userService; //gọi kiểu hướng đối tượng
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -56,6 +29,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = $this->userService->getUserById($id);
+
         return view('client.profile', ['user' => $user]);
     }
 
@@ -65,21 +39,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showPassword($id)
+    public function editPassword($id)
     {
         $user = $this->userService->getUserById($id);
-        return view('client.password', ['user' => $user]);
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return view('client.password', ['user' => $user]);
     }
 
     /**
@@ -89,7 +53,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         $data = $request->only([
             'name',
@@ -99,11 +63,10 @@ class UserController extends Controller
         $updateUser = $this->userService->update($id, $data);
 
         if ($updateUser) {
-            return back()->with('status', 'Update success!');
+            return back()->with('success', 'Update success!');
         } else {
-            return back()->with('status', 'Update failed!');
+            return back()->with('error', 'Update failed!');
         }
-
     }
 
     /**
@@ -113,24 +76,20 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updatePassword(Request $request, $id)
+    public function updatePassword(PasswordRequest $request, $id)
     {
-        if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
+        if (!(Hash::check($request->current_password, Auth::user()->password))) {
             // The passwords matches
-            return redirect()->back()->with("error","Your current password does not matches with the password you provided. Please try again.");
-        }
-        if(strcmp($request->get('current-password'), $request->get('new-password')) == 0){
-            //Current password and new password are same
-            return redirect()->back()->with("error","New Password cannot be same as your current password. Please choose a different password.");
+            return back()->with('error', 'Your current password does not matches with the password you provided. Please try again.');
         }
 
-        $validatedData = $request->validate([
-            'current-password' => 'required',
-            'new-password' => 'required|string|min:8|confirmed',
-        ]);
+        if (strcmp($request->current_password, $request->new_password) == 0) {
+            //Current password and new password are same
+            return back()->with('error', 'New Password cannot be same as your current password. Please choose a different password.');
+        }
 
         //Change Password
-        $newPassword = bcrypt($request->get('new-password'));
+        $newPassword = bcrypt($request->new_password);
 
         $updatePassword = $this->userService->update($id, ['password' => $newPassword]);
 
@@ -150,6 +109,7 @@ class UserController extends Controller
     public function confirmDestroy($id)
     {
         $user = $this->userService->getUserById($id);
+
         return view('client.destroy', ['user' => $user]);
     }
 
@@ -161,9 +121,9 @@ class UserController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        if (!(Hash::check($request->get('confirm-password'), Auth::user()->password))) {
+        if (!(Hash::check($request->confirm_password, Auth::user()->password))) {
             // The passwords matches
-            return redirect()->back()->with("error","Your current password does not matches with the password you provided. Please try again.");
+            return back()->with('error', 'Your current password does not matches with the password you provided. Please try again.');
         }
 
         $deleteUser = $this->userService->delete($id);

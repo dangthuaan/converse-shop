@@ -7,16 +7,6 @@ use Illuminate\Support\Facades\Log;
 
 class UserService
 {
-    // public function getList($key = null)
-    // {
-    //     if (is_null($key)){
-    //     $users = User::all();
-    //     } else {
-    //         $users = User::where('name', 'like', '%' . $key . '%')->get();
-    //     }
-    //     return $users;
-    // }
-
     /**
      * Get list of users.
      *
@@ -31,6 +21,7 @@ class UserService
         if (isset($option['key'])) {
             $query = $query->where('name', 'like', '%' . $key . '%');
         }
+
         if (isset($option['order_by'])) {
             $query = $query->orderBy($option['order_by'], 'DESC');
         }

@@ -33,7 +33,7 @@ Route::middleware(['auth', 'verified'])
     ->group(function () {
 
     Route::resource('user', 'UserController');
-    Route::get('user/{user}/password', 'UserController@showPassword')->name('user.showPassword');
+    Route::get('user/{user}/password', 'UserController@editPassword')->name('user.editPassword');
     Route::get('user/{user}/delete', 'UserController@confirmDestroy')->name('user.confirmDestroy');
     Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
 });
