@@ -31,9 +31,16 @@ Route::middleware(['auth', 'verified'])
     ->name('client.')
     ->namespace('Client')
     ->group(function () {
-
     Route::resource('user', 'UserController');
     Route::get('user/{user}/password', 'UserController@editPassword')->name('user.editPassword');
     Route::get('user/{user}/delete', 'UserController@confirmDestroy')->name('user.confirmDestroy');
     Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
+});
+
+Route::middleware(['auth', 'verified'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->namespace('Admin')
+    ->group(function () {
+    Route::resource('categories', 'CategoryController');
 });
