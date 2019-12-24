@@ -1,8 +1,11 @@
 <?php
+
 namespace App\Http\Requests;
+
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use App\Category;
 
 class CategoryRequest extends FormRequest
 {
@@ -16,6 +19,7 @@ class CategoryRequest extends FormRequest
         if (Auth::check()) {
             return true;
         }
+
         return false;
     }
     /**
@@ -31,7 +35,9 @@ class CategoryRequest extends FormRequest
                 'max:255',
                 Rule::unique('categories')->ignore($this->category)
             ],
-            'parent_id' =>  'required'
+            'parent_id' =>  [
+                'nullable'
+            ]
         ];
     }
     public function messages()

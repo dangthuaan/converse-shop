@@ -43,4 +43,5 @@ Route::middleware(['auth', 'verified'])
     ->namespace('Admin')
     ->group(function () {
     Route::resource('categories', 'CategoryController');
+    Route::get('categories/{category}/delete', 'CategoryController@confirmDestroy')->name('categories.confirmDestroy');
 });

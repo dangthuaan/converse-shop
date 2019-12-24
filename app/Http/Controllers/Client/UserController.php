@@ -101,7 +101,7 @@ class UserController extends Controller
     }
 
     /**
-     * Confirm site for deleting account.
+     * Confirm deleting account.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

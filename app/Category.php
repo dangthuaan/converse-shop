@@ -10,4 +10,9 @@ class Category extends Model
         'name',
         'parent_id'
     ];
+
+    public function parent()
+    {
+        return $this->belongsTo('App\Category');
+    }
 }
