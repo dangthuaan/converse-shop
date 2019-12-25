@@ -31,8 +31,8 @@ class CategoryService
         } //delete parent_id if is null
 
         try {
-            $category = Category::create($data);
-        } catch (Exception $e) {
+            Category::create($data);
+        } catch (\Exception $e) {
             Log::error($e);
 
             return false;
@@ -58,7 +58,7 @@ class CategoryService
 
         try {
             $category->update($data);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             Log::error($e);
 
             return false;
@@ -79,8 +79,8 @@ class CategoryService
 
         try {
             $category->delete();
-        } catch (\Throwable $th) {
-            Log::error($th);
+        } catch (\Exception $e) {
+            Log::error($e);
 
             return false;
         }

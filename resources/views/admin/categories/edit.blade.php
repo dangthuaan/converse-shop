@@ -24,7 +24,7 @@
                                 {{ __('Category ') }}
                             </label>
                             <div class="col-md-6">
-                                <select autocomplete="parent_id" autofocus="" class="form-control @error('parent_id') is-invalid @enderror" id="categories" name="parent_id">
+                                <select autocomplete="parent_id" class="form-control @error('parent_id') is-invalid @enderror" id="categories" name="parent_id">
                                     @if ($categories->parent_id == null)
                                     <option id="parent" style="font-weight:700;" value="0">
                                         {{$categories->name}}
@@ -49,21 +49,26 @@
                                 {{ __('Edit Category name') }}
                             </label>
                             <div class="col-md-6">
-                                <input autocomplete="name" class="form-control" id="category-text" name="name" required="" type="text" value="{{$categories->name}}">
-                                </input>
-                            </div>
+                                <input autocomplete="name" class="form-control @error('name') is-invalid @enderror" id="category-text" name="name" type="text" value="{{$categories->name}}">
+                            </input>
+                            @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
                         </div>
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button class="btn btn-primary" type="submit">
-                                    {{ __('Edit') }}
-                                </button>
-                            </div>
+                    </div>
+                    <div class="form-group row mb-0">
+                        <div class="col-md-6 offset-md-4">
+                            <button class="btn btn-primary" type="submit">
+                                {{ __('Edit') }}
+                            </button>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection

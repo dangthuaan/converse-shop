@@ -13,7 +13,6 @@ class CategoryController extends Controller
 
     public function __construct(CategoryService $categoryService)
     {
-        //injection
         $this->categoryService = $categoryService;
     }
 
@@ -47,7 +46,6 @@ class CategoryController extends Controller
      * @param  \App\Http\Requests\CategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(CategoryRequest $request)
     public function store(CategoryRequest $request)
     {
         $data = $request->only([
@@ -59,9 +57,9 @@ class CategoryController extends Controller
 
         if ($createCategory) {
             return redirect('admin/categories')->with('success', 'Create success!');
-        } else {
-            return back()->with('error', 'Create failed!');
         }
+
+        return back()->with('error', 'Create failed!');
     }
 
     /**
@@ -95,9 +93,9 @@ class CategoryController extends Controller
 
         if ($updateCategory) {
             return redirect('admin/categories')->with('success', 'Update success!');
-        } else {
-            return back()->with('error', 'Update failed!');
         }
+
+        return back()->with('error', 'Update failed!');
     }
 
     /**
@@ -125,8 +123,8 @@ class CategoryController extends Controller
 
         if ($deleteCategory) {
             return redirect('admin/categories')->with('success', 'Delete success!');
-        } else {
-            return back()->with('error', 'Delete failed!');
         }
+
+        return back()->with('error', 'Delete failed!');
     }
 }
