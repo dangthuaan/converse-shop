@@ -184,6 +184,11 @@ return [
             'can'  => 'manage-blog',
         ],
         [
+            'text'        => 'Products',
+            'url'         => 'admin/products',
+            'icon'        => 'fa fa-fw fa-shoe-prints',
+        ],
+        [
             'text'        => 'Categories',
             'url'         => 'admin/categories',
             'icon'        => 'fa fa-fw fa-list',
