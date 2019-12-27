@@ -54,13 +54,9 @@ class ProductService
      * @param  Array $data
      * @return Boolean
      */
-    public function saveCategory($categories)
+    public function getCategoryId($categories)
     {
-        $arr_categories = [];
-        foreach ($categories as $category) {
-            $arr_categories[] = $category;
-        }
-        $total_categories = implode("|", $arr_categories);
+        $total_categories = implode("|", $categories);
 
         return $total_categories;
     }

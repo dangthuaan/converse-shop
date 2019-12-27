@@ -71,8 +71,10 @@ class ProductController extends Controller
         }
 
         if ($categories = $request->category) {
-            $data['category'] = $this->productService->saveCategory($categories);
+            $data['category'] = $this->productService->getCategoryId($categories);
         }
+
+        dd($data);
 
         $category_ids = $request->category;
         $createProduct = $this->productService->create($data, $category_ids);
