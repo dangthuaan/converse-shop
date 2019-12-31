@@ -48,3 +48,9 @@ Route::middleware(['auth', 'verified'])
     Route::resource('products', 'ProductController');
     Route::get('products/{product}/delete', 'ProductController@confirmDestroy')->name('products.confirmDestroy');
 });
+
+Auth::routes();
+
+Route::get('/home', function() {
+    return view('home');
+})->name('home')->middleware('auth');

@@ -26,12 +26,12 @@ class ProductService
     /**
      * Save Images.
      *
-     * @param  Array $data
+     * @param  Array $stringImage
      * @return Boolean
      */
     public function saveImage($files)
     {
-        $arr_images = [];
+        $arrayImage = [];
         foreach ($files as $image) {
             // Make a image name based on user name and current timestamp
             // Define folder path
@@ -41,24 +41,24 @@ class ProductService
             // Upload image
             $this->uploadOne($image, $folder, 'public');
             // Set user profile image path in database to filePath
-            $arr_images[] = $filePath;
+            $arrayImage[] = $filePath;
         }
-        $total_images = implode("|", $arr_images);
+        $stringImage = implode('|', $arrayImage);
 
-        return $total_images;
+        return $stringImage;
     }
 
     /**
-     * Save Categories.
+     * Save Categories to Products table.
      *
-     * @param  Array $data
+     * @param  Array $stringCategory
      * @return Boolean
      */
     public function getCategoryId($categories)
     {
-        $total_categories = implode("|", $categories);
+        $stringCategory = implode('|', $categories);
 
-        return $total_categories;
+        return $stringCategory;
     }
 
     /**
@@ -67,12 +67,12 @@ class ProductService
      * @param  Array $data
      * @return Boolean
      */
-    public function create($data, $category_ids)
+    public function create($data, $categoryIds)
     {
         try {
             $product = Product::create($data);
-            $product->categories()->attach($category_ids);
-        } catch (Exception $e) {
+            $product->categories()->attach($categoryIds);
+        } catch (\Exception $e) {
             Log::error($e);
 
             return false;
@@ -90,7 +90,17 @@ class ProductService
      */
     public function update($id, $data)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        try {
+            $product->update($data);
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -101,10 +111,10 @@ class ProductService
      */
     public function delete($id)
     {
-        $Product = Product::findOrFail($id);
+        $product = Product::findOrFail($id);
 
         try {
-            $Product->delete();
+            $product->delete();
         } catch (\Exception $e) {
             Log::error($e);
 

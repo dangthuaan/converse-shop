@@ -1,4 +1,4 @@
-@extends('adminlte::page')
+@extends('admin.dashboard')
 
 @section('content')
 
@@ -47,8 +47,8 @@
                 <table id="categories_table">
                     @foreach ($product->categories as $category)
                         <tr>
-                            <th>{{$category->parent->name ?? ''}}</th>
-                            <td>{{$category->name ?? ''}}</td>
+                            <th>{{ $parentCategory[$category->id] }}</th>
+                            <td>{{ $category->name ?? '' }}</td>
                         </tr>
                     @endforeach
                 </table>
@@ -57,7 +57,7 @@
             <td> {{ $product->publish_date }} </td>
             <td class="currency-data">{{ $product->price }}</td>
             <td class="currency-data">{{ $product->sale }}</td>
-            <td>{{ $product->user ? $product->user->email : '' }}</td>
+            <td>{{ $product->createdBy ? $product->createdBy->email : '' }}</td>
             <td>
                 <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary">Edit</a>
 

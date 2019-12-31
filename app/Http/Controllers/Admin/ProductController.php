@@ -30,7 +30,11 @@ class ProductController extends Controller
     {
         $products = Product::with('categories')->get();
 
-        return view('admin.products.index', compact('products'));
+        $parentCategory = Category::with('parent')->get()->pluck('parent.name', 'id');
+
+        $data = ['products' => $products, 'parentCategory' => $parentCategory];
+
+        return view('admin.products.index', $data);
     }
 
     /**
@@ -40,9 +44,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::whereNull('parent_id')->get();
+        $parentCategories = Category::with('children')->whereNull('parent_id')->get();
 
-        return view('admin.products.create', compact('categories'));
+        return view('admin.products.create', compact('parentCategories'));
     }
 
     /**
@@ -54,7 +58,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->only([
-            'image.*',
+            'image',
             'name',
             'gender',
             'category',
@@ -64,37 +68,20 @@ class ProductController extends Controller
             'sale'
         ]);
 
-        $data['user_id'] = Auth::id();
+        $data['user_id'] = auth()->id();
 
-        if ($files = $request->file('image')) {
-            $data['image'] = $this->productService->saveImage($files);
-        }
+        $data['image'] = $this->productService->saveImage($data['image']);
 
-        if ($categories = $request->category) {
-            $data['category'] = $this->productService->getCategoryId($categories);
-        }
+        $data['category'] = $this->productService->getCategoryId($data['category']);
 
-        dd($data);
-
-        $category_ids = $request->category;
-        $createProduct = $this->productService->create($data, $category_ids);
+        $categoryIds = $request->category;
+        $createProduct = $this->productService->create($data, $categoryIds);
 
         if ($createProduct) {
             return redirect('admin/products')->with('success', 'Create success!');
         }
 
         return back()->with('error', 'Create failed!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**
@@ -105,7 +92,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        $parentCategories = Category::with('children')->whereNull('parent_id')->get();
+
+        return view('admin.products.edit', compact('product', 'parentCategories'));
     }
 
     /**
@@ -115,9 +106,32 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        //
+        $data = $request->only([
+            'image',
+            'name',
+            'gender',
+            'category',
+            'description',
+            'publish_date',
+            'price',
+            'sale'
+        ]);
+
+        $data['user_id'] = auth()->id();
+
+        $data['image'] = $this->productService->saveImage($data['image']);
+
+        $data['category'] = $this->productService->getCategoryId($data['category']);
+
+        $updateProduct = $this->productService->update($id, $data);
+
+        if ($updateProduct) {
+            return redirect('admin/products')->with('success', 'Update success!');
+        }
+
+        return back()->with('error', 'Update failed!');
     }
 
     /**
@@ -128,6 +142,12 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $deleteProduct = $this->productService->delete($id);
+
+        if ($deleteProduct) {
+            return redirect('admin/products')->with('success', 'Delete success!');
+        }
+
+        return back()->with('error', 'Delete failed!');
     }
 }

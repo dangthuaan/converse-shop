@@ -23,8 +23,9 @@
                     </h1>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.products.store') }}" role="form" enctype="multipart/form-data" method="POST">
+                    <form action="{{ route('admin.products.update', $product->id) }}" role="form" enctype="multipart/form-data" method="POST">
                         @csrf
+                        @method('PUT')
                         <div class="form-group row col-md-10">
                             <input required type="file" class="form-control @error('image') is-invalid @enderror" name="image[]" placeholder="address" multiple>
                             @error('image')
@@ -38,7 +39,7 @@
                                 {{ __('Product name') }}
                             </label>
                             <div class="col-md-6">
-                                <input autocomplete="name" autofocus="" class="form-control @error('name') is-invalid @enderror" id="name" name="name" required="" type="text" value="{{ old('name') }}">
+                                <input autocomplete="name" autofocus="" class="form-control @error('name') is-invalid @enderror" id="name" name="name" required="" type="text" value="{{ old('name') ?? $product->name }}">
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -57,13 +58,13 @@
                                     <option disabled="" selected="">
                                         Choose gender
                                     </option>
-                                    <option value="male">
+                                    <option value="male" {{ $product->gender == 'male' ? 'selected' : '' }}>
                                         Male
                                     </option>
-                                    <option value="female">
+                                    <option value="female" {{ $product->gender == 'female' ? 'selected' : '' }}>
                                         Female
                                     </option>
-                                    <option value="kid">
+                                    <option value="kid" {{ $product->gender == 'kid' ? 'selected' : '' }}>
                                         Kid
                                     </option>
                                 </select>
@@ -107,8 +108,7 @@
                                 {{ __('Description') }}
                             </label>
                             <div class="col-md-6">
-                                <textarea autocomplete="description" class="form-control @error('description') is-invalid @enderror" id="description" name="description" required="" value="{{ old('description') }}">
-                                </textarea>
+                                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" required>{{ old('description') ?? $product->description }}</textarea>
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -123,7 +123,7 @@
                                 {{ __('Publish date') }}
                             </label>
                             <div class="col-md-6">
-                                <input autocomplete="publish_date" class="form-control" id="datepicker" name="publish_date" required="" type="text" value="{{ old('publish_date') }}">
+                                <input autocomplete="publish_date" class="form-control" id="datepicker" name="publish_date" required="" type="text" value="{{ old('publish_date') ?? $product->publish_date }}">
                             </input>
                             @error('publish_date')
                             <span class="invalid-feedback" role="alert">
@@ -147,7 +147,7 @@
                         {{ __('Price') }}
                     </label>
                     <div class="col-md-6">
-                        <input autocomplete="price" class="form-control" id="currency" name="price" placeholder="VNĐ" required="" type="text" value="{{ old('price') }}">
+                        <input autocomplete="price" class="form-control" id="currency" name="price" placeholder="VNĐ" required="" type="text" value="{{ old('price') ?? $product->price }}">
                         @error('price')
                         <span class="invalid-feedback" role="alert">
                             <strong>
@@ -162,7 +162,7 @@
                         {{ __('Sale') }}
                     </label>
                     <div class="col-md-6">
-                        <input autocomplete="sale" class="form-control" id="currency" max="90" min="0" name="sale" placeholder="%" required="" step="10" type="number" value="{{ old('sale') }}">
+                        <input autocomplete="sale" class="form-control" id="currency" max="90" min="0" name="sale" placeholder="%" required="" step="10" type="number" value="{{ old('sale') ?? $product->sale }}">
                         @error('sale')
                         <span class="invalid-feedback" role="alert">
                             <strong>
@@ -175,7 +175,7 @@
                 <div class="form-group row mb-0">
                     <div class="col-md-6 offset-md-4">
                         <button class="btn btn-primary" type="submit">
-                            {{ __('Create') }}
+                            {{ __('Update') }}
                         </button>
                     </div>
                 </div>

@@ -9,20 +9,6 @@ use Illuminate\Validation\Rule;
 class ProductRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        if (Auth::check()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -30,8 +16,7 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'required',
-            'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'name' => [
                 'required',
                 'max:255',
@@ -41,7 +26,7 @@ class ProductRequest extends FormRequest
             'category' => 'required',
             'publish_date' => 'required|date',
             'price' => 'required|integer',
-            'sale' => 'required|integer',
+            'sale' => 'integer',
         ];
     }
 
