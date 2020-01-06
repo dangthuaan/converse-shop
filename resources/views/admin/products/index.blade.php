@@ -46,10 +46,10 @@
             <td>
                 <table id="categories_table">
                     @foreach ($product->categories as $category)
-                        <tr>
-                            <th>{{ $parentCategory[$category->id] }}</th>
-                            <td>{{ $category->name ?? '' }}</td>
-                        </tr>
+                    <tr>
+                        <th>{{ $parentCategory[$category->id] }}</th>
+                        <td>{{ $category->name ?? '' }}</td>
+                    </tr>
                     @endforeach
                 </table>
             </td>
@@ -96,11 +96,11 @@
 
 @section('css')
 <style type="text/css">
-#categories_table {
-    table-layout: fixed;
-    border-collapse: collapse;
-    width: 100%;
-}
+    #categories_table {
+        table-layout: fixed;
+        border-collapse: collapse;
+        width: 100%;
+    }
 </style>
 @stop
 
