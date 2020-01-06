@@ -44,4 +44,13 @@ Route::middleware(['auth', 'verified'])
     ->group(function () {
     Route::resource('categories', 'CategoryController');
     Route::get('categories/{category}/delete', 'CategoryController@confirmDestroy')->name('categories.confirmDestroy');
+
+    Route::resource('products', 'ProductController');
+    Route::get('products/{product}/delete', 'ProductController@confirmDestroy')->name('products.confirmDestroy');
 });
+
+Auth::routes();
+
+Route::get('/home', function() {
+    return view('home');
+})->name('home')->middleware('auth');

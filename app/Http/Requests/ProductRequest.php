@@ -5,9 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use App\Category;
 
-class CategoryRequest extends FormRequest
+class ProductRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -17,20 +16,24 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
+            'image.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique('categories')->ignore($this->category)
+                Rule::unique('products')->ignore($this->product),
             ],
-            'parent_id' =>  [
-                'nullable'
-            ]
+            'gender' => 'required',
+            'category' => 'required',
+            'publish_date' => 'required|date',
+            'price' => 'required|integer',
+            'sale' => 'integer',
         ];
     }
+
     public function messages()
     {
         return [
-            'name.unique' => 'The category name has already been taken!'
+            'name.unique' => 'This product has already been taken!'
         ];
     }
 }
