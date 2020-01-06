@@ -35,6 +35,8 @@ Route::middleware(['auth', 'verified'])
     Route::get('user/{user}/password', 'UserController@editPassword')->name('user.editPassword');
     Route::get('user/{user}/delete', 'UserController@confirmDestroy')->name('user.confirmDestroy');
     Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
+
+    Route::resource('products', 'ProductController');
 });
 
 Route::middleware(['auth', 'verified'])
@@ -42,6 +44,7 @@ Route::middleware(['auth', 'verified'])
     ->name('admin.')
     ->namespace('Admin')
     ->group(function () {
+    Route::resource('users', 'UserController');
     Route::resource('categories', 'CategoryController');
     Route::get('categories/{category}/delete', 'CategoryController@confirmDestroy')->name('categories.confirmDestroy');
 
