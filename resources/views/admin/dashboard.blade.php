@@ -26,7 +26,7 @@
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 <script>
     $(function() {
-        $('.example').DataTable();
+        $('#example').DataTable();
 
         $('#datepicker').datepicker({
             format: 'yyyy-mm-dd',
