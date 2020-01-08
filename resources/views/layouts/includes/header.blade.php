@@ -1,5 +1,15 @@
 <!--================Header Menu Area =================-->
 <header class="header_area">
+    @if (session('error'))
+    <div class="alert alert-danger" role="alert" style="text-align: center;">
+        {{ session('error') }}
+    </div>
+    @endif
+    @if (session('success'))
+    <div class="alert alert-success" role="alert" style="text-align: center;">
+        {{ session('success') }}
+    </div>
+    @endif
     <div class="top_menu row m0">
         <div class="container-fluid">
             <div class="float-left">
@@ -58,22 +68,8 @@
                                 <li class="nav-item active">
                                     <a class="nav-link" href="index.html">Home</a>
                                 </li>
-                                <li class="nav-item submenu dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shop</a>
-                                    <ul class="dropdown-menu">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="category.html">Shop Category</a>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="single-product.html">Product Details</a>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="checkout.html">Product Checkout</a>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="cart.html">Shopping Cart</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="confirmation.html">Confirmation</a>
-                                        </li>
-                                    </ul>
+                                <li class="nav-item">
+                                    <a href="{{ route('client.products.index') }}" class="nav-link">Shop</a>
                                 </li>
                                 <li class="nav-item submenu dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Blog</a>

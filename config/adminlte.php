@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Converse Shop Manager',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -30,7 +30,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Converse</b> shop',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image-xl',
     'logo_img_xl' => null,
@@ -184,11 +184,19 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
+            'text'        => 'Users',
+            'url'         => 'admin/users',
+            'icon'        => 'fas fa-fw fa-users',
+        ],
+        [
+            'text'        => 'Categories',
+            'url'         => 'admin/categories',
+            'icon'        => 'fas fa-fw fa-th-list',
+        ],
+        [
+            'text'        => 'Products',
+            'url'         => 'admin/products',
+            'icon'        => 'fas fa-fw fa-shoe-prints',
         ],
         ['header' => 'account_settings'],
         [

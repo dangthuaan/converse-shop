@@ -26,7 +26,9 @@
 <script src="{{ asset('js/datatables.min.js') }}"></script>
 <script>
     $(function() {
-        $('.example').DataTable();
+        $('#example').DataTable({
+            "paging": true,
+        });
 
         $('#datepicker').datepicker({
             format: 'yyyy-mm-dd',

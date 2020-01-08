@@ -41,6 +41,28 @@ class UserService
     }
 
     /**
+     * Ban a user.
+     *
+     * @param  int  $id
+     * @param  array $data
+     * @return Boolean
+     */
+    public function banUser($id, $data)
+    {
+        $user = User::findOrFail($id);
+
+        try {
+            $user->update($data);
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Get user by Id.
      *
      * @param  Array $data
@@ -63,7 +85,7 @@ class UserService
      * Update user by Id.
      *
      * @param  int $id
-     * @param  Array $data
+     * @param  array $data
      * @return Boolean
      */
     public function update($id, $data)
