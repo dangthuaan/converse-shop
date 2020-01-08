@@ -23,7 +23,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(config('pagination.user_page_size'));
 
         return view('admin.users.index', compact('users'));
     }
@@ -36,24 +36,22 @@ class UserController extends Controller
     public function banUser(BanRequest $request)
     {
         $bannedFlag = $request->is_ban;
-        $user_id = $request->user_id;
+        $userId = $request->user_id;
 
         $bannedData = [
             'is_ban' => !$bannedFlag,
         ];
 
-        $banUser = $this->userService->banUser($user_id, $bannedData);
+        $banUser = $this->userService->banUser($userId, $bannedData);
+
+        $status = false;
 
         if ($banUser) {
-            $result = [
-                'status' => true,
-            ];
-
-            return response()->json($result);
+            $status = true;
         }
 
         $result = [
-            'status' => false,
+            'status' => $status,
         ];
 
         return response()->json($result);

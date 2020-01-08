@@ -55,6 +55,7 @@
         </tr>
     </tfoot>
 </table>
+{{ $users->links() }}
 @endsection
 
 @section('js')

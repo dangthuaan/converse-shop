@@ -27,9 +27,9 @@ class AddIsBanToUsersTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasColumn('products', 'user_id')) {
+        if (Schema::hasColumn('users', 'is_ban')) {
             Schema::table('users', function (Blueprint $table) {
-                //
+                $table->dropColumn('is_ban');
             });
         }
     }

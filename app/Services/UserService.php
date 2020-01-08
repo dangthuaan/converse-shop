@@ -41,10 +41,11 @@ class UserService
     }
 
     /**
-     * Get user by Id.
+     * Ban a user.
      *
      * @param  int  $id
-     * @return Model
+     * @param  array $data
+     * @return Boolean
      */
     public function banUser($id, $data)
     {
@@ -84,7 +85,7 @@ class UserService
      * Update user by Id.
      *
      * @param  int $id
-     * @param  Array $data
+     * @param  array $data
      * @return Boolean
      */
     public function update($id, $data)
