@@ -20,14 +20,14 @@ Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 Auth::routes(['verify' => true]);
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'is-ban'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/admin', function() {
         return view('admin.dashboard');
     })->name('dashboard');
 });
 
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified', 'is-ban'])
     ->name('client.')
     ->namespace('Client')
     ->group(function () {
@@ -39,12 +39,14 @@ Route::middleware(['auth', 'verified'])
     Route::resource('products', 'ProductController');
 });
 
-Route::middleware(['auth', 'verified'])
+Route::middleware(['auth', 'verified', 'is-ban'])
     ->prefix('admin')
     ->name('admin.')
     ->namespace('Admin')
     ->group(function () {
     Route::resource('users', 'UserController');
+    Route::post('users/ban', 'UserController@banUser')->name('users.ban');
+
     Route::resource('categories', 'CategoryController');
     Route::get('categories/{category}/delete', 'CategoryController@confirmDestroy')->name('categories.confirmDestroy');
 

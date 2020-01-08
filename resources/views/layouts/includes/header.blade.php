@@ -1,5 +1,15 @@
 <!--================Header Menu Area =================-->
 <header class="header_area">
+    @if (session('error'))
+    <div class="alert alert-danger" role="alert" style="text-align: center;">
+        {{ session('error') }}
+    </div>
+    @endif
+    @if (session('success'))
+    <div class="alert alert-success" role="alert" style="text-align: center;">
+        {{ session('success') }}
+    </div>
+    @endif
     <div class="top_menu row m0">
         <div class="container-fluid">
             <div class="float-left">
@@ -59,6 +69,7 @@
                                     <a class="nav-link" href="index.html">Home</a>
                                 </li>
                                 <li class="nav-item submenu dropdown">
+                                <li class="nav-item">
                                     <a href="{{ route('client.products.index') }}" class="nav-link">Shop</a>
                                 </li>
                                 <li class="nav-item submenu dropdown">

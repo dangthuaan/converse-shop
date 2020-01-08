@@ -3,11 +3,6 @@
 @section('content')
 <!--================Home Banner Area =================-->
 <section class="home_banner_area">
-@if (session('status'))
-<div class="alert alert-success" role="alert" style="text-align: center;">
-    {{ session('status') }}
-</div>
-@endif
     <div class="overlay"></div>
     <div class="banner_inner d-flex align-items-center">
         <div class="container">
