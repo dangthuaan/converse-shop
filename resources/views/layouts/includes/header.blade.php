@@ -122,15 +122,15 @@
 
                                 <li class="nav-item">
                                     <a href="#" class="icons">
-                                        <i class="fa fa-heart-o" aria-hidden="true"></i>
+                                        <i class="fa fa-heart-o" aria-hidden="true"> 0 </i>
                                     </a>
                                 </li>
 
                                 <hr>
 
                                 <li class="nav-item">
-                                    <a href="#" class="icons">
-                                        <i class="lnr lnr lnr-cart"></i>
+                                    <a href="{{ route('client.orders.index') }}" class="icons">
+                                        <i class="cart-number lnr lnr lnr-cart"> [{{ cartQuantity() }}] </i>
                                     </a>
                                 </li>
 

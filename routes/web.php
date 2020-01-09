@@ -37,6 +37,8 @@ Route::middleware(['auth', 'verified', 'is-ban'])
     Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
 
     Route::resource('products', 'ProductController');
+
+    Route::resource('orders', 'OrderController');
 });
 
 Route::middleware(['auth', 'verified', 'is-ban'])

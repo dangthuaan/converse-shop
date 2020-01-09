@@ -33,11 +33,11 @@
                             <div class="f_p_img">
                                 <img class="img-fluid" src="{{ url($product->first_image) }}" alt="">
                                 <div class="p_icon">
-                                    <a href="#">
-                                        <i class="lnr lnr-heart"></i>
+                                    <a href="#" class="add-to-cart" data-product-id="{{ $product->id }}">
+                                        <i class="lnr lnr-cart"></i>
                                     </a>
                                     <a href="#">
-                                        <i class="lnr lnr-cart"></i>
+                                        <i class="add-to-favorite lnr lnr-heart"></i>
                                     </a>
                                 </div>
                             </div>

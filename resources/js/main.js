@@ -6,7 +6,6 @@ $(document).ready(function() {
             $(this).toggleClass('selected');
         });
     };
-
     //Size Picker
     var sizePicker = function() {
         $(".size-desc .size").on('click', function(event) {
@@ -14,7 +13,6 @@ $(document).ready(function() {
             $(this).toggleClass('selected');
         });
     };
-
     //Style Picker
     var stylePicker = function() {
         $(".list-desc .list").on('click', function(event) {
@@ -23,7 +21,39 @@ $(document).ready(function() {
         });
     };
 
+    //functions
     colorPicker();
     sizePicker();
     stylePicker();
+
+    //ajax setup for orders(add to cart)
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $('.add-to-cart').click(function() {
+        var url = "/orders";
+        var data = {
+            'product_id': $(this).data('product-id'),
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            cache: false,
+            success: function(result) {
+                if (result.status) {
+                    $('.cart-number').text(result.quantity);
+                    alert('Order success!');
+                    location.reload();
+                }
+            },
+            error: function() {
+                alert('Something went wrong!');
+                location.reload();
+            }
+        });
+    });
 });
