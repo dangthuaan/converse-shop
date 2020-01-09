@@ -68,6 +68,7 @@
                                 <li class="nav-item active">
                                     <a class="nav-link" href="index.html">Home</a>
                                 </li>
+                                <li class="nav-item submenu dropdown">
                                 <li class="nav-item">
                                     <a href="{{ route('client.products.index') }}" class="nav-link">Shop</a>
                                 </li>

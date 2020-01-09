@@ -46,6 +46,7 @@ Route::middleware(['auth', 'verified', 'is-ban'])
     ->group(function () {
     Route::resource('users', 'UserController');
     Route::post('users/ban', 'UserController@banUser')->name('users.ban');
+
     Route::resource('categories', 'CategoryController');
     Route::get('categories/{category}/delete', 'CategoryController@confirmDestroy')->name('categories.confirmDestroy');
 

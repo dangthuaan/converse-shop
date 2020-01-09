@@ -5333,12 +5333,3 @@ h6 {
 .confirmation_btn_inner .main_btn {
   margin-bottom: 80px;
 }
-
-#change_password:hover {
-  color: #fff !important;
-}
-
-#delete_user:hover {
-  background: #f44a40;
-  color: #fff;
-}

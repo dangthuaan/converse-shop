@@ -15,8 +15,19 @@ class Product extends Model
         'publish_date',
         'price',
         'sale',
-        'user_id'
+        'user_id',
     ];
+
+    protected $appends = [
+        'first_image',
+    ];
+
+    public function getFirstImageAttribute()
+    {
+        $images = explode('|', $this->image);
+
+        return isset($images[0]) ? $images[0] : null;
+    }
 
     public function categories()
     {

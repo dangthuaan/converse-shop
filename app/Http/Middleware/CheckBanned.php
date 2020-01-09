@@ -3,9 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Http\Middleware\CheckBanned as Middleware;
+//use App\Http\Middleware\CheckBanned as Middleware;
 
-class CheckBanned extends Middleware
+class CheckBanned
 {
     /**
      * Handle an incoming request.
