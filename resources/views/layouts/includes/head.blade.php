@@ -16,5 +16,6 @@
 	<link rel="stylesheet" href="{{ asset('fashiop/vendors/jquery-ui/jquery-ui.css') }}">
 	<!-- main css -->
 	<link rel="stylesheet" href="{{ asset('fashiop/css/style.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 	<link rel="stylesheet" href="{{ asset('fashiop/css/responsive.css') }}">
 </head>

@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('categories')->get();
+        $products = Product::with('categories')->paginate(config('pagination.product_page_size'));
 
         return view('client.products.index', compact('products'));
     }
@@ -49,7 +49,9 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        return view('client.products.show', compact('product'));
     }
 
     /**
