@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Client;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\OrderService;
 use App\Order;
 use App\Product;
 
 class OrderController extends Controller
 {
+    protected $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,68 +30,20 @@ class OrderController extends Controller
     }
 
     /**
-     * Count total price
-     *
-     * @param  App\Order $order
-     * @return int $totalPrice
-     */
-    public function calTotalPrice($order)
-    {
-        $totalPrice = 0;
-
-        foreach ($order->products as $orderProduct) {
-            $totalPrice += $orderProduct->price * $orderProduct->pivot->quantity;
-        }
-
-        return $totalPrice;
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\OrderRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         $productId = $request->product_id;
-        $product = Product::findOrFail($productId);
+        $product = $this->orderService->getProductById($productId);
         $currentUserId = auth()->id();
 
-        if (session()->has('product_data')) {
-            $productData = session('product_data');
-        } else {
-            $productData = [];
-        }
-
-        try {
-            if (array_key_exists($product->id, $productData)) {
-                $productData[$product->id]['quantity'] += 1;
-            } else {
-                $productData[$product->id] = [
-                    'name' => $product->name,
-                    'price' => $product->price,
-                    'quantity' => 1,
-                ];
-            }
-            session(['product_data' => $productData]);
-        } catch (\Exception $e) {
-            \Log::error($e);
-
-            $result = [
-                'status' => false,
-                'quantity' => 0,
-            ];
-
-            return response()->json($result);
-        }
+        $productData = $this->orderService->createProductSession($productId);
 
         $quantity = array_sum(array_column($productData,'quantity'));
-
-        $result = [
-            'status' => true,
-            'quantity' => $quantity,
-        ];
 
         $orderData = [
             'user_id' => $currentUserId,
@@ -91,58 +51,20 @@ class OrderController extends Controller
             'quantity' => $quantity,
         ];
 
-        if (session()->has('order_data')) {
-            $orderData['total_price'] = session('order_data.total_price')
-                + $product->price;
+        $createOrderSession = $this->orderService->createOrderSession($productId, $orderData);
+
+        $result = [
+            'status' => false,
+            'quantity' => 0,
+        ];
+
+        if ($productData && $createOrderSession) {
+            $result = [
+                'status' => true,
+                'quantity' => $quantity,
+            ];
         }
 
-        session(['order_data' => $orderData]);
-
         return response()->json($result);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
