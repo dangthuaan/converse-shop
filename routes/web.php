@@ -22,7 +22,7 @@ Auth::routes(['verify' => true]);
 
 Route::middleware(['auth', 'verified', 'is-ban'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
-    Route::get('/admin', function() {
+    Route::get('/admin', function () {
         return view('admin.dashboard');
     })->name('dashboard');
 });
@@ -31,33 +31,35 @@ Route::middleware(['auth', 'verified', 'is-ban'])
     ->name('client.')
     ->namespace('Client')
     ->group(function () {
-    Route::resource('user', 'UserController');
-    Route::get('user/{user}/password', 'UserController@editPassword')->name('user.editPassword');
-    Route::get('user/{user}/delete', 'UserController@confirmDestroy')->name('user.confirmDestroy');
-    Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
+        Route::resource('user', 'UserController');
+        Route::get('user/{user}/password', 'UserController@editPassword')->name('user.editPassword');
+        Route::get('user/{user}/delete', 'UserController@confirmDestroy')->name('user.confirmDestroy');
+        Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
 
-    Route::resource('products', 'ProductController');
+        Route::resource('products', 'ProductController');
 
-    Route::resource('orders', 'OrderController');
-});
+        Route::get('orders', 'OrderController@index')->name('orders.index');
+        Route::post('orders/remove', 'OrderController@removeProductInCart')->name('orders.product.remove');
+        Route::post('orders', 'OrderController@addToCart')->name('orders.addToCart');
+    });
 
 Route::middleware(['auth', 'verified', 'is-ban'])
     ->prefix('admin')
     ->name('admin.')
     ->namespace('Admin')
     ->group(function () {
-    Route::resource('users', 'UserController');
-    Route::post('users/ban', 'UserController@banUser')->name('users.ban');
+        Route::resource('users', 'UserController');
+        Route::post('users/ban', 'UserController@banUser')->name('users.ban');
 
-    Route::resource('categories', 'CategoryController');
-    Route::get('categories/{category}/delete', 'CategoryController@confirmDestroy')->name('categories.confirmDestroy');
+        Route::resource('categories', 'CategoryController');
+        Route::get('categories/{category}/delete', 'CategoryController@confirmDestroy')->name('categories.confirmDestroy');
 
-    Route::resource('products', 'ProductController');
-    Route::get('products/{product}/delete', 'ProductController@confirmDestroy')->name('products.confirmDestroy');
-});
+        Route::resource('products', 'ProductController');
+        Route::get('products/{product}/delete', 'ProductController@confirmDestroy')->name('products.confirmDestroy');
+    });
 
 Auth::routes();
 
-Route::get('/home', function() {
+Route::get('/home', function () {
     return view('home');
 })->name('home')->middleware('auth');

@@ -77,3 +77,32 @@ p.color-desc {
     border: 2px solid #000;
   }
 }
+
+.banner_area .banner_inner {
+  background: none;
+  min-height: 395px;
+  .banner_content {
+    h2 {
+      color: $black;
+      font-size: 48px;
+      font-family: "Roboto", sans-serif;
+      margin-bottom: 12px;
+      font-weight: 500;
+      margin-top: 20px;
+    }
+    .page_link a {
+      font-size: 14px;
+      color: $black;
+      font-family: "Roboto", sans-serif;
+      margin-right: 32px;
+      position: relative;
+    }
+    .page_link a:hover {
+      font-weight: 700;
+    }
+  }
+}
+
+.cart_area {
+  padding-top: 0px;
+}

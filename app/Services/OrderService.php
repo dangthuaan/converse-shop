@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Order;
 use App\Product;
 use Illuminate\Support\Facades\Log;
 
@@ -19,6 +18,12 @@ class OrderService
         return Product::findOrFail($id);
     }
 
+    /**
+     * Check if empty session.
+     *
+     * @param  int  $id
+     * @return Array
+     */
     public function checkProductSession()
     {
         if (session()->has('product_data')) {
@@ -29,10 +34,10 @@ class OrderService
     }
 
     /**
-     * create Product session
+     * create Product session.
      *
      * @param  Int $id
-     * @return Boolean
+     * @return Array
      */
     public function createProductSession($id)
     {
@@ -54,50 +59,73 @@ class OrderService
         } catch (\Throwable $th) {
             Log::error($th);
 
-            return false;
+            return [];
         }
 
         return $productData;
     }
 
     /**
-     * create Order session
+     * create Order session.
      *
      * @param  Int $id
-     * @param  Array $orderData
-     * @return Boolean
+     * @return Array
      */
-    public function createOrderSession($id, $orderData)
+    public function createOrderSession($id)
     {
         $product = $this->getProductById($id);
+        $currentUserId = auth()->id();
+
+        $productData = $this->createProductSession($id);
+
+        $quantity = array_sum(array_column($productData, 'quantity'));
+
+        $orderData = [
+            'user_id' => $currentUserId,
+            'total_price' => $product->price,
+            'quantity' => $quantity,
+        ];
 
         try {
             if (session()->has('order_data')) {
                 $orderData['total_price'] = session('order_data.total_price')
-                + $product->price;
+                    + $product->price;
             }
             session(['order_data' => $orderData]);
         } catch (\Throwable $th) {
             Log::error($th);
 
-            return false;
+            return [];
         }
 
-        return true;
+        return $orderData;
     }
 
     /**
-     * Delete order by Id.
+     * Remove a product from Order list.
      *
      * @param  int $id
      * @return Boolean
      */
-    public function delete($id)
+    public function removeProductData($id)
     {
-        $order = Order::findOrFail($id);
+        $productData = session('product_data');
+        $orderData = session('order_data');
+
+        $quantityOfRemoveProduct = $productData[$id]['quantity'];
+        $totalPriceOfRemoveProduct = $quantityOfRemoveProduct * $productData[$id]['price'];
 
         try {
-            $order->delete();
+            unset($productData[$id]);
+            session(['product_data' => $productData]);
+
+            $orderData['total_price'] -= $totalPriceOfRemoveProduct;
+            $orderData['quantity'] -= $quantityOfRemoveProduct;
+            session(['order_data' => $orderData]);
+
+            if (empty(session('product_data'))) {
+                session()->flush();
+            }
         } catch (\Throwable $th) {
             Log::error($th);
 

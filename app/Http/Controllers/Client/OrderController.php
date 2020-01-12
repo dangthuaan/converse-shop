@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrderService;
-use App\Order;
 use App\Product;
 
 class OrderController extends Controller
@@ -24,46 +23,67 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('products')->get();
+        $productData = $this->orderService->checkProductSession();
 
-        return view('client.orders.index', compact('orders'));
+
+        $productImage = Product::whereIn('id', array_keys($productData))->get()->pluck('first_image', 'id');
+
+        $data = [
+            'productImage' => $productImage,
+            'product_data' => $productData,
+        ];
+
+        return view('client.orders.index', $data);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Add a product to Cart
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function addToCart(Request $request)
     {
         $productId = $request->product_id;
-        $product = $this->orderService->getProductById($productId);
-        $currentUserId = auth()->id();
 
-        $productData = $this->orderService->createProductSession($productId);
-
-        $quantity = array_sum(array_column($productData,'quantity'));
-
-        $orderData = [
-            'user_id' => $currentUserId,
-            'total_price' => $product->price,
-            'quantity' => $quantity,
-        ];
-
-        $createOrderSession = $this->orderService->createOrderSession($productId, $orderData);
+        $orderSession = $this->orderService->createOrderSession($productId);
 
         $result = [
             'status' => false,
             'quantity' => 0,
         ];
 
-        if ($productData && $createOrderSession) {
+        if ($orderSession) {
             $result = [
                 'status' => true,
-                'quantity' => $quantity,
+                'quantity' => $orderSession['quantity'],
             ];
         }
+
+        return response()->json($result);
+    }
+
+    /**
+     * Destroy a product in Order list
+     *
+     * @param  \App\Http\Requests\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function removeProductInCart(Request $request)
+    {
+        $productId = $request->product_id;
+
+        $removeProduct = $this->orderService->removeProductData($productId);
+
+        $removeFlag = false;
+
+        if ($removeProduct) {
+            $removeFlag = true;
+        }
+
+        $result = [
+            'status' => $removeFlag,
+        ];
 
         return response()->json($result);
     }
