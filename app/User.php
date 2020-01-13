@@ -42,4 +42,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->notify(new PasswordReset($token));
     }
+
+
+    public function orders()
+    {
+        return $this->hasMany('App\Order');
+    }
 }
