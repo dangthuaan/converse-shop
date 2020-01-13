@@ -15,3 +15,4 @@
 	<script src="{{ asset('fashiop/vendors/counter-up/jquery.counterup.js') }}"></script>
 	<script src="{{ asset('fashiop/js/mail-script.js') }}"></script>
     <script src="{{ asset('fashiop/js/theme.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>

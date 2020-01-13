@@ -1,0 +1,108 @@
+$black: #000;
+$white: #fff;
+$red: #ff0000;
+$blue: #0000ff;
+
+
+#change_password:hover {
+  color: $white !important;
+}
+
+#delete_user:hover {
+  background: #f44a40;
+  color: $white;
+}
+
+.list p.size-desc {
+  margin-bottom: 0;
+  text-transform: uppercase;
+  display: block;
+  font-weight: 500;
+  .size {
+    font-size: 12px;
+    text-align: center;
+    width: 36px;
+    padding: 5px 0;
+    display: inline-block;
+    border: 1px solid #e6e6e6;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    color: gray;
+  }
+  .size.selected {
+    color: $white;
+    background-color: $black;
+  }
+  .size:hover {
+    color: $white;
+    background-color: $black;
+  }
+}
+
+.p_filter_widgets .list {
+  li {
+    a.selected {
+      font-weight: 700;
+    }
+    a.selected:before {
+      background: #222222;
+      border-color: #222222;
+    }
+  }
+}
+
+p.color-desc {
+  margin-bottom: 0;
+  text-transform: uppercase;
+  display: block;
+  font-weight: 500;
+  .color {
+    padding: 10px;
+    display: inline-block;
+    border: 1px solid $black;
+  }
+  .color-1 {
+    background: $black;
+  }
+  .color-2 {
+    background: $white;
+  }
+  .color-3 {
+    background: $red;
+  }
+  .color-4 {
+    background: $blue;
+  }
+  .color.selected {
+    border: 2px solid #000;
+  }
+}
+
+.banner_area .banner_inner {
+  background: none;
+  min-height: 395px;
+  .banner_content {
+    h2 {
+      color: $black;
+      font-size: 48px;
+      font-family: "Roboto", sans-serif;
+      margin-bottom: 12px;
+      font-weight: 500;
+      margin-top: 20px;
+    }
+    .page_link a {
+      font-size: 14px;
+      color: $black;
+      font-family: "Roboto", sans-serif;
+      margin-right: 32px;
+      position: relative;
+    }
+    .page_link a:hover {
+      font-weight: 700;
+    }
+  }
+}
+
+.cart_area {
+  padding-top: 0px;
+}
