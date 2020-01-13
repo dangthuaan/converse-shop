@@ -1,23 +1,23 @@
 $(document).ready(function () {
     //Color Picker
     var colorPicker = function () {
-        $(".color-desc .color").on("click", function (event) {
+        $('.color-desc .color').on('click', function (event) {
             event.preventDefault();
-            $(this).toggleClass("selected");
+            $(this).toggleClass('selected');
         });
     };
     //Size Picker
     var sizePicker = function () {
-        $(".size-desc .size").on("click", function (event) {
+        $('.size-desc .size').on('click', function (event) {
             event.preventDefault();
-            $(this).toggleClass("selected");
+            $(this).toggleClass('selected');
         });
     };
     //Style Picker
     var stylePicker = function () {
-        $(".list-desc .list").on("click", function (event) {
+        $('.list-desc .list').on('click', function (event) {
             event.preventDefault();
-            $(this).toggleClass("selected");
+            $(this).toggleClass('selected');
         });
     };
 
@@ -35,8 +35,10 @@ $(document).ready(function () {
 
     $(".add-to-cart").click(function () {
         var url = "/orders";
+        var productId = $(this).data("product-id");
+
         var data = {
-            product_id: $(this).data("product-id")
+            product_id: productId
         };
 
         $.ajax({
@@ -64,7 +66,7 @@ $(document).ready(function () {
             var productId = $(this).data("product-id");
 
             var data = {
-                product_id: $(this).data("product-id")
+                product_id: productId
             };
 
             $.ajax({

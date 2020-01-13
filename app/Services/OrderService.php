@@ -19,12 +19,12 @@ class OrderService
     }
 
     /**
-     * Check if empty session.
+     * Check and get if empty session.
      *
      * @param  int  $id
      * @return Array
      */
-    public function checkProductSession()
+    public function getProductSession()
     {
         if (session()->has('product_data')) {
             return session('product_data');
@@ -43,7 +43,7 @@ class OrderService
     {
         $product = $this->getProductById($id);
 
-        $productData = $this->checkProductSession();
+        $productData = $this->getProductSession();
 
         try {
             if (array_key_exists($product->id, $productData)) {
@@ -115,23 +115,15 @@ class OrderService
         $quantityOfRemoveProduct = $productData[$id]['quantity'];
         $totalPriceOfRemoveProduct = $quantityOfRemoveProduct * $productData[$id]['price'];
 
-        try {
-            unset($productData[$id]);
-            session(['product_data' => $productData]);
+        unset($productData[$id]);
+        session(['product_data' => $productData]);
 
-            $orderData['total_price'] -= $totalPriceOfRemoveProduct;
-            $orderData['quantity'] -= $quantityOfRemoveProduct;
-            session(['order_data' => $orderData]);
+        $orderData['total_price'] -= $totalPriceOfRemoveProduct;
+        $orderData['quantity'] -= $quantityOfRemoveProduct;
+        session(['order_data' => $orderData]);
 
-            if (empty(session('product_data'))) {
-                session()->flush();
-            }
-        } catch (\Throwable $th) {
-            Log::error($th);
-
-            return false;
+        if (empty(session('product_data'))) {
+            session()->forget(['product_data', 'order_data']);
         }
-
-        return true;
     }
 }

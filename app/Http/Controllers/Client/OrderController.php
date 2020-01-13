@@ -23,7 +23,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $productData = $this->orderService->checkProductSession();
+        $productData = $this->orderService->getProductSession();
 
 
         $productImage = Product::whereIn('id', array_keys($productData))->get()->pluck('first_image', 'id');
@@ -53,7 +53,7 @@ class OrderController extends Controller
             'quantity' => 0,
         ];
 
-        if ($orderSession) {
+        if (!empty($orderSession)) {
             $result = [
                 'status' => true,
                 'quantity' => $orderSession['quantity'],
@@ -73,18 +73,10 @@ class OrderController extends Controller
     {
         $productId = $request->product_id;
 
-        $removeProduct = $this->orderService->removeProductData($productId);
+        $this->orderService->removeProductData($productId);
 
-        $removeFlag = false;
-
-        if ($removeProduct) {
-            $removeFlag = true;
-        }
-
-        $result = [
-            'status' => $removeFlag,
-        ];
-
-        return response()->json($result);
+        return response()->json([
+            'status' => true,
+        ]);
     }
 }
