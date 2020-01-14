@@ -78,11 +78,6 @@ class UserController extends Controller
      */
     public function updatePassword(PasswordRequest $request, $id)
     {
-        if (!(Hash::check($request->current_password, Auth::user()->password))) {
-            // The passwords matches
-            return back()->with('error', 'Your current password does not matches with the password you provided. Please try again.');
-        }
-
         if (strcmp($request->current_password, $request->new_password) == 0) {
             //Current password and new password are same
             return back()->with('error', 'New Password cannot be same as your current password. Please choose a different password.');

@@ -25,12 +25,12 @@ class OrderController extends Controller
     {
         $productData = $this->orderService->getProductSession();
 
-
         $productImage = Product::whereIn('id', array_keys($productData))->get()->pluck('first_image', 'id');
 
         $data = [
             'productImage' => $productImage,
             'product_data' => $productData,
+
         ];
 
         return view('client.orders.index', $data);

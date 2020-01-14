@@ -3,16 +3,6 @@
 @section('content')
 <!--================Login Box Area =================-->
 <section class="login_box_area p_120">
-    @if (session('error'))
-    <div class="alert alert-danger" role="alert" style="text-align: center;">
-        {{ session('error') }}
-    </div>
-    @endif
-    @if (session('success'))
-    <div class="alert alert-success" role="alert" style="text-align: center;">
-        {{ session('success') }}
-    </div>
-    @endif
     <div class="container">
         <div class="row">
             <div class="col-lg-12">

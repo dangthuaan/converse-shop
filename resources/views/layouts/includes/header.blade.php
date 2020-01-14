@@ -1,10 +1,5 @@
 <!--================Header Menu Area =================-->
 <header class="header_area">
-    @if (session('error'))
-    <div class="alert alert-danger" role="alert" style="text-align: center;">
-        {{ session('error') }}
-    </div>
-    @endif
     @if (session('success'))
     <div class="alert alert-success" role="alert" style="text-align: center;">
         {{ session('success') }}
