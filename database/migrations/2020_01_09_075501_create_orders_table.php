@@ -17,10 +17,9 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id');
             $table->bigInteger('total_price');
-            $table->string('coupon')->nullable();
             $table->tinyInteger('status')
-                    ->default(1)
-                    ->comment('1: new, 2: in progress, 3: delivered');
+                ->default(1)
+                ->comment('1: new, 2: in progress, 3: delivered');
             $table->timestamps();
         });
     }

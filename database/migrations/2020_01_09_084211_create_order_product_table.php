@@ -19,7 +19,6 @@ class CreateOrderProductTable extends Migration
             $table->bigInteger('order_id');
             $table->integer('quantity');
             $table->bigInteger('price');
-            $table->string('coupon')->nullable();
             $table->timestamps();
         });
     }

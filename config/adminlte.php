@@ -184,11 +184,19 @@ return [
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
+            'text'        => 'Users',
+            'url'         => 'admin/users',
+            'icon'        => 'fas fa-users',
+        ],
+        [
+            'text'        => 'Categories',
+            'url'         => 'admin/categories',
+            'icon'        => 'fas fa-th-list',
+        ],
+        [
+            'text'        => 'Products',
+            'url'         => 'admin/products',
+            'icon'        => 'fas fa-shoe-prints',
         ],
         ['header' => 'account_settings'],
         [

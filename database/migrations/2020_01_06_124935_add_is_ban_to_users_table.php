@@ -15,7 +15,7 @@ class AddIsBanToUsersTable extends Migration
     {
         if (!Schema::hasColumn('users', 'is_ban')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->boolean('is_ban')->after('remember_token');
+                $table->boolean('is_ban')->default(0)->after('remember_token');
             });
         }
     }
