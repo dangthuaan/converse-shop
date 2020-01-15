@@ -41,6 +41,9 @@ Route::middleware(['auth', 'verified', 'is-ban'])
         Route::get('orders', 'OrderController@index')->name('orders.index');
         Route::post('orders/remove', 'OrderController@removeProductInCart')->name('orders.product.remove');
         Route::post('orders', 'OrderController@addToCart')->name('orders.addToCart');
+        Route::post('orders/plusQuantity', 'OrderController@plusQuantity')->name('orders.plusQuantity');
+        Route::post('orders/minusQuantity', 'OrderController@minusQuantity')->name('orders.minusQuantity');
+        Route::post('orders/checkout', 'OrderController@checkout')->name('orders.checkout');
     });
 
 Route::middleware(['auth', 'verified', 'is-ban'])

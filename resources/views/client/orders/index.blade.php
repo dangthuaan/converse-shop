@@ -74,13 +74,13 @@
                             </td>
                             <td>
                                 <div class="product_count">
-                                    <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="1">
+                                    <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="{{ $product_data[$id]['quantity'] }}">
                                     <button class="increase items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" type="button">
-                                        <i class="lnr lnr-chevron-up">
+                                        <i data-product-id="{{ $id }}" class="lnr lnr-chevron-up">
                                         </i>
                                     </button>
                                     <button class="reduced items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 1 ) result.value--;return false;" type="button">
-                                        <i class="lnr lnr-chevron-down">
+                                        <i data-product-id="{{ $id }}" class="lnr lnr-chevron-down">
                                         </i>
                                     </button>
                                     </input>
@@ -88,7 +88,7 @@
                             </td>
                             <td>
                                 <h5>
-                                    $720.00
+                                    {{ $product_data[$id]['price'] * $product_data[$id]['quantity']  }}
                                 </h5>
                             </td>
                             <td>
@@ -138,7 +138,7 @@
                             </td>
                             <td>
                                 <h5>
-                                    $2160.00
+                                    ${{ $order_data['total_price'] }}
                                 </h5>
                             </td>
                         </tr>
@@ -223,7 +223,7 @@
                                     <a class="gray_btn" href="#">
                                         Continue Shopping
                                     </a>
-                                    <a class="main_btn" href="#">
+                                    <a class="main_btn" href="{{ route('client.orders.checkout') }}">
                                         Proceed to checkout
                                     </a>
                                 </div>

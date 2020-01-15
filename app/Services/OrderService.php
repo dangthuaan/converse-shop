@@ -126,4 +126,42 @@ class OrderService
             session()->forget(['product_data', 'order_data']);
         }
     }
+
+    /**
+     * Increase product quantity.
+     *
+     * @param  int $id
+     */
+    public function increaseQuantity($id)
+    {
+        $productData = session('product_data');
+        $orderData = session('order_data');
+
+        $productData[$id]['quantity']++;
+        session(['product_data' => $productData]);
+
+        $orderData['total_price'] += $productData[$id]['price'];
+        $orderData['quantity']++;
+        session(['order_data' => $orderData]);
+    }
+
+    /**
+     * Decrease product quantity.
+     *
+     * @param  int $id
+     */
+    public function decreaseQuantity($id)
+    {
+        $productData = session('product_data');
+        $orderData = session('order_data');
+
+        if ($productData[$id]['quantity'] > 1) {
+            $productData[$id]['quantity']--;
+            session(['product_data' => $productData]);
+
+            $orderData['total_price'] -= $productData[$id]['price'];
+            $orderData['quantity']--;
+            session(['order_data' => $orderData]);
+        }
+    }
 }
