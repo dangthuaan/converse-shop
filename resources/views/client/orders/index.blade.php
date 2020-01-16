@@ -48,8 +48,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($product_data)
-                        @foreach ($product_data as $id => $product)
+                        @if ($product_session)
+                        @foreach ($product_session as $id => $product)
                         @if (isset($productImage[$id]))
                         <tr class="product-{{ $id }}">
                             <td>
@@ -61,7 +61,7 @@
                                     <div class="media">
                                         <div class="media-body">
                                             <p>
-                                                {{ $product_data[$id]['name'] }}
+                                                {{ $product_session[$id]['name'] }}
                                             </p>
                                         </div>
                                     </div>
@@ -69,12 +69,12 @@
                             </td>
                             <td>
                                 <h5>
-                                    {{ $product_data[$id]['price'] }}
+                                    {{ $product_session[$id]['price'] }}
                                 </h5>
                             </td>
                             <td>
                                 <div class="product_count">
-                                    <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="{{ $product_data[$id]['quantity'] }}">
+                                    <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="{{ $product_session[$id]['quantity'] }}">
                                     <button class="increase items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" type="button">
                                         <i data-product-id="{{ $id }}" class="lnr lnr-chevron-up">
                                         </i>
@@ -88,7 +88,7 @@
                             </td>
                             <td>
                                 <h5>
-                                    {{ $product_data[$id]['price'] * $product_data[$id]['quantity']  }}
+                                    {{ $product_session[$id]['price'] * $product_session[$id]['quantity']  }}
                                 </h5>
                             </td>
                             <td>
@@ -138,7 +138,7 @@
                             </td>
                             <td>
                                 <h5>
-                                    ${{ $order_data['total_price'] }}
+                                    ${{ $order_session['total_price'] }}
                                 </h5>
                             </td>
                         </tr>

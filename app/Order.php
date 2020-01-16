@@ -10,7 +10,8 @@ class Order extends Model
         'id',
         'user_id',
         'total_price',
-        'coupon'
+        'quantity',
+        'status'
     ];
 
     public function products()

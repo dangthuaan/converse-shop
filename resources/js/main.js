@@ -89,7 +89,7 @@ $(document).ready(function () {
     });
 
     $('.lnr-chevron-up').click(function () {
-        var url = '/orders/plusQuantity';
+        var url = '/orders/increaseQuantity';
         var productId = $(this).data('product-id');
 
         var data = {
@@ -114,7 +114,7 @@ $(document).ready(function () {
     });
 
     $('.lnr-chevron-down').click(function () {
-        var url = '/orders/minusQuantity';
+        var url = '/orders/decreaseQuantity';
         var productId = $(this).data('product-id');
 
         var data = {

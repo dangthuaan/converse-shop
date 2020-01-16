@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrderService;
 use App\Product;
-use App\Order;
 
 class OrderController extends Controller
 {
@@ -24,22 +23,22 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $productData = $this->orderService->getProductSession();
-        $orderData = session('order_data');
+        $productSession = $this->orderService->getProductSession();
+        $orderSession = session('order_session');
 
-        $productImage = Product::whereIn('id', array_keys($productData))->get()->pluck('first_image', 'id');
+        $productImage = Product::whereIn('id', array_keys($productSession))->get()->pluck('first_image', 'id');
 
         $data = [
             'productImage' => $productImage,
-            'product_data' => $productData,
-            'order_data' => $orderData,
+            'product_session' => $productSession,
+            'order_session' => $orderSession,
         ];
 
         return view('client.orders.index', $data);
     }
 
     /**
-     * Add a product to Cart
+     * Add a product to Cart.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -66,7 +65,7 @@ class OrderController extends Controller
     }
 
     /**
-     * Destroy a product in Order list
+     * Destroy a product in Order list.
      *
      * @param  \App\Http\Requests\Request $request
      * @return \Illuminate\Http\Response
@@ -83,12 +82,12 @@ class OrderController extends Controller
     }
 
     /**
-     * Increase product quantity in order
+     * Increase product quantity in order.
      *
      * @param  \App\Http\Requests\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function plusQuantity(Request $request)
+    public function increaseQuantity(Request $request)
     {
         $productId = $request->product_id;
         $this->orderService->increaseQuantity($productId);
@@ -99,12 +98,12 @@ class OrderController extends Controller
     }
 
     /**
-     * Decrease product quantity in order
+     * Decrease product quantity in order.
      *
      * @param  \App\Http\Requests\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function minusQuantity(Request $request)
+    public function decreaseQuantity(Request $request)
     {
         $productId = $request->product_id;
 
@@ -113,5 +112,28 @@ class OrderController extends Controller
         return response()->json([
             'status' => true,
         ]);
+    }
+
+    /**
+     * Checkout order and Store order data in database.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function checkout()
+    {
+        $currentUser = auth()->user();
+        $currentUserId = $currentUser->id;
+
+        $order = $currentUser->orders
+            ->where('status', 2)
+            ->first();
+
+        if (session('order_session')) {
+            $this->orderService->storeOrderProduct($currentUserId);
+            $this->orderService->sendOrderConfirmEmail($currentUser, $order);
+            session()->forget(['product_session', 'order_session']);
+        }
+
+        return view('client.orders.confirmation', ['order' => $order]);
     }
 }
