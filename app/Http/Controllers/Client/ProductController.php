@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
+use App\Comment;
 
 class ProductController extends Controller
 {
@@ -50,8 +51,9 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::findOrFail($id);
+        $comment = Comment::with('parent')->get();
 
-        return view('client.products.show', compact('product'));
+        return view('client.products.show', compact('product', 'comment'));
     }
 
     /**

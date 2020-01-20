@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  @include('layouts.includes.head')
+@include('layouts.includes.head')
 
-  <body>
+<body>
 
-    @include('layouts.includes.header')
+  @include('layouts.includes.header')
 
-    @yield('content')
+  @yield('content')
 
-    @include('layouts.includes.footer')
+  @include('layouts.includes.footer')
 
-    @include('layouts.includes.script')
+  @include('layouts.includes.script')
+</body>
 
-  </body>
 </html>

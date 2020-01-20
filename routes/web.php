@@ -48,6 +48,9 @@ Route::middleware(['auth', 'verified', 'is-ban'])
         Route::post('orders/decrease-product-quantity', 'OrderController@decreaseQuantity')->name('orders.decrease-product-quantity');
         Route::get('orders/confirmation', 'OrderController@confirmation')->name('orders.confirmation');
         Route::get('orders/confirmation/checkout', 'OrderController@checkout')->name('orders.checkout');
+
+        Route::post('comments', 'CommentController@store')->name('comments.store');
+        Route::post('comments/reply', 'CommentController@storeReply')->name('comments.storeReply');
     });
 
 Route::middleware(['auth', 'verified', 'is-ban'])
