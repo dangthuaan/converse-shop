@@ -75,11 +75,11 @@
                             <td>
                                 <div class="product_count">
                                     <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="{{ $product_session[$id]['quantity'] }}">
-                                    <button class="increase items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" type="button">
+                                    <button class="increase items-count" type="button">
                                         <i data-product-id="{{ $id }}" class="lnr lnr-chevron-up">
                                         </i>
                                     </button>
-                                    <button class="reduced items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 1 ) result.value--;return false;" type="button">
+                                    <button class="reduced items-count" type="button">
                                         <i data-product-id="{{ $id }}" class="lnr lnr-chevron-down">
                                         </i>
                                     </button>
@@ -142,75 +142,6 @@
                                 </h5>
                             </td>
                         </tr>
-                        <tr class="shipping_area">
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                                <h5>
-                                    Shipping
-                                </h5>
-                            </td>
-                            <td>
-                                <div class="shipping_box">
-                                    <ul class="list">
-                                        <li>
-                                            <a href="#">
-                                                Flat Rate: $5.00
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                Free Shipping
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                Flat Rate: $10.00
-                                            </a>
-                                        </li>
-                                        <li class="active">
-                                            <a href="#">
-                                                Local Delivery: $2.00
-                                            </a>
-                                        </li>
-                                    </ul>
-                                    <h6>
-                                        Calculate Shipping
-                                        <i aria-hidden="true" class="fa fa-caret-down">
-                                        </i>
-                                    </h6>
-                                    <select class="shipping_select">
-                                        <option value="1">
-                                            Bangladesh
-                                        </option>
-                                        <option value="2">
-                                            India
-                                        </option>
-                                        <option value="4">
-                                            Pakistan
-                                        </option>
-                                    </select>
-                                    <select class="shipping_select">
-                                        <option value="1">
-                                            Select a State
-                                        </option>
-                                        <option value="2">
-                                            Select a State
-                                        </option>
-                                        <option value="4">
-                                            Select a State
-                                        </option>
-                                    </select>
-                                    <input placeholder="Postcode/Zipcode" type="text">
-                                    <a class="gray_btn" href="#">
-                                        Update Details
-                                    </a>
-                                    </input>
-                                </div>
-                            </td>
-                        </tr>
                         <tr class="out_button_area">
                             <td>
                             </td>
@@ -223,7 +154,7 @@
                                     <a class="gray_btn" href="#">
                                         Continue Shopping
                                     </a>
-                                    <a class="main_btn" href="{{ route('client.orders.checkout') }}">
+                                    <a class="main_btn" href="{{ route('client.orders.confirmation') }}">
                                         Proceed to checkout
                                     </a>
                                 </div>

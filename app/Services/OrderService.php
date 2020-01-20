@@ -185,20 +185,28 @@ class OrderService
             'user_id' => $userId,
             'total_price' => $orderSession['total_price'],
             'quantity' => $orderSession['quantity'],
-            'status' => 2,
+            'status' => config('order.new_order_status'),
         ];
 
-        $order = Order::create($orderData);
+        try {
+            $order = Order::create($orderData);
 
-        foreach ($products as $product) {
-            $productData = [
-                'product_id' => $product->id,
-                'quantity' => $productSession[$product->id]['quantity'],
-                'price' => $product->price,
-            ];
+            foreach ($products as $product) {
+                $productData = [
+                    'product_id' => $product->id,
+                    'quantity' => $productSession[$product->id]['quantity'],
+                    'price' => $product->price,
+                ];
 
-            $product->orders()->attach($order->id, $productData);
+                $product->orders()->attach($order->id, $productData);
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
         }
+
+        return true;
     }
 
     /**
@@ -212,6 +220,10 @@ class OrderService
             Mail::to($user)->send(new OrderConfirmation($order));
         } catch (\Throwable $th) {
             Log::error($th);
+
+            return false;
         }
+
+        return true;
     }
 }

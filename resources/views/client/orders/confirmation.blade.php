@@ -1,56 +1,54 @@
 @extends('layouts.shop')
 
 @section('content')
-<!--================Order Details Area =================-->
-<section class="order_details p_120">
+<!--================Checkout Area =================-->
+<section class="checkout_area section_gap">
     <div class="container">
-        <h3 class="title_confirmation">Thank you. Your order has been received.</h3>
-        <div class="confirmation_btn_inner">
-            <a class="main_btn" href="#">Continue Shopping</a>
+        @if (session('error'))
+        <div class="alert alert-danger" role="alert" style="text-align: center;">
+            {{ session('error') }}
         </div>
-        <div class="order_details_table">
-            <h2>Order Details</h2>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Product</th>
-                            <th scope="col">Quantity</th>
-                            <th scope="col">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if ($order)
-                        @foreach ($order->products as $orderProduct)
-                        <tr>
-                            <td>
-                                <p>{{ $orderProduct->name }}</p>
-                            </td>
-                            <td>
-                                <h5>{{ $orderProduct->pivot->quantity }}</h5>
-                            </td>
-                            <td>
-                                <p>{{ $orderProduct->price }}</p>
-                            </td>
-                        </tr>
-                        @endforeach
-                        <tr>
-                            <td>
-                                <h4>Total</h4>
-                            </td>
-                            <td>
-                                <h5></h5>
-                            </td>
-                            <td>
-                                <p>{{ $order->total_price }}</p>
-                            </td>
-                        </tr>
-                        @endif
-                    </tbody>
-                </table>
+        @endif
+
+        @if ($productSession)
+        <div class="billing_details margin_top">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="order_box">
+                        <h2>Your Order</h2>
+                        <ul class="list">
+                            <li>
+                                <a href="#">Product
+                                    <span>Product total</span>
+                                </a>
+                            </li>
+                            @foreach ($productSession as $id => $product)
+                            <li>
+                                <a href="#">{{ $productSession[$id]['name'] }}
+                                    <span class="middle">x{{ $productSession[$id]['quantity'] }}</span>
+                                    <span class="last">{{ $productSession[$id]['price'] * $productSession[$id]['quantity'] }}</span>
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                        <ul class="list list_2">
+                            <li>
+                                <a href="#">Total
+                                    <span>{{ $orderSession['total_price'] }} (VNĐ)</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12" style="text-align: center;">
+                    <a class="main_btn" href="{{  route('client.orders.checkout') }}" style="margin-top: 50px;">Proceed to Checkout</a>
+                </div>
             </div>
         </div>
+        @else
+        @include('client.orders.checkout')
+        @endif
     </div>
 </section>
-<!--================End Order Details Area =================-->
+<!--================End Checkout Area =================-->
 @endsection

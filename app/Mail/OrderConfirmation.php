@@ -36,7 +36,6 @@ class OrderConfirmation extends Mailable
      */
     public function build()
     {
-        return $this->from('dangthua@gmail.com')
-            ->markdown('emails.orders.confirm');
+        return $this->markdown('emails.orders.confirm');
     }
 }

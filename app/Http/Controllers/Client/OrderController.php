@@ -115,6 +115,19 @@ class OrderController extends Controller
     }
 
     /**
+     * Checkout order: list all products in order.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function confirmation()
+    {
+        $productSession = session('product_session');
+        $orderSession = session('order_session');
+
+        return view('client.orders.confirmation', compact('productSession', 'orderSession'));
+    }
+
+    /**
      * Checkout order and Store order data in database.
      *
      * @return \Illuminate\Http\Response
@@ -124,16 +137,17 @@ class OrderController extends Controller
         $currentUser = auth()->user();
         $currentUserId = $currentUser->id;
 
-        $order = $currentUser->orders
-            ->where('status', 2)
-            ->first();
-
         if (session('order_session')) {
-            $this->orderService->storeOrderProduct($currentUserId);
+            $storeOrderProduct = $this->orderService->storeOrderProduct($currentUserId);
+        }
+
+        if (!empty($storeOrderProduct)) {
+            $order = $currentUser->orders()->latest()->first();
+
             $this->orderService->sendOrderConfirmEmail($currentUser, $order);
             session()->forget(['product_session', 'order_session']);
         }
 
-        return view('client.orders.confirmation', ['order' => $order]);
+        return view('client.orders.checkout');
     }
 }
