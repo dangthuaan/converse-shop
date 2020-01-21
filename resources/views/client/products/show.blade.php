@@ -238,18 +238,18 @@
             </div>
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                 <div class="row">
-                    <div class="col-lg-6" id="comment">
-                        @include('client.products.comment', ['comments' => $product->comments, 'product_id' => $product->id])
+                    <div class="col-lg-12" id="comment">
+                        @include('client.products.comments.comment', ['comments' => $product->comments, 'product_id' => $product->id])
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-12 margin_top">
                         <div class="review_box">
                             <h4>
                                 Post a comment
                             </h4>
-                            <form class="row contact_form" id="contactForm">
+                            <form class="row contact_form" id="comment_form">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <textarea class="form-control @error('message') is-invalid @enderror" name="content" placeholder="Message" rows="1" required></textarea>
+                                        <textarea class="form-control @error('message') is-invalid @enderror content" name="content" placeholder="Message" rows="1" required></textarea>
                                     </div>
                                     @error('content')
                                     <span class="text-danger" role="alert">
@@ -258,7 +258,7 @@
                                     @enderror
                                 </div>
                                 <div class="col-md-12 text-right">
-                                    <button data-product-id="{{ $product->id }}" class="submit_comment btn submit_btn" type="submit" value="submit">
+                                    <button data-product-id="{{ $product->id }}" class="submit_comment btn submit_btn" type="submit">
                                         Submit Now
                                     </button>
                                 </div>

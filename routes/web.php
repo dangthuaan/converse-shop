@@ -49,8 +49,8 @@ Route::middleware(['auth', 'verified', 'is-ban'])
         Route::get('orders/confirmation', 'OrderController@confirmation')->name('orders.confirmation');
         Route::get('orders/confirmation/checkout', 'OrderController@checkout')->name('orders.checkout');
 
-        Route::post('comments', 'CommentController@store')->name('comments.store');
-        Route::post('comments/reply', 'CommentController@storeReply')->name('comments.storeReply');
+        Route::post('comments', 'CommentController@storeComment')->name('comments.storeComment');
+        Route::post('comments/reply', 'CommentController@storeCommentReply')->name('comments.storeCommentReply');
     });
 
 Route::middleware(['auth', 'verified', 'is-ban'])

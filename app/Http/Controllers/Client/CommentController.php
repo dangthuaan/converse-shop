@@ -4,18 +4,24 @@ namespace App\Http\Controllers\Client;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Comment;
-use App\Http\Requests\CommentRequest;
+use App\Services\CommentService;
 
 class CommentController extends Controller
 {
+    protected $commentService;
+
+    public function __construct(CommentService $commentService)
+    {
+        $this->commentService = $commentService;
+    }
+
     /**
      * Store user's comments in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CommentRequest $request)
+    public function storeComment(Request $request)
     {
         $data = $request->only([
             'product_id',
@@ -24,10 +30,16 @@ class CommentController extends Controller
 
         $data['user_id'] = auth()->id();
 
-        Comment::create($data);
+        $storeComment = $this->commentService->storeComment($data);
+
+        $statusFlag = false;
+
+        if ($storeComment) {
+            $statusFlag = true;
+        }
 
         return response()->json([
-            'status' => true,
+            'status' => $statusFlag,
         ]);
     }
 
@@ -37,7 +49,7 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storeReply(Request $request)
+    public function storeCommentReply(Request $request)
     {
         $data = $request->only([
             'product_id',
@@ -47,10 +59,16 @@ class CommentController extends Controller
 
         $data['user_id'] = auth()->id();
 
-        Comment::create($data);
+        $storeCommentReply = $this->commentService->storeComment($data);
+
+        $statusFlag = false;
+
+        if ($storeCommentReply) {
+            $statusFlag = true;
+        }
 
         return response()->json([
-            'status' => true,
+            'status' => $statusFlag,
         ]);
     }
 }

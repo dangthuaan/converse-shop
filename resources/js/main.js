@@ -143,71 +143,104 @@ $(document).ready(function () {
         });
     });
 
-    $('.submit_comment').click(function (event) {
+    $("#comment_form").submit(function (event) {
         event.preventDefault();
-
-        var url = "/comments";
-        var content = $('textarea[name="content"]').val();
-        var productId = $(this).data("product-id");
-
-        var data = {
-            'product_id': productId,
-            'content': content,
-        };
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: data,
-            cache: false,
-            success: function (result) {
-                if (result.status) {
-                    $("#comment").load(location.href + " #comment>*", "");
-                    $("textarea[name='reply_content']").val('');
-                }
+    }).validate({
+        rules: {
+            content: {
+                required: true,
+                minlength: 10,
             },
-            error: function () {
-                alert("Something went wrong!");
-                location.reload();
-            }
-        });
+        },
+        errorPlacement: function (label, element) {
+            label.addClass('error');
+            label.insertAfter(element);
+        },
+        wrapper: 'span',
+        submitHandler: function (form) {
+            var url = "/comments";
+            var content = $(form).find('textarea[name="content"]').val();
+            var productId = $('.submit_comment').data("product-id");
+
+            var data = {
+                'product_id': productId,
+                'content': content,
+            };
+
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: data,
+                cache: false,
+                success: function (result) {
+                    if (result.status) {
+                        $("#comment").load(location.href + " #comment>*", "");
+                        $(form).find("textarea[name='content']").val('');
+                    }
+                },
+                error: function () {
+                    alert("Something went wrong!");
+                    location.reload();
+                }
+            });
+            return false;
+        }
     });
 
     $('#comment').on('click', '.reply_btn', function (event) {
         event.preventDefault();
 
-        var $this = $(this).parent().parent().parent().next('.comment_reply');
-        $(".comment_reply").not($this).hide();
-        $this.toggle();
+        $('.hide_reply_form').hide();
+
+        var $this = $(this).parent().parent().parent().next('#comment_reply');
+        $("#comment_reply").not($this).hide();
+        $this.show();
+        $this.children().attr('id', 'active_reply');
     });
 
-    $('#comment').on('click', '.submit_reply', function (event) {
-        event.preventDefault();
-
-        var url = "/comments/reply";
-        var content = $(this).parent().parent().find('.reply_content').val();
-        var productId = $(this).data("product-id");
-        var parentId = $(this).data("parent-id");
-
-        var data = {
-            'product_id': productId,
-            'parent_id': parentId,
-            'content': content,
-        };
-
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: data,
-            cache: false,
-            success: function (result) {
-                if (result.status) {
-                    $("#comment").load(location.href + " #comment>*", "");
-                }
+    $('#comment').on('click', '.submit_reply', function () {
+        $(this).parent().parent().on('submit', function (event) {
+            event.preventDefault();
+        }).validate({
+            rules: {
+                reply_content: {
+                    required: true,
+                    minlength: 10,
+                },
             },
-            error: function () {
-                alert("Something went wrong!");
-                location.reload();
+            errorPlacement: function (label, element) {
+                label.addClass('error');
+                label.insertAfter(element);
+            },
+            wrapper: 'span',
+            submitHandler: function (form) {
+                var url = "/comments/reply";
+                var content = $(form).find('.reply_content').val();
+                var productId = $('#active_reply').find('.submit_reply').data("product-id");
+                var parentId = $('#active_reply').find('.submit_reply').data("parent-id");
+
+                var data = {
+                    'product_id': productId,
+                    'parent_id': parentId,
+                    'content': content,
+                };
+
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    cache: false,
+                    success: function (result) {
+                        if (result.status) {
+                            $("#comment").load(location.href + " #comment>*", "");
+                            $("textarea[name='reply_content']").val('');
+                        }
+                    },
+                    error: function () {
+                        alert("Something went wrong!");
+                        location.reload();
+                    }
+                });
             }
         });
     });

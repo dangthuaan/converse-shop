@@ -51,9 +51,8 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::findOrFail($id);
-        $comment = Comment::with('parent')->get();
 
-        return view('client.products.show', compact('product', 'comment'));
+        return view('client.products.show', compact('product'));
     }
 
     /**

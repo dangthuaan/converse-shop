@@ -84,7 +84,7 @@ p.color-desc {
     h2 {
       color: $black;
       font-size: 48px;
-      font-family: "Roboto", sans-serif;
+      font-family: 'Roboto', sans-serif;
       margin-bottom: 12px;
       font-weight: 500;
       margin-top: 20px;
@@ -92,7 +92,7 @@ p.color-desc {
     .page_link a {
       font-size: 14px;
       color: $black;
-      font-family: "Roboto", sans-serif;
+      font-family: 'Roboto', sans-serif;
       margin-right: 32px;
       position: relative;
     }
@@ -110,6 +110,23 @@ p.color-desc {
   margin-top: 40px;
 }
 
+.display_none {
+  display: none;
+}
+
 .nav-item.active {
   margin-right: 0px !important;
+}
+
+.reply_btn:hover {
+  cursor: pointer;
+}
+
+span.error {
+  color: #ff0000;
+  font-weight: 700;
+}
+
+.form_border {
+  border: 1px solid #000;
 }
