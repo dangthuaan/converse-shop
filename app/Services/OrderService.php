@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Product;
+use App\Order;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderConfirmation;
 
 class OrderService
 {
@@ -26,8 +29,8 @@ class OrderService
      */
     public function getProductSession()
     {
-        if (session()->has('product_data')) {
-            return session('product_data');
+        if (session()->has('product_session')) {
+            return session('product_session');
         }
 
         return [];
@@ -43,26 +46,26 @@ class OrderService
     {
         $product = $this->getProductById($id);
 
-        $productData = $this->getProductSession();
+        $productSession = $this->getProductSession();
 
         try {
-            if (array_key_exists($product->id, $productData)) {
-                $productData[$product->id]['quantity'] += 1;
+            if (array_key_exists($product->id, $productSession)) {
+                $productSession[$product->id]['quantity'] += 1;
             } else {
-                $productData[$product->id] = [
+                $productSession[$product->id] = [
                     'name' => $product->name,
                     'price' => $product->price,
                     'quantity' => 1,
                 ];
             }
-            session(['product_data' => $productData]);
+            session(['product_session' => $productSession]);
         } catch (\Throwable $th) {
             Log::error($th);
 
             return [];
         }
 
-        return $productData;
+        return $productSession;
     }
 
     /**
@@ -76,9 +79,9 @@ class OrderService
         $product = $this->getProductById($id);
         $currentUserId = auth()->id();
 
-        $productData = $this->createProductSession($id);
+        $productSession = $this->createProductSession($id);
 
-        $quantity = array_sum(array_column($productData, 'quantity'));
+        $quantity = array_sum(array_column($productSession, 'quantity'));
 
         $orderData = [
             'user_id' => $currentUserId,
@@ -87,11 +90,11 @@ class OrderService
         ];
 
         try {
-            if (session()->has('order_data')) {
-                $orderData['total_price'] = session('order_data.total_price')
+            if (session()->has('order_session')) {
+                $orderData['total_price'] = session('order_session.total_price')
                     + $product->price;
             }
-            session(['order_data' => $orderData]);
+            session(['order_session' => $orderData]);
         } catch (\Throwable $th) {
             Log::error($th);
 
@@ -109,21 +112,118 @@ class OrderService
      */
     public function removeProductData($id)
     {
-        $productData = session('product_data');
-        $orderData = session('order_data');
+        $productSession = session('product_session');
+        $orderSession = session('order_session');
 
-        $quantityOfRemoveProduct = $productData[$id]['quantity'];
-        $totalPriceOfRemoveProduct = $quantityOfRemoveProduct * $productData[$id]['price'];
+        $quantityOfRemoveProduct = $productSession[$id]['quantity'];
+        $totalPriceOfRemoveProduct = $quantityOfRemoveProduct * $productSession[$id]['price'];
 
-        unset($productData[$id]);
-        session(['product_data' => $productData]);
+        unset($productSession[$id]);
+        session(['product_session' => $productSession]);
 
-        $orderData['total_price'] -= $totalPriceOfRemoveProduct;
-        $orderData['quantity'] -= $quantityOfRemoveProduct;
-        session(['order_data' => $orderData]);
+        $orderSession['total_price'] -= $totalPriceOfRemoveProduct;
+        $orderSession['quantity'] -= $quantityOfRemoveProduct;
+        session(['order_session' => $orderSession]);
 
-        if (empty(session('product_data'))) {
-            session()->forget(['product_data', 'order_data']);
+        if (empty(session('product_session'))) {
+            session()->forget(['product_session', 'order_session']);
         }
+    }
+
+    /**
+     * Increase product quantity.
+     *
+     * @param  int $id
+     */
+    public function increaseQuantity($id)
+    {
+        $productSession = session('product_session');
+        $orderSession = session('order_session');
+
+        $productSession[$id]['quantity']++;
+        session(['product_session' => $productSession]);
+
+        $orderSession['total_price'] += $productSession[$id]['price'];
+        $orderSession['quantity']++;
+        session(['order_session' => $orderSession]);
+    }
+
+    /**
+     * Decrease product quantity.
+     *
+     * @param  int $id
+     */
+    public function decreaseQuantity($id)
+    {
+        $productSession = session('product_session');
+        $orderSession = session('order_session');
+
+        if ($productSession[$id]['quantity'] > 1) {
+            $productSession[$id]['quantity']--;
+            session(['product_session' => $productSession]);
+
+            $orderSession['total_price'] -= $productSession[$id]['price'];
+            $orderSession['quantity']--;
+            session(['order_session' => $orderSession]);
+        }
+    }
+
+    /**
+     * Store order in database.
+     *
+     * @param  int $id
+     */
+    public function storeOrderProduct($userId)
+    {
+        $productSession = session('product_session');
+        $orderSession = session('order_session');
+
+        $productId = array_keys($productSession);
+        $products = Product::findOrFail($productId);
+
+        $orderData = [
+            'user_id' => $userId,
+            'total_price' => $orderSession['total_price'],
+            'quantity' => $orderSession['quantity'],
+            'status' => config('order.new_order_status'),
+        ];
+
+        try {
+            $order = Order::create($orderData);
+
+            foreach ($products as $product) {
+                $productData = [
+                    'product_id' => $product->id,
+                    'quantity' => $productSession[$product->id]['quantity'],
+                    'price' => $product->price,
+                ];
+
+                $product->orders()->attach($order->id, $productData);
+            }
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Send order confirmation email.
+     *
+     * @param  int $id
+     */
+    public function sendOrderConfirmEmail($user, $order)
+    {
+        try {
+            Mail::to($user)->send(new OrderConfirmation($order));
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
     }
 }

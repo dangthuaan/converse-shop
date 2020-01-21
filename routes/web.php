@@ -16,12 +16,15 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('client.index');
 });
+Route::get('/home', function () {
+    return view('client.index');
+})->name('client.index');
+
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 Auth::routes(['verify' => true]);
 
 Route::middleware(['auth', 'verified', 'is-ban'])->group(function () {
-    Route::get('/home', 'HomeController@index')->name('home');
     Route::get('/admin', function () {
         return view('admin.dashboard');
     })->name('dashboard');
@@ -41,6 +44,10 @@ Route::middleware(['auth', 'verified', 'is-ban'])
         Route::get('orders', 'OrderController@index')->name('orders.index');
         Route::post('orders/remove', 'OrderController@removeProductInCart')->name('orders.product.remove');
         Route::post('orders', 'OrderController@addToCart')->name('orders.addToCart');
+        Route::post('orders/increase-product-quantity', 'OrderController@increaseQuantity')->name('orders.increase-product-quantity');
+        Route::post('orders/decrease-product-quantity', 'OrderController@decreaseQuantity')->name('orders.decrease-product-quantity');
+        Route::get('orders/confirmation', 'OrderController@confirmation')->name('orders.confirmation');
+        Route::get('orders/confirmation/checkout', 'OrderController@checkout')->name('orders.checkout');
     });
 
 Route::middleware(['auth', 'verified', 'is-ban'])
@@ -59,11 +66,3 @@ Route::middleware(['auth', 'verified', 'is-ban'])
     });
 
 Auth::routes();
-
-Route::get('/home', function () {
-    return view('home');
-})->name('home')->middleware('auth');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
