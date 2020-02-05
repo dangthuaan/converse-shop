@@ -34,7 +34,7 @@ class Product extends Model
         return $this->belongsToMany('App\Category');
     }
 
-    public function createdBy()
+    public function user()
     {
         return $this->belongsTo('App\User');
     }
@@ -42,5 +42,10 @@ class Product extends Model
     public function orders()
     {
         return $this->belongsToMany('App\Order')->withPivot('quantity');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment')->whereNull('parent_id');
     }
 }

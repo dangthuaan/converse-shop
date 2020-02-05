@@ -67,21 +67,21 @@
                     </ul>
                     <p>
                         Mill Oil is an innovative oil filled radiator with the most modern technology. If you are looking for something that
-                            can make your interior look awesome, and at the same time give you the pleasant warm feeling during the winter.
+                        can make your interior look awesome, and at the same time give you the pleasant warm feeling during the winter.
                     </p>
                     <div class="product_count">
                         <label for="qty">
                             Quantity:
                         </label>
                         <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="1">
-                            <button class="increase items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" type="button">
-                                <i class="lnr lnr-chevron-up">
-                                </i>
-                            </button>
-                            <button class="reduced items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 1 ) result.value--;return false;" type="button">
-                                <i class="lnr lnr-chevron-down">
-                                </i>
-                            </button>
+                        <button class="increase items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;" type="button">
+                            <i class="lnr lnr-chevron-up">
+                            </i>
+                        </button>
+                        <button class="reduced items-count" onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) && sst > 1 ) result.value--;return false;" type="button">
+                            <i class="lnr lnr-chevron-down">
+                            </i>
+                        </button>
                         </input>
                     </div>
                     <div class="card_area">
@@ -236,113 +236,29 @@
                     </table>
                 </div>
             </div>
-            <div aria-labelledby="contact-tab" class="tab-pane fade" id="contact" role="tabpanel">
+            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <div class="comment_list">
-                            <div class="review_item">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img alt="" src="img/product/single-product/review-1.png">
-                                        </img>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>
-                                            Blake Ruiz
-                                        </h4>
-                                        <h5>
-                                            12th Feb, 2017 at 05:56 pm
-                                        </h5>
-                                        <a class="reply_btn" href="#">
-                                            Reply
-                                        </a>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                </p>
-                            </div>
-                            <div class="review_item reply">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img alt="" src="img/product/single-product/review-2.png">
-                                        </img>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>
-                                            Blake Ruiz
-                                        </h4>
-                                        <h5>
-                                            12th Feb, 2017 at 05:56 pm
-                                        </h5>
-                                        <a class="reply_btn" href="#">
-                                            Reply
-                                        </a>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                </p>
-                            </div>
-                            <div class="review_item">
-                                <div class="media">
-                                    <div class="d-flex">
-                                        <img alt="" src="img/product/single-product/review-3.png">
-                                        </img>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>
-                                            Blake Ruiz
-                                        </h4>
-                                        <h5>
-                                            12th Feb, 2017 at 05:56 pm
-                                        </h5>
-                                        <a class="reply_btn" href="#">
-                                            Reply
-                                        </a>
-                                    </div>
-                                </div>
-                                <p>
-                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                </p>
-                            </div>
-                        </div>
+                    <div class="col-lg-12" id="comment">
+                        @include('client.products.comments.comment', ['comments' => $product->comments, 'product_id' => $product->id])
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-12 margin_top">
                         <div class="review_box">
                             <h4>
                                 Post a comment
                             </h4>
-                            <form action="contact_process.php" class="row contact_form" id="contactForm" method="post" novalidate="novalidate">
+                            <form class="row contact_form" id="comment_form">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <input class="form-control" id="name" name="name" placeholder="Your Full name" type="text">
-                                        </input>
+                                        <textarea class="form-control @error('message') is-invalid @enderror content" name="content" placeholder="Message" rows="1" required></textarea>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input class="form-control" id="email" name="email" placeholder="Email Address" type="email">
-                                        </input>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <input class="form-control" id="number" name="number" placeholder="Phone Number" type="text">
-                                        </input>
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <textarea class="form-control" id="message" name="message" placeholder="Message" rows="1">
-                                        </textarea>
-                                    </div>
+                                    @error('content')
+                                    <span class="text-danger" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                                 <div class="col-md-12 text-right">
-                                    <button class="btn submit_btn" type="submit" value="submit">
+                                    <button data-product-id="{{ $product->id }}" class="submit_comment btn submit_btn" type="submit">
                                         Submit Now
                                     </button>
                                 </div>
@@ -483,7 +399,7 @@
                                 </div>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                                 </p>
                             </div>
                             <div class="review_item">
@@ -510,7 +426,7 @@
                                 </div>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                                 </p>
                             </div>
                             <div class="review_item">
@@ -537,7 +453,7 @@
                                 </div>
                                 <p>
                                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-                                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
                                 </p>
                             </div>
                         </div>
@@ -623,5 +539,6 @@
         </div>
     </div>
 </section>
+
 <!--================End Product Description Area =================-->
 @endsection

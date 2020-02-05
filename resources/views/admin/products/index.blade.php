@@ -57,7 +57,7 @@
             <td> {{ $product->publish_date }} </td>
             <td class="currency-data">{{ $product->price }}</td>
             <td class="currency-data">{{ $product->sale }}</td>
-            <td>{{ $product->createdBy ? $product->createdBy->email : '' }}</td>
+            <td>{{ $product->user ? $product->user->email : '' }}</td>
             <td>
                 <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
