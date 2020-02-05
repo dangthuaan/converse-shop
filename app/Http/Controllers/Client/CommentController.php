@@ -32,14 +32,8 @@ class CommentController extends Controller
 
         $storeComment = $this->commentService->storeComment($data);
 
-        $statusFlag = false;
-
-        if ($storeComment) {
-            $statusFlag = true;
-        }
-
         return response()->json([
-            'status' => $statusFlag,
+            'status' => $storeComment,
         ]);
     }
 
@@ -61,14 +55,8 @@ class CommentController extends Controller
 
         $storeCommentReply = $this->commentService->storeComment($data);
 
-        $statusFlag = false;
-
-        if ($storeCommentReply) {
-            $statusFlag = true;
-        }
-
         return response()->json([
-            'status' => $statusFlag,
+            'status' => $storeCommentReply,
         ]);
     }
 }
