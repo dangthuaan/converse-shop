@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
@@ -14,32 +15,20 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $products = Product::with('categories')->paginate(config('pagination.product_page_size'));
 
+        if ($request->has('size')) {
+            $sizeName = $request->size;
+            $sizeArray = explode(',', $sizeName);
+
+            $products = Product::whereHas('categories', function (Builder $query) use ($sizeArray) {
+                $query->whereIn('name', $sizeArray);
+            })->paginate(config('pagination.product_page_size'));
+        }
+
         return view('client.products.index', compact('products'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
@@ -53,39 +42,5 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         return view('client.products.show', compact('product'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
