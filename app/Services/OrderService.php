@@ -171,7 +171,7 @@ class OrderService
     /**
      * Store order in database.
      *
-     * @param  int $id
+     * @param  int $userId
      */
     public function storeOrderProduct($userId)
     {
@@ -218,6 +218,25 @@ class OrderService
     {
         try {
             Mail::to($user)->send(new OrderConfirmation($order));
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Update Order status.
+     *
+     * @param  int $id
+     */
+    public function updateOrderStatus($id)
+    {
+        $order = Order::findOrFail($id);
+        try {
+            $order->increment('status');
         } catch (\Throwable $th) {
             Log::error($th);
 
