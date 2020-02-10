@@ -15,7 +15,6 @@ class OrderRequest extends FormRequest
     {
         return [
             'total_price' => 'required|integer',
-            'coupon' => 'string',
         ];
     }
 }

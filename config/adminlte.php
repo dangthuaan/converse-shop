@@ -198,6 +198,11 @@ return [
             'url'         => 'admin/products',
             'icon'        => 'fas fa-shoe-prints',
         ],
+        [
+            'text'        => 'Orders',
+            'url'         => 'admin/orders',
+            'icon'        => 'fas fa-shopping-bag',
+        ],
         ['header' => 'account_settings'],
         [
             'text' => 'profile',

@@ -66,6 +66,9 @@ Route::middleware(['auth', 'verified', 'is-ban'])
 
         Route::resource('products', 'ProductController');
         Route::get('products/{product}/delete', 'ProductController@confirmDestroy')->name('products.confirmDestroy');
+
+        Route::resource('orders', 'OrderController');
+        Route::put('orders/{order}/deliver', 'OrderController@deliverOrder')->name('orders.deliver');
     });
 
 Auth::routes();

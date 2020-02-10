@@ -15,8 +15,8 @@
 @section('adminlte_css')
 <!-- Datepicker CSS -->
 <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
-
 <link rel="stylesheet" href="{{ asset('css/datatables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 @yield('css')
 @stop
 

@@ -19,6 +19,11 @@ class Order extends Model
         return $this->belongsToMany('App\Product')->withPivot('quantity');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     /**
      * Scope a query get new order.
      *
@@ -28,5 +33,25 @@ class Order extends Model
     public function scopeNewOrder($query)
     {
         return $query->where('status', 1);
+    }
+
+    /**
+     * Scope a boolean of in progress orders.
+     *
+     * @return Boolean
+     */
+    public function scopeIsInProgressOrder()
+    {
+        return $this->status == 1;
+    }
+
+    /**
+     * Scope a boolean of delivered orders.
+     *
+     * @return Boolean
+     */
+    public function scopeIsDeliveredOrder()
+    {
+        return $this->status == 2;
     }
 }
