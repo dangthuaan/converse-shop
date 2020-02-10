@@ -7,6 +7,7 @@ use App\Order;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmation;
+use App\Mail\OrderSuccess;
 
 class OrderService
 {
@@ -212,12 +213,31 @@ class OrderService
     /**
      * Send order confirmation email.
      *
-     * @param  int $id
+     * @param  int $user
+     * @param  array $order
      */
     public function sendOrderConfirmEmail($user, $order)
     {
         try {
             Mail::to($user)->send(new OrderConfirmation($order));
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Send order success email.
+     *
+     * @param  int $user
+     */
+    public function sendOrderSuccessEmail($user)
+    {
+        try {
+            Mail::to($user)->send(new OrderSuccess());
         } catch (\Throwable $th) {
             Log::error($th);
 
