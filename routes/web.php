@@ -30,6 +30,12 @@ Route::middleware(['auth', 'verified', 'is-ban'])->group(function () {
     })->name('dashboard');
 });
 
+Route::name('client.')
+    ->namespace('Client')
+    ->group(function () {
+        Route::resource('products', 'ProductController');
+    });
+
 Route::middleware(['auth', 'verified', 'is-ban'])
     ->name('client.')
     ->namespace('Client')
@@ -38,8 +44,6 @@ Route::middleware(['auth', 'verified', 'is-ban'])
         Route::get('user/{user}/password', 'UserController@editPassword')->name('user.editPassword');
         Route::get('user/{user}/delete', 'UserController@confirmDestroy')->name('user.confirmDestroy');
         Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
-
-        Route::resource('products', 'ProductController');
 
         Route::get('orders', 'OrderController@index')->name('orders.index');
         Route::post('orders/remove', 'OrderController@removeProductInCart')->name('orders.product.remove');
