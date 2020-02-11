@@ -36,7 +36,9 @@ class OrderController extends Controller
      */
     public function deliverOrder($id)
     {
+        $currentUser = auth()->user();
         $deliverOrder = $this->orderService->updateOrderStatus($id);
+        $this->orderService->sendOrderSuccessEmail($currentUser);
 
         if ($deliverOrder) {
             return redirect('admin/orders')->with('success', 'Delivered success!');

@@ -180,7 +180,7 @@
             </thead>
             <tbody>
                 @foreach ($orders as $order)
-                @if ($order->isInProgressOrder())
+                @if ($order->isDeliveredOrder())
                 <tr v-pre>
                     <td> {{$order->id}} </td>
                     <td>{{$order->user ? $order->user->name : ''}}</td>
