@@ -36,9 +36,17 @@
                                     <a href="#" class="add-to-cart" data-product-id="{{ $product->id }}">
                                         <i class="lnr lnr-cart"></i>
                                     </a>
-                                    <a href="#">
+                                    @foreach ($userFavorites->favorites as $favorite)
+                                    @if ($product->id == $favorite->product_id)
+                                    <a href="#" class="add-to-favorite" data-product-id="{{ $product->id }}">
                                         <i class="add-to-favorite lnr lnr-heart"></i>
                                     </a>
+                                    @else
+                                    <a href="#" class="remove-from-favorite" data-product-id="{{ $product->id }}">
+                                        <i class="add-to-favorite lnr lnr-heart"></i>
+                                    </a>
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                             <a href="{{ route('client.products.show', $product->id) }}">
