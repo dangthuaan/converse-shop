@@ -20,17 +20,6 @@ class FavoriteService
     }
 
     /**
-     * Check product is in favorite list.
-     *
-     * @param  int  $id
-     * @return Model
-     */
-    public function checkFavoriteProduct($id)
-    {
-        return Favorite::where('product_id', $id)->exists();
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

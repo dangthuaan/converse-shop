@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFavoriteProductTable extends Migration
+class DropPriceAndSaleColumnInFavoritesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateFavoriteProductTable extends Migration
      */
     public function up()
     {
-        Schema::create('favorite_product', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('favorite_id');
-            $table->bigInteger('product_id');
-            $table->timestamps();
+        Schema::table('favorites', function (Blueprint $table) {
+            $table->dropColumn(['price', 'sale']);
         });
     }
 
@@ -28,6 +25,9 @@ class CreateFavoriteProductTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('favorite_product');
+        Schema::table('favorites', function (Blueprint $table) {
+            $table->bigInteger('price');
+            $table->integer('sale');
+        });
     }
 }

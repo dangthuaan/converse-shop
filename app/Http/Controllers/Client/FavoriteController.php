@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\FavoriteService;
-use Illuminate\Support\Facades\Log;
 use App\Favorite;
-use App\Product;
 
 class FavoriteController extends Controller
 {
@@ -26,6 +24,7 @@ class FavoriteController extends Controller
     public function index()
     {
         $favoriteProducts = Favorite::paginate(config('pagination.favorite_page_size'));
+
         return view('client.favorites.index', compact('favoriteProducts'));
     }
 

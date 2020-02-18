@@ -214,6 +214,7 @@ class OrderService
      * Send order confirmation email.
      *
      * @param  int $user
+     * @param object $order
      */
     public function sendOrderConfirmEmail($user, $order)
     {
