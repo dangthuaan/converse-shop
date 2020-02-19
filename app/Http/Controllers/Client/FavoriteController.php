@@ -38,13 +38,10 @@ class FavoriteController extends Controller
     {
         $productId = $request->product_id;
         $userId = auth()->id();
-        $product = $this->favoriteService->getProductById($productId);
 
         $data = [
             'user_id' => $userId,
             'product_id' => $productId,
-            'price' => $product->price,
-            'sale' => $product->sale,
         ];
 
         $createFavoriteData = $this->favoriteService->createFavoriteData($data);
