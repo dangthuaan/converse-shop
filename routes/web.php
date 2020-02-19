@@ -51,6 +51,8 @@ Route::middleware(['auth', 'verified', 'is-ban'])
 
         Route::post('comments', 'CommentController@storeComment')->name('comments.storeComment');
         Route::post('comments/reply', 'CommentController@storeCommentReply')->name('comments.storeCommentReply');
+
+        Route::resource('favorites', 'FavoriteController');
     });
 
 Route::middleware(['auth', 'verified', 'is-ban'])

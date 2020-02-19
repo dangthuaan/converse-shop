@@ -65,6 +65,32 @@ $(document).ready(function () {
         });
     });
 
+    $('.add-to-favorite').click(function () {
+        var url = '/favorites';
+        var productId = $(this).data('product-id');
+
+        var data = {
+            'product_id': productId
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            cache: false,
+            success: function (result) {
+                if (result.status) {
+                    alert('Added to favorites!');
+                    location.reload();
+                }
+            },
+            error: function () {
+                alert('Something went wrong!');
+                location.reload();
+            }
+        });
+    });
+
     $('.product-remove').click(function () {
         if (confirm('Are you sure remove this product from cart?')) {
             var url = '/orders/remove';

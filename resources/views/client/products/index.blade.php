@@ -36,9 +36,15 @@
                                     <a href="#" class="add-to-cart" data-product-id="{{ $product->id }}">
                                         <i class="lnr lnr-cart"></i>
                                     </a>
-                                    <a href="#">
-                                        <i class="add-to-favorite lnr lnr-heart"></i>
+                                    @if (in_array($product->id, $favoriteProducts))
+                                    <a href="#" class="remove-from-favorite" data-product-id="{{ $product->id }}">
+                                        <i class="lnr lnr-heart"></i>
                                     </a>
+                                    @else
+                                    <a href="#" class="add-to-favorite" data-product-id="{{ $product->id }}">
+                                        <i class="lnr lnr-heart"></i>
+                                    </a>
+                                    @endif
                                 </div>
                             </div>
                             <a href="{{ route('client.products.show', $product->id) }}">
