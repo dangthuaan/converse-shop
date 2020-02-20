@@ -47,8 +47,8 @@ class FavoriteService
     public function deleteFavoriteData($userId, $productId)
     {
         $favoriteProduct = Favorite::where([
-            ['user_id', $userId],
-            ['product_id', $productId],
+            'user_id' => $userId,
+            'product_id' => $productId,
         ])->firstOrFail();
 
         try {
