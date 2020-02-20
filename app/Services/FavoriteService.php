@@ -20,10 +20,10 @@ class FavoriteService
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly favorite product.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  array $data
+     * @return Boolean
      */
     public function createFavoriteData($data)
     {
@@ -39,14 +39,18 @@ class FavoriteService
     }
 
     /**
-     * Delete created resource in storage.
+     * Delete a product from favorite list.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  int $productId
+     * @return Boolean
      */
-    public function deleteFavoriteData($productId)
+    public function deleteFavoriteData($userId, $productId)
     {
-        $favoriteProduct = Favorite::findOrFail($productId);
+        $favoriteProduct = Favorite::where([
+            ['user_id', $userId],
+            ['product_id', $productId],
+        ])->firstOrFail();
+
         try {
             $favoriteProduct->delete();
         } catch (\Exception $e) {

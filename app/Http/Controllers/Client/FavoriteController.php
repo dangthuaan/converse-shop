@@ -60,11 +60,12 @@ class FavoriteController extends Controller
     public function destroy(Request $request)
     {
         $productId = $request->product_id;
+        $userId = auth()->id();
 
-        $createFavoriteData = $this->favoriteService->deleteFavoriteData($productId);
+        $deleteFavoriteData = $this->favoriteService->deleteFavoriteData($userId, $productId);
 
         return response()->json([
-            'status' => $createFavoriteData,
+            'status' => $deleteFavoriteData,
         ]);
     }
 }

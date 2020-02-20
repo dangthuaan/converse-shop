@@ -19,7 +19,7 @@ class ProductController extends Controller
     {
         $products = Product::with('categories')->paginate(config('pagination.product_page_size'));
 
-        $favoriteProducts = Favorite::pluck('product_id')->toArray();
+        $favoriteProducts = Favorite::where('user_id', auth()->id())->pluck('product_id')->toArray();
 
         if ($request->has('size')) {
             $sizeName = $request->size;
