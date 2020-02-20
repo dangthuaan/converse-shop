@@ -50,4 +50,22 @@ class FavoriteController extends Controller
             'status' => $createFavoriteData,
         ]);
     }
+
+    /**
+     * Delete created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        $productId = $request->product_id;
+        $userId = auth()->id();
+
+        $deleteFavoriteData = $this->favoriteService->deleteFavoriteData($userId, $productId);
+
+        return response()->json([
+            'status' => $deleteFavoriteData,
+        ]);
+    }
 }
