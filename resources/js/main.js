@@ -91,6 +91,32 @@ $(document).ready(function () {
         });
     });
 
+    $('.remove-from-favorite').click(function () {
+        var productId = $(this).data('product-id');
+        var url = '/favorites/' + productId;
+
+        var data = {
+            'product_id': productId
+        };
+
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            data: data,
+            cache: false,
+            success: function (result) {
+                if (result.status) {
+                    alert('Removed from favorites!');
+                    location.reload();
+                }
+            },
+            error: function () {
+                alert('Something went wrong!');
+                location.reload();
+            }
+        });
+    });
+
     $('.product-remove').click(function () {
         if (confirm('Are you sure remove this product from cart?')) {
             var url = '/orders/remove';

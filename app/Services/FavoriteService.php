@@ -37,4 +37,24 @@ class FavoriteService
 
         return true;
     }
+
+    /**
+     * Delete created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteFavoriteData($productId)
+    {
+        $favoriteProduct = Favorite::findOrFail($productId);
+        try {
+            $favoriteProduct->delete();
+        } catch (\Exception $e) {
+            Log::error($e);
+
+            return false;
+        }
+
+        return true;
+    }
 }
