@@ -37,31 +37,24 @@
                                 Price
                             </th>
                             <th scope="col">
-                                Quantity
-                            </th>
-                            <th scope="col">
-                                Total
-                            </th>
-                            <th scope="col">
                                 Remove
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         @if ($favoriteProducts)
-                        @foreach ($favoriteProducts as $id => $product)
-                        @if (isset($productImage[$id]))
-                        <tr class="product-{{ $id }}">
+                        @foreach ($favoriteProducts as $favoriteProduct)
+                        <tr>
                             <td>
                                 <div class="d-flex">
                                     <div class="col-lg-3 col-md-3 col-sm-6">
-                                        <img alt="" class="img-fluid" src="{{ url( $productImage[$id]) }}">
+                                        <img alt="" class="img-fluid" src="{{ url($productImage[$favoriteProduct->id]) }}">
                                         </img>
                                     </div>
                                     <div class="media">
                                         <div class="media-body">
                                             <p>
-                                                {{ $product_session[$id]['name'] }}
+                                                {{ $favoriteProduct->name }}
                                             </p>
                                         </div>
                                     </div>
@@ -69,97 +62,26 @@
                             </td>
                             <td>
                                 <h5>
-                                    {{ $product_session[$id]['price'] }}
-                                </h5>
-                            </td>
-                            <td>
-                                <div class="product_count">
-                                    <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="{{ $product_session[$id]['quantity'] }}">
-                                    <button class="increase items-count" type="button">
-                                        <i data-product-id="{{ $id }}" class="lnr lnr-chevron-up">
-                                        </i>
-                                    </button>
-                                    <button class="reduced items-count" type="button">
-                                        <i data-product-id="{{ $id }}" class="lnr lnr-chevron-down">
-                                        </i>
-                                    </button>
-                                    </input>
-                                </div>
-                            </td>
-                            <td>
-                                <h5>
-                                    {{ $product_session[$id]['price'] * $product_session[$id]['quantity']  }}
+                                    @if ($favoriteProduct->sale != 0)
+                                    <strike>
+                                        {{ $favoriteProduct->price }}
+                                    </strike> | - {{$favoriteProduct->sale}}% {{ $favoriteProduct->price - $favoriteProduct->price * ($favoriteProduct->sale / 100) }}
+                                    @else
+                                    {{ $favoriteProduct->price }}
+                                    @endif
                                 </h5>
                             </td>
                             <td>
                                 <div class="product_remove">
-                                    <button data-product-id="{{ $id }}" class="product-remove" type="button">
+                                    <button class="remove-from-favorite" data-product-id="{{ $favoriteProduct->id }}" type="button">
                                         <i class="lnr lnr-cross">
                                         </i>
                                     </button>
                                 </div>
                             </td>
                         </tr>
-                        @endif
                         @endforeach
                         @endif
-                        <tr class="bottom_button">
-                            <td>
-                                <a class="gray_btn" href="#">
-                                    Update Cart
-                                </a>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                                <div class="cupon_text">
-                                    <input placeholder="Coupon Code" type="text">
-                                    <a class="main_btn" href="#">
-                                        Apply
-                                    </a>
-                                    <a class="gray_btn" href="#">
-                                        Close Coupon
-                                    </a>
-                                    </input>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                                <h5>
-                                    Subtotal
-                                </h5>
-                            </td>
-                            <td>
-                                <h5>
-                                    ${{ $order_session['total_price'] }}
-                                </h5>
-                            </td>
-                        </tr>
-                        <tr class="out_button_area">
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                                <div class="checkout_btn_inner">
-                                    <a class="gray_btn" href="#">
-                                        Continue Shopping
-                                    </a>
-                                    <a class="main_btn" href="{{ route('client.orders.confirmation') }}">
-                                        Proceed to checkout
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>

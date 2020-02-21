@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\FavoriteService;
 use App\Favorite;
+use App\Product;
 
 class FavoriteController extends Controller
 {
@@ -23,9 +24,13 @@ class FavoriteController extends Controller
      */
     public function index()
     {
-        $favoriteProducts = Favorite::paginate(config('pagination.favorite_page_size'));
+        $favoriteProductIds = Favorite::where('user_id', auth()->id())->pluck('product_id')->toArray();
 
-        return view('client.favorites.index', compact('favoriteProducts'));
+        $favoriteProducts = Product::whereIn('id', $favoriteProductIds)->get();
+
+        $productImage = $favoriteProducts->pluck('first_image', 'id');
+
+        return view('client.favorites.index', compact('favoriteProducts', 'productImage'));
     }
 
     /**
