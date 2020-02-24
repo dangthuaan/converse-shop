@@ -84,11 +84,10 @@
                             </label>
                             <div class="col-md-6">
                                 <select class="form-control @error('category') is-invalid @enderror" id="category" name="category[]">
-                                    <option disabled="" selected="">
-                                        Choose Size
-                                    </option>
                                     @foreach ($parentCategory->children as $childCategory)
-                                    <option id="child" value="{{ $childCategory->id }}">
+                                    <option id="child" value="{{ $childCategory->id }}" @foreach ($product->categories as $category)
+                                        {{ $childCategory->name == $category->name ? 'selected' : '' }}
+                                        @endforeach>
                                         {{$childCategory->name}}
                                     </option>
                                     @endforeach
@@ -124,7 +123,15 @@
                             </label>
                             <div class="col-md-6">
                                 <input autocomplete="publish_date" class="form-control" id="datepicker" name="publish_date" required="" type="text" value="{{ old('publish_date') ?? $product->publish_date }}">
-                            </input>
+                                </input>
+                                @error('publish_date')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>
+                                        {{ $message }}
+                                    </strong>
+                                </span>
+                                @enderror
+                            </div>
                             @error('publish_date')
                             <span class="invalid-feedback" role="alert">
                                 <strong>
@@ -133,14 +140,6 @@
                             </span>
                             @enderror
                         </div>
-                        @error('publish_date')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>
-                                {{ $message }}
-                            </strong>
-                        </span>
-                        @enderror
-                    </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label text-md-right" for="price">
@@ -179,10 +178,10 @@
                         </button>
                     </div>
                 </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </div>
 </div>
 @endsection

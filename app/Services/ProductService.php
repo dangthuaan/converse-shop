@@ -8,6 +8,8 @@ use App\Traits\UploadTrait;
 use Illuminate\Support\Facades\Auth;
 use App\Product;
 use App\Category;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProductUpdate;
 
 class ProductService
 {
@@ -88,12 +90,18 @@ class ProductService
      * @param  Array $data
      * @return Boolean
      */
-    public function update($id, $data)
+    public function update($id, $data, $userFavorites)
     {
         $product = Product::findOrFail($id);
 
         try {
             $product->update($data);
+            $changedProduct = $product->getChanges();
+            if (isset($changedProduct['price']) || isset($changedProduct['sale'])) {
+                foreach ($userFavorites as $userFavorite) {
+                    Mail::to($userFavorite->user)->send(new ProductUpdate());
+                }
+            }
         } catch (\Exception $e) {
             Log::error($e);
 
