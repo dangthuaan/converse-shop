@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Category;
 use App\Product;
+use App\Favorite;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Services\ProductService;
@@ -91,7 +92,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with('categories')->findOrFail($id);
 
         $parentCategories = Category::with('children')->whereNull('parent_id')->get();
 
@@ -118,13 +119,15 @@ class ProductController extends Controller
             'sale'
         ]);
 
+        $userFavorites = Favorite::with('user')->where('product_id', $id)->get();
+
         $data['user_id'] = auth()->id();
 
         $data['image'] = $this->productService->saveImage($data['image']);
 
         $data['category'] = $this->productService->getCategoryId($data['category']);
 
-        $updateProduct = $this->productService->update($id, $data);
+        $updateProduct = $this->productService->update($id, $data, $userFavorites);
 
         if ($updateProduct) {
             return redirect('admin/products')->with('success', 'Update success!');
