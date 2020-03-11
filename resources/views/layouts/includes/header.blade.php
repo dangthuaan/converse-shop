@@ -85,8 +85,8 @@
                                 <hr>
 
                                 <li class="nav-item">
-                                    <a href="#" class="icons">
-                                        <i class="fa fa-heart-o" aria-hidden="true"> [0] </i>
+                                    <a href="{{ route('client.favorites.index') }}" class="icons">
+                                        <i class="fa fa-heart-o" aria-hidden="true"> [{{ favoriteQuantity() }}] </i>
                                     </a>
                                 </li>
 

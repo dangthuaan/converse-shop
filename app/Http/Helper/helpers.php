@@ -1,5 +1,7 @@
 <?php
 
+use App\Favorite;
+
 if (!function_exists('cartQuantity')) {
     function cartQuantity()
     {
@@ -12,5 +14,15 @@ if (!function_exists('cartQuantity')) {
         }
 
         return $quantity;
+    }
+}
+
+if (!function_exists('favoriteQuantity')) {
+    function favoriteQuantity()
+    {
+        $userId = auth()->id();
+        $favoriteCount = Favorite::where('user_id', $userId)->count();
+
+        return $favoriteCount;
     }
 }
