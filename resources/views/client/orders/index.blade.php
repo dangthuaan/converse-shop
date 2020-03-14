@@ -34,13 +34,13 @@
                                 {{ __('Product') }}
                             </th>
                             <th scope="col">
-                                Price
+                                Price (VNĐ)
                             </th>
                             <th scope="col">
                                 Quantity
                             </th>
                             <th scope="col">
-                                Total
+                                Total (VNĐ)
                             </th>
                             <th scope="col">
                                 Remove
@@ -68,26 +68,26 @@
                                 </div>
                             </td>
                             <td>
-                                <h5>
+                                <h5 class="currency">
                                     {{ $product_session[$id]['price'] }}
                                 </h5>
                             </td>
                             <td>
                                 <div class="product_count">
                                     <input class="input-text qty" id="sst" maxlength="12" name="qty" title="Quantity:" type="text" value="{{ $product_session[$id]['quantity'] }}">
-                                    <button class="increase items-count" type="button">
-                                        <i data-product-id="{{ $id }}" class="lnr lnr-chevron-up">
+                                    <button class="increase items-count" type="button" data-product-id="{{ $id }}">
+                                        <i class="lnr lnr-chevron-up">
                                         </i>
                                     </button>
-                                    <button class="reduced items-count" type="button">
-                                        <i data-product-id="{{ $id }}" class="lnr lnr-chevron-down">
+                                    <button class="reduced items-count" type="button" data-product-id="{{ $id }}">
+                                        <i class="lnr lnr-chevron-down">
                                         </i>
                                     </button>
                                     </input>
                                 </div>
                             </td>
                             <td>
-                                <h5>
+                                <h5 class="currency">
                                     {{ $product_session[$id]['price'] * $product_session[$id]['quantity']  }}
                                 </h5>
                             </td>
@@ -103,29 +103,6 @@
                         @endif
                         @endforeach
                         @endif
-                        <tr class="bottom_button">
-                            <td>
-                                <a class="gray_btn" href="#">
-                                    Update Cart
-                                </a>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                                <div class="cupon_text">
-                                    <input placeholder="Coupon Code" type="text">
-                                    <a class="main_btn" href="#">
-                                        Apply
-                                    </a>
-                                    <a class="gray_btn" href="#">
-                                        Close Coupon
-                                    </a>
-                                    </input>
-                                </div>
-                            </td>
-                        </tr>
                         <tr>
                             <td>
                             </td>
@@ -133,13 +110,13 @@
                             </td>
                             <td>
                                 <h5>
-                                    Subtotal
+                                    Total
                                 </h5>
                             </td>
                             <td>
-                                <h5>
+                                <h5 class="currency">
                                     ${{ $order_session['total_price'] }}
-                                </h5>
+                                </h5> (VNĐ)
                             </td>
                         </tr>
                         <tr class="out_button_area">
@@ -151,7 +128,7 @@
                             </td>
                             <td>
                                 <div class="checkout_btn_inner">
-                                    <a class="gray_btn" href="#">
+                                    <a class="main_btn" href="{{ route('client.products.index') }}">
                                         Continue Shopping
                                     </a>
                                     <a class="main_btn" href="{{ route('client.orders.confirmation') }}">

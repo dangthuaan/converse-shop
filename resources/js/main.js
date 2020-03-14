@@ -145,76 +145,7 @@ $(document).ready(function () {
         }
     });
 
-    var checkUrl = function () {
-        var pathname = window.location.href;
-        var url = new URL(pathname);
-        var size = url.searchParams.get("size");
-        var sizeArray = size.split(",");
-
-        $.each(sizeArray, function (index, value) {
-            $("." + value).toggleClass("selected");
-        });
-    };
-
-    //Product size filter
-    var path = window.location.search;
-    var urlParams = new URLSearchParams(path);
-
-    var getParamArrayFromUrl = function (paramString) {
-        if (paramString) {
-            return paramString.split(",");
-        }
-
-        return [];
-    };
-
-    var createNewSizeParamInUrl = function (paramString, sizeName) {
-        if (paramString.length) {
-            paramString += ",";
-        }
-
-        return paramString + sizeName;
-    };
-
-    var removeSizeParamInUrl = function (urlSizeParamArray, sizeName) {
-        var removalSizeParamArray = jQuery.grep(urlSizeParamArray, function (value) {
-            return value != sizeName;
-        });
-
-        return removalSizeParamArray.toString();
-    };
-
-    $('.size').on('click', function () {
-        var sizeName = $(this).text();
-        var sizeParamPosition = -1;
-        var paramString = "";
-        var urlSizeParamArray = [];
-
-        if (urlParams.has("size") && urlParams.get("size").length) {
-            var paramString = urlParams.get("size");
-            urlSizeParamArray = getParamArrayFromUrl(paramString);
-            sizeParamPosition = jQuery.inArray(sizeName, urlSizeParamArray);
-        }
-
-        var newSizeParamInUrl = "";
-
-        if (sizeParamPosition < 0) {
-            newSizeParamInUrl = createNewSizeParamInUrl(paramString, sizeName);
-        } else {
-            newSizeParamInUrl = removeSizeParamInUrl(urlSizeParamArray, sizeName);
-        }
-
-        if (!newSizeParamInUrl) {
-            window.location.href = "/products";
-        } else {
-            newUrl = "/products?size=" + newSizeParamInUrl;
-            window.location.href = newUrl;
-        }
-    });
-
-    checkUrl();
-
-    $('.lnr-chevron-up').click(function () {
+    $('.increase').click(function () {
         var url = '/orders/increase-product-quantity';
         var productId = $(this).data('product-id');
 
@@ -239,7 +170,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.lnr-chevron-down').click(function () {
+    $('.reduced').click(function () {
         var url = '/orders/decrease-product-quantity';
         var productId = $(this).data('product-id');
 
@@ -365,4 +296,84 @@ $(document).ready(function () {
             }
         });
     });
+
+    $(".currency").inputmask({
+        alias: 'numeric',
+        rightAlign: false,
+        digitsOptional: true,
+        radixPoint: ',',
+        groupSeparator: '.',
+        autoGroup: true,
+        placeholder: '',
+        removeMaskOnSubmit: true
+    });
+
+    var checkUrl = function () {
+        var pathname = window.location.href;
+        var url = new URL(pathname);
+        var size = url.searchParams.get("size");
+        var sizeArray = size.split(",");
+
+        $.each(sizeArray, function (index, value) {
+            $("." + value).toggleClass("selected");
+        });
+    };
+
+    //Product size filter
+    var path = window.location.search;
+    var urlParams = new URLSearchParams(path);
+
+    var getParamArrayFromUrl = function (paramString) {
+        if (paramString) {
+            return paramString.split(",");
+        }
+
+        return [];
+    };
+
+    var createNewSizeParamInUrl = function (paramString, sizeName) {
+        if (paramString.length) {
+            paramString += ",";
+        }
+
+        return paramString + sizeName;
+    };
+
+    var removeSizeParamInUrl = function (urlSizeParamArray, sizeName) {
+        var removalSizeParamArray = jQuery.grep(urlSizeParamArray, function (value) {
+            return value != sizeName;
+        });
+
+        return removalSizeParamArray.toString();
+    };
+
+    $('.size').on('click', function () {
+        var sizeName = $(this).text();
+        var sizeParamPosition = -1;
+        var paramString = "";
+        var urlSizeParamArray = [];
+
+        if (urlParams.has("size") && urlParams.get("size").length) {
+            var paramString = urlParams.get("size");
+            urlSizeParamArray = getParamArrayFromUrl(paramString);
+            sizeParamPosition = jQuery.inArray(sizeName, urlSizeParamArray);
+        }
+
+        var newSizeParamInUrl = "";
+
+        if (sizeParamPosition < 0) {
+            newSizeParamInUrl = createNewSizeParamInUrl(paramString, sizeName);
+        } else {
+            newSizeParamInUrl = removeSizeParamInUrl(urlSizeParamArray, sizeName);
+        }
+
+        if (!newSizeParamInUrl) {
+            window.location.href = "/products";
+        } else {
+            newUrl = "/products?size=" + newSizeParamInUrl;
+            window.location.href = newUrl;
+        }
+    });
+
+    checkUrl();
 });

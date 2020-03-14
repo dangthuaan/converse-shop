@@ -17,4 +17,6 @@
 <script src="{{ asset('fashiop/js/theme.js') }}"></script>
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/additional-methods.min.js') }}"></script>
+<script src="{{ asset('js/inputmask.numeric.extensions.js') }}"></script>
+<script src="{{ asset('js/jquery.inputmask.bundle.min.js') }}"></script>
 <script src="{{ asset('js/main.js') }}"></script>

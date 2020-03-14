@@ -34,6 +34,11 @@ Route::name('client.')
     ->namespace('Client')
     ->group(function () {
         Route::resource('products', 'ProductController');
+        Route::get('orders', 'OrderController@index')->name('orders.index');
+        Route::post('orders/remove', 'OrderController@removeProductInCart')->name('orders.product.remove');
+        Route::post('orders', 'OrderController@addToCart')->name('orders.addToCart');
+        Route::post('orders/increase-product-quantity', 'OrderController@increaseQuantity')->name('orders.increase-product-quantity');
+        Route::post('orders/decrease-product-quantity', 'OrderController@decreaseQuantity')->name('orders.decrease-product-quantity');
     });
 
 Route::middleware(['auth', 'verified', 'is-ban'])
@@ -45,11 +50,6 @@ Route::middleware(['auth', 'verified', 'is-ban'])
         Route::get('user/{user}/delete', 'UserController@confirmDestroy')->name('user.confirmDestroy');
         Route::put('user/{user}/password', 'UserController@updatePassword')->name('user.updatePassword');
 
-        Route::get('orders', 'OrderController@index')->name('orders.index');
-        Route::post('orders/remove', 'OrderController@removeProductInCart')->name('orders.product.remove');
-        Route::post('orders', 'OrderController@addToCart')->name('orders.addToCart');
-        Route::post('orders/increase-product-quantity', 'OrderController@increaseQuantity')->name('orders.increase-product-quantity');
-        Route::post('orders/decrease-product-quantity', 'OrderController@decreaseQuantity')->name('orders.decrease-product-quantity');
         Route::get('orders/confirmation', 'OrderController@confirmation')->name('orders.confirmation');
         Route::get('orders/confirmation/checkout', 'OrderController@checkout')->name('orders.checkout');
 
