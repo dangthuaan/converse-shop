@@ -26,7 +26,7 @@
                             <li>
                                 <a href="#">{{ $productSession[$id]['name'] }}
                                     <span class="middle">x{{ $productSession[$id]['quantity'] }}</span>
-                                    <span class="last">{{ $productSession[$id]['price'] * $productSession[$id]['quantity'] }}</span>
+                                    <span class="last currency">{{ $productSession[$id]['price'] * $productSession[$id]['quantity'] }}</span>
                                 </a>
                             </li>
                             @endforeach
@@ -34,7 +34,7 @@
                         <ul class="list list_2">
                             <li>
                                 <a href="#">Total
-                                    <span>{{ $orderSession['total_price'] }} (VNĐ)</span>
+                                    <span class="currency">{{ $orderSession['total_price'] }}</span>(VNĐ)
                                 </a>
                             </li>
                         </ul>

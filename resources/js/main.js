@@ -65,6 +65,35 @@ $(document).ready(function () {
         });
     });
 
+    $('.add-to-cart-single').click(function () {
+        var url = '/orders/single';
+        var productId = $(this).data('product-id');
+        var productNumber = $(this).parent().prev().find(".qty").val();
+
+        var data = {
+            'product_id': productId,
+            'product_number': productNumber
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: data,
+            cache: false,
+            success: function (result) {
+                if (result.status) {
+                    $('.cart-number').text(result.quantity);
+                    alert('Order success!');
+                    location.reload();
+                }
+            },
+            error: function () {
+                alert('Something went wrong!');
+                location.reload();
+            }
+        });
+    });
+
     $('.add-to-favorite').click(function () {
         var url = '/favorites';
         var productId = $(this).data('product-id');
@@ -195,6 +224,28 @@ $(document).ready(function () {
         });
     });
 
+    $('.spinner input').keydown(function (e) {
+        e.preventDefault();
+        return false;
+    });
+    var minNumber = 1;
+    var maxNumber = 10;
+    $('.spinner .items-count:first-of-type').on('click', function () {
+        if ($('.spinner input').val() == maxNumber) {
+            return false;
+        } else {
+            $('.spinner input').val(parseInt($('.spinner input').val(), 10) + 1);
+        }
+    });
+
+    $('.spinner .items-count:last-of-type').on('click', function () {
+        if ($('.spinner input').val() == minNumber) {
+            return false;
+        } else {
+            $('.spinner input').val(parseInt($('.spinner input').val(), 10) - 1);
+        }
+    });
+
     $("#comment_form").submit(function (event) {
         event.preventDefault();
     }).validate({
@@ -297,7 +348,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".currency").inputmask({
+    $(".currency").inputmask("decimal", {
         alias: 'numeric',
         rightAlign: false,
         digitsOptional: true,
@@ -305,6 +356,18 @@ $(document).ready(function () {
         groupSeparator: '.',
         autoGroup: true,
         placeholder: '',
+        removeMaskOnSubmit: true
+    });
+
+    $(".product-currency").inputmask("decimal", {
+        alias: 'numeric',
+        rightAlign: false,
+        digitsOptional: true,
+        radixPoint: ',',
+        groupSeparator: '.',
+        autoGroup: true,
+        placeholder: '',
+        suffix: " ₫",
         removeMaskOnSubmit: true
     });
 

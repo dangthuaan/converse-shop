@@ -65,6 +65,34 @@ class OrderController extends Controller
     }
 
     /**
+     * Add a product to Cart from Single product page.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function addToCartSingle(Request $request)
+    {
+        $productId = $request->product_id;
+        $productNumber = $request->product_number;
+
+        $orderSession = $this->orderService->createSingleOrderSession($productId, $productNumber);
+
+        $result = [
+            'status' => false,
+            'quantity' => $productNumber,
+        ];
+
+        if (!empty($orderSession)) {
+            $result = [
+                'status' => true,
+                'quantity' => $productNumber,
+            ];
+        }
+
+        return response()->json($result);
+    }
+
+    /**
      * Destroy a product in Order list.
      *
      * @param  \App\Http\Requests\Request $request

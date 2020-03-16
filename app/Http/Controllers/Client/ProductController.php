@@ -5,11 +5,19 @@ namespace App\Http\Controllers\Client;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\OrderService;
 use App\Product;
+use App\Category;
 use App\Favorite;
 
 class ProductController extends Controller
 {
+    protected $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -41,8 +49,24 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        $product = Product::findOrFail($id);
+        $parentCategory = Category::with('parent')->get()->pluck('parent.name', 'id');
+        $product = Product::with('categories')->findOrFail($id);
+        $images = explode('|', $product->image);
 
-        return view('client.products.show', compact('product'));
+        $productSession = $this->orderService->getProductSession();
+        $orderSession = session('order_session');
+
+        $favoriteProducts = Favorite::where('user_id', auth()->id())->pluck('product_id')->toArray();
+
+        $data = [
+            'parentCategory' => $parentCategory,
+            'product' => $product,
+            'images' => $images,
+            'product_session' => $productSession,
+            'order_session' => $orderSession,
+            'favoriteProducts' => $favoriteProducts,
+        ];
+
+        return view('client.products.show', $data);
     }
 }

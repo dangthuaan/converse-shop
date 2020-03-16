@@ -37,6 +37,7 @@ Route::name('client.')
         Route::get('orders', 'OrderController@index')->name('orders.index');
         Route::post('orders/remove', 'OrderController@removeProductInCart')->name('orders.product.remove');
         Route::post('orders', 'OrderController@addToCart')->name('orders.addToCart');
+        Route::post('orders/single', 'OrderController@addToCartSingle')->name('orders.addToCartSingle');
         Route::post('orders/increase-product-quantity', 'OrderController@increaseQuantity')->name('orders.increase-product-quantity');
         Route::post('orders/decrease-product-quantity', 'OrderController@decreaseQuantity')->name('orders.decrease-product-quantity');
     });

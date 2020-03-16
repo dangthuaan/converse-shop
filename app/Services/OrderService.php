@@ -56,6 +56,7 @@ class OrderService
                 $productSession[$product->id] = [
                     'name' => $product->name,
                     'price' => $product->price,
+                    'sale' => $product->sale,
                     'quantity' => 1,
                 ];
             }
@@ -104,6 +105,72 @@ class OrderService
 
         return $orderData;
     }
+
+    /**
+     * create Single Product session.
+     *
+     * @param  Int $id
+     * @return Array
+     */
+    public function createSingleProductSession($id, $productNumber)
+    {
+        $product = $this->getProductById($id);
+
+        $productSession = $this->getProductSession();
+
+        try {
+            $productSession[$product->id] = [
+                'name' => $product->name,
+                'price' => $product->price,
+                'sale' => $product->sale,
+                'quantity' => $productNumber,
+            ];
+            session(['product_session' => $productSession]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return [];
+        }
+
+        return $productSession;
+    }
+
+    /**
+     * create Single Order session.
+     *
+     * @param  Int $id
+     * @return Array
+     */
+    public function createSingleOrderSession($id, $productNumber)
+    {
+        $product = $this->getProductById($id);
+        $currentUserId = auth()->id();
+
+        $productSession = $this->createSingleProductSession($id, $productNumber);
+
+        $quantity = array_sum(array_column($productSession, 'quantity'));
+
+        $orderData = [
+            'user_id' => $currentUserId,
+            'total_price' => $product->price,
+            'quantity' => $quantity,
+        ];
+
+        try {
+            if (session()->has('order_session')) {
+                $orderData['total_price'] = session('order_session.total_price')
+                    + $product->price;
+            }
+            session(['order_session' => $orderData]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return [];
+        }
+
+        return $orderData;
+    }
+
 
     /**
      * Remove a product from Order list.

@@ -29,6 +29,7 @@
             <div class="table-responsive">
                 <table class="table">
                     <thead>
+                        @if ($product_session)
                         <tr>
                             <th scope="col">
                                 {{ __('Product') }}
@@ -48,7 +49,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($product_session)
                         @foreach ($product_session as $id => $product)
                         @if (isset($productImage[$id]))
                         <tr class="product-{{ $id }}">
@@ -60,16 +60,25 @@
                                     </div>
                                     <div class="media">
                                         <div class="media-body">
-                                            <p>
-                                                {{ $product_session[$id]['name'] }}
-                                            </p>
+                                            <a href="{{ route('client.products.show', $id) }}" style="color: #222222;">
+                                                <h4>
+                                                    {{ $product_session[$id]['name'] }}
+                                                </h4>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <h5 class="currency">
-                                    {{ $product_session[$id]['price'] }}
+                                <h5>
+                                    @if ($product_session[$id]['sale'] != 0)
+                                    <strike class="currency">
+                                        {{ $product_session[$id]['price'] }}
+                                    </strike> | -{{$product_session[$id]['sale']}}%
+                                    <span class="currency" style="color:red">{{ $product_session[$id]['price'] - $product_session[$id]['price'] * ($product_session[$id]['sale'] / 100) }}</span>
+                                    @else
+                                    <span class="currency">{{ $product_session[$id]['price'] }}</span>
+                                    @endif
                                 </h5>
                             </td>
                             <td>
@@ -102,7 +111,6 @@
                         </tr>
                         @endif
                         @endforeach
-                        @endif
                         <tr>
                             <td>
                             </td>
@@ -137,6 +145,18 @@
                                 </div>
                             </td>
                         </tr>
+                        @else
+                        <section class="order_details">
+                            <div class="container">
+                                <h3 class="title_confirmation">
+                                    Sorry. You have no order yet.
+                                </h3>
+                                <div class="confirmation_btn_inner">
+                                    <a class="main_btn" href="{{ asset('/products') }}">Continue Shopping</a>
+                                </div>
+                            </div>
+                        </section>
+                        @endif
                     </tbody>
                 </table>
             </div>
