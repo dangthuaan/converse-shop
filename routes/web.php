@@ -76,6 +76,7 @@ Route::middleware(['auth', 'verified', 'is-ban'])
 
         Route::resource('orders', 'OrderController');
         Route::put('orders/{order}/deliver', 'OrderController@deliverOrder')->name('orders.deliver');
+        Route::put('orders/{order}/close', 'OrderController@closeOrder')->name('orders.close');
     });
 
 Auth::routes();

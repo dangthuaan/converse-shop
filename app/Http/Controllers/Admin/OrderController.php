@@ -23,13 +23,17 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::paginate(config('pagination.order_page_size'));
+        $orders = Order::with('products')->paginate(config('pagination.order_page_size'));
 
-        return view('admin.orders.index', compact('orders'));
+        $inProgressOrders = Order::with('products')->where('status', 1)->paginate(1, ['*'], 'in-progress');
+        $deliveredOrders = Order::with('products')->where('status', 2)->paginate(1, ['*'], 'delivered');
+        $closedOrders = Order::with('products')->where('status', 3)->paginate(1, ['*'], 'closed');
+
+        return view('admin.orders.index', compact('orders', 'inProgressOrders', 'deliveredOrders', 'closedOrders'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update order status(deliver).
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -37,7 +41,7 @@ class OrderController extends Controller
     public function deliverOrder($id)
     {
         $currentUser = auth()->user();
-        $deliverOrder = $this->orderService->updateOrderStatus($id);
+        $deliverOrder = $this->orderService->deliverOrder($id);
         $this->orderService->sendOrderSuccessEmail($currentUser);
 
         if ($deliverOrder) {
@@ -45,5 +49,22 @@ class OrderController extends Controller
         }
 
         return back()->with('error', 'Delivery failed!');
+    }
+
+    /**
+     * Update order status(close).
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function closeOrder($id)
+    {
+        $closeOrder = $this->orderService->closeOrder($id);
+
+        if ($closeOrder) {
+            return redirect('admin/orders')->with('success', 'Order Closed!');
+        }
+
+        return back()->with('error', 'Close failed!');
     }
 }

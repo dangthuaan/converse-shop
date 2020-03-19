@@ -315,15 +315,34 @@ class OrderService
     }
 
     /**
-     * Update Order status.
+     * Update Order delivered status.
      *
      * @param  int $id
      */
-    public function updateOrderStatus($id)
+    public function deliverOrder($id)
     {
         $order = Order::findOrFail($id);
         try {
             $order->increment('status');
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Update Order close status.
+     *
+     * @param  int $id
+     */
+    public function closeOrder($id)
+    {
+        $order = Order::findOrFail($id);
+        try {
+            $order->update(['status' => 3]);
         } catch (\Throwable $th) {
             Log::error($th);
 

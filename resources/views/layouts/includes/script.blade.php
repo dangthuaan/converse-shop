@@ -14,6 +14,7 @@
 <script src="{{ asset('fashiop/vendors/flipclock/timer.js') }}"></script>
 <script src="{{ asset('fashiop/vendors/counter-up/jquery.counterup.js') }}"></script>
 <script src="{{ asset('fashiop/js/mail-script.js') }}"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="{{ asset('fashiop/js/theme.js') }}"></script>
 <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/additional-methods.min.js') }}"></script>

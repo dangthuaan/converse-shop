@@ -54,4 +54,14 @@ class Order extends Model
     {
         return $this->status == 2;
     }
+
+    /**
+     * Scope a boolean of closed orders.
+     *
+     * @return Boolean
+     */
+    public function scopeIsClosedOrder()
+    {
+        return $this->status == 3;
+    }
 }

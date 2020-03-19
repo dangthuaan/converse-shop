@@ -135,9 +135,16 @@ span.error {
   font-weight: 700;
 }
 
-.remove-from-favorite {
+.add-to-favorite:hover {
+  border-color: #ff0000 !important;
   color: #fff !important;
-  background: #222222 !important;
+  background: #ff0000 !important;
+}
+
+.remove-from-favorite {
+  border-color: #ff0000 !important;
+  color: #fff !important;
+  background: #ff0000 !important;
 }
 
 .product_image_area {
@@ -150,4 +157,20 @@ span.error {
 
 .product_count .down {
   bottom: -1px;
+}
+
+.order-pagination {
+  float: right;
+}
+
+table {
+  counter-reset: tableCount;
+}
+.counterCell:before {
+  content: counter(tableCount);
+  counter-increment: tableCount;
+}
+
+.functions {
+  display: inline-block !important;
 }

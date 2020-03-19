@@ -30,7 +30,6 @@ $(document).ready(function () {
     sizePicker();
     stylePicker();
 
-
     //ajax setup for orders(add to cart)
     $.ajaxSetup({
         headers: {
