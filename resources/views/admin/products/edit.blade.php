@@ -19,10 +19,13 @@
             <div class="card">
                 <div class="card-header">
                     <h1>
-                        {{ __('Create product') }}
+                        {{ __('Edit product') }}
                     </h1>
                 </div>
                 <div class="card-body">
+                    <label class="col-form-label text-md-right" for="name">
+                        {{ __('Product image') }} <strong class="required-field">*</strong>
+                    </label>
                     <form action="{{ route('admin.products.update', $product->id) }}" role="form" enctype="multipart/form-data" method="POST">
                         @csrf
                         @method('PUT')
@@ -36,7 +39,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label text-md-right" for="name">
-                                {{ __('Product name') }}
+                                {{ __('Product name') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
                                 <input autocomplete="name" autofocus="" class="form-control @error('name') is-invalid @enderror" id="name" name="name" required="" type="text" value="{{ old('name') ?? $product->name }}">
@@ -51,7 +54,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label text-md-right" for="gender">
-                                {{ __('Gender') }}
+                                {{ __('Gender') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
                                 <select autocomplete="gender" autofocus="" class="form-control @error('gender') is-invalid @enderror" id="gender" name="gender">
@@ -80,7 +83,7 @@
                         @foreach ($parentCategories as $parentCategory)
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label text-md-right" for="category">
-                                {{ $parentCategory->name }}
+                                {{ $parentCategory->name }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
                                 <select class="form-control @error('category') is-invalid @enderror" id="category" name="category[]">
@@ -104,10 +107,10 @@
                         @endforeach
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label text-md-right" for="description">
-                                {{ __('Description') }}
+                                {{ __('Description') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
-                                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" required>{{ old('description') ?? $product->description }}</textarea>
+                                <textarea rows="10" class="form-control @error('description') is-invalid @enderror" id="description" name="description" required>{{ old('description') ?? $product->description }}</textarea>
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -119,7 +122,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label text-md-right" for="publish_date">
-                                {{ __('Publish date') }}
+                                {{ __('Publish date') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
                                 <input autocomplete="publish_date" class="form-control" id="datepicker" name="publish_date" required="" type="text" value="{{ old('publish_date') ?? $product->publish_date }}">
@@ -143,10 +146,10 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label text-md-right" for="price">
-                        {{ __('Price') }}
+                        {{ __('Price') }}(VNĐ) <strong class="required-field">*</strong>
                     </label>
                     <div class="col-md-6">
-                        <input autocomplete="price" class="form-control" id="currency" name="price" placeholder="VNĐ" required="" type="text" value="{{ old('price') ?? $product->price }}">
+                        <input autocomplete="price" class="form-control product-currency" id="currency" name="price" placeholder="VNĐ" required="" type="text" value="{{ old('price') ?? $product->price }}">
                         @error('price')
                         <span class="invalid-feedback" role="alert">
                             <strong>
@@ -158,10 +161,10 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-md-4 col-form-label text-md-right" for="sale">
-                        {{ __('Sale') }}
+                        {{ __('Sale') }} (%)
                     </label>
                     <div class="col-md-6">
-                        <input autocomplete="sale" class="form-control" id="currency" max="90" min="0" name="sale" placeholder="%" required="" step="10" type="number" value="{{ old('sale') ?? $product->sale }}">
+                        <input autocomplete="sale" class="form-control product-sale" max="90" min="0" name="sale" placeholder="%" required="" step="5" type="number" value="{{ old('sale') ?? $product->sale }}">
                         @error('sale')
                         <span class="invalid-feedback" role="alert">
                             <strong>
@@ -172,7 +175,7 @@
                     </div>
                 </div>
                 <div class="form-group row mb-0">
-                    <div class="col-md-6 offset-md-4">
+                    <div class="col-md-6 offset-md-4" style="margin-bottom: 20px;">
                         <button class="btn btn-primary" type="submit">
                             {{ __('Update') }}
                         </button>

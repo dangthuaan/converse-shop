@@ -94,7 +94,7 @@
 
                                 <li class="nav-item">
                                     <a href="{{ route('client.orders.index') }}" class="icons">
-                                        <i class="cart-number lnr lnr lnr-cart"> [{{ cartQuantity() }}] </i>
+                                        <i class="lnr lnr lnr-cart"> [<span class="cart-number">{{ cartQuantity() }}</span>] </i>
                                     </a>
                                 </li>
 

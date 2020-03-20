@@ -28,7 +28,7 @@
 <div class="tab-content" id="myTabContent">
     <!-- In Progress Order -->
     <div class="tab-pane show active" id="in-progress" role="in-progress" aria-labelledby="profile-tab">
-        <table class="table table-striped table-bordered order-table" style="width:100%">
+        <table class="table table-striped table-bordered data-table" style="width:100%">
             <thead>
                 <tr>
                     <th>#</th>
@@ -48,7 +48,7 @@
                     <td>{{$order->user ? $order->user->email : ''}}</td>
                     <td class="product-currency">{{$order->total_price}}</td>
                     <td style="color: orange;"><i class="fas fa-sync-alt"></i><strong> In progress</strong></td>
-                    <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#orderDetail{{ $order->id }}" data-order-id="{{ $order->id }}">Detail</button>
+                    <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#orderDetail{{ $order->id }}" data-order-id="{{ $order->id }}">Detail</button>
                         <!-- Modal -->
                         <div class="modal fade" id="orderDetail{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="orderDetailLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg" role="document">
@@ -132,12 +132,12 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="order-pagination">{{ $inProgressOrders->appends(array_except(Request::query(), 'in-progress'))->fragment('in-progress')->links('vendor.pagination.product-bottom') }}</div>
+        <div class="float-right">{{ $inProgressOrders->appends(array_except(Request::query(), 'in-progress'))->fragment('in-progress')->links('vendor.pagination.product-bottom') }}</div>
     </div>
 
     <!-- Delivered Orders -->
     <div class="tab-pane fade" id="delivered" role="delivered" aria-labelledby="contact-tab">
-        <table class="table table-striped table-bordered order-table" style="width:100%">
+        <table class="table table-striped table-bordered data-table" style="width:100%">
             <thead>
                 <tr>
                     <th>#</th>
@@ -214,11 +214,11 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="order-pagination">{{ $deliveredOrders->appends(array_except(Request::query(), 'delivered'))->fragment('delivered')->links('vendor.pagination.product-bottom') }}
+        <div class="float-right">{{ $deliveredOrders->appends(array_except(Request::query(), 'delivered'))->fragment('delivered')->links('vendor.pagination.product-bottom') }}
         </div>
     </div>
     <div class="tab-pane fade" id="closed" role="closed" aria-labelledby="contact-tab">
-        <table class="table table-striped table-bordered order-table" style="width:100%">
+        <table class="table table-striped table-bordered data-table" style="width:100%">
             <thead>
                 <tr>
                     <th>#</th>
@@ -295,7 +295,7 @@
                 </tr>
             </tfoot>
         </table>
-        <div class="order-pagination">{{ $closedOrders->appends(array_except(Request::query(), 'closed'))->fragment('closed')->links('vendor.pagination.product-bottom') }}</div>
+        <div class="float-right">{{ $closedOrders->appends(array_except(Request::query(), 'closed'))->fragment('closed')->links('vendor.pagination.product-bottom') }}</div>
     </div>
 </div>
 @endsection
