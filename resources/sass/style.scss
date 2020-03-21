@@ -159,10 +159,6 @@ span.error {
   bottom: -1px;
 }
 
-.order-pagination {
-  float: right;
-}
-
 table {
   counter-reset: tableCount;
 }
@@ -173,4 +169,32 @@ table {
 
 .functions {
   display: inline-block !important;
+}
+
+.data-table .gender {
+  width: 100px;
+}
+
+.data-table .detail {
+  width: 50px;
+}
+
+.data-table .publish-date {
+  width: 140px;
+}
+
+.data-table .price {
+  width: 100px;
+}
+
+.data-table .sale {
+  width: 80px;
+}
+
+.action-form {
+  display: inline-block;
+}
+
+.required-field {
+  color: #ff0000;
 }

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\Product;
 use App\Favorite;
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use App\Services\ProductService;
 use App\Traits\UploadTrait;
@@ -28,7 +30,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('categories')->get();
+        $products = Product::with('categories')->paginate(config('pagination.product_page_size'));
 
         $parentCategory = Category::with('parent')->get()->pluck('parent.name', 'id');
 
@@ -57,6 +59,7 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
+
         $data = $request->only([
             'image',
             'name',
@@ -67,6 +70,10 @@ class ProductController extends Controller
             'price',
             'sale'
         ]);
+
+        $data['publish_date'] = Carbon::createFromFormat('m/d/Y', $request->publish_date)->format('Y-m-d');
+
+        dd($data);
 
         $data['user_id'] = auth()->id();
 
@@ -118,6 +125,8 @@ class ProductController extends Controller
             'price',
             'sale'
         ]);
+
+        $data['publish_date'] = Carbon::createFromFormat('m/d/Y', $request->publish_date)->format('Y-m-d');
 
         $userFavorites = Favorite::with('user')->where('product_id', $id)->get();
 
