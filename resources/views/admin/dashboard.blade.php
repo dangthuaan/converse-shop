@@ -59,6 +59,14 @@
 
     $('#datepicker').datepicker({
         format: 'dd/mm/yyyy',
+        maxDate: '0'
+    });
+
+    $("#submit-form").click(function() {
+        var imgVal = $('#upload-image').val();
+        if (imgVal == '') {
+            $('#noImage').modal("show");
+        }
     });
 
     // Inputmask().mask(".date");

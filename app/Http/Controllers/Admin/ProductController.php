@@ -73,8 +73,6 @@ class ProductController extends Controller
 
         $data['publish_date'] = Carbon::createFromFormat('m/d/Y', $request->publish_date)->format('Y-m-d');
 
-        dd($data);
-
         $data['user_id'] = auth()->id();
 
         $data['image'] = $this->productService->saveImage($data['image']);

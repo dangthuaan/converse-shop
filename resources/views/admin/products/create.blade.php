@@ -25,12 +25,12 @@
                 <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
-                        <div class="form-group">
-                            <label class="col-form-label text-md-right" for="name">
+                        <div class="form-group row">
+                            <label class="col-md-4 col-form-label text-md-right" for="image">
                                 {{ __('Product image') }} <strong class="required-field">*</strong>
                             </label>
-                            <div class="dropzone" id="dropzone">
-                                <input required type="file" class="form-control @error('image') is-invalid @enderror" name="image[]" multiple>
+                            <div class="col-md-6">
+                                <input type="file" required id="upload-image" name="image[]" multiple>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -38,7 +38,7 @@
                                 {{ __('Product name') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
-                                <input autocomplete="name" autofocus="" class="form-control @error('name') is-invalid @enderror" id="name" name="name" required="" type="text" value="{{ old('name') }}">
+                                <input autocomplete="name" autofocus="" class="form-control @error('name') is-invalid @enderror" id="name" name="name" type="text" value="{{ old('name') }}">
                                 @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -107,14 +107,7 @@
                                 {{ __('Description') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
-                                <textarea rows="10" autocomplete="description" class="form-control @error('description') is-invalid @enderror" id="description" name="description" required="" value="{{ old('description') }}"></textarea>
-                                @error('description')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>
-                                        {{ $message }}
-                                    </strong>
-                                </span>
-                                @enderror
+                                <textarea rows="10" autocomplete="description" class="form-control" id="description" name="description" value="{{ old('description') }}"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -122,7 +115,7 @@
                                 {{ __('Publish date') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
-                                <input autocomplete="publish_date" class="form-control" id="datepicker" name="publish_date" required="" type="text" value="{{ old('publish_date') }}">
+                                <input autocomplete="publish_date" class="form-control @error('publish_date') is-invalid @enderror" id="datepicker" name="publish_date" type="text" placeholder="dd/mm/yyyy" value="{{ old('publish_date') }}">
                                 </input>
                                 @error('publish_date')
                                 <span class="invalid-feedback" role="alert">
@@ -132,13 +125,6 @@
                                 </span>
                                 @enderror
                             </div>
-                            @error('publish_date')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>
-                                    {{ $message }}
-                                </strong>
-                            </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="form-group row">
@@ -146,7 +132,7 @@
                             {{ __('Price') }}(VNĐ) <strong class="required-field">*</strong>
                         </label>
                         <div class="col-md-6">
-                            <input autocomplete="price" class="form-control product-currency" id="currency" name="price" placeholder="VNĐ" required="" type="text" value="{{ old('price') }}">
+                            <input autocomplete="price" class="form-control product-currency @error('price') is-invalid @enderror" id="currency" name="price" placeholder="VNĐ" type="text" value="{{ old('price') }}">
                             @error('price')
                             <span class="invalid-feedback" role="alert">
                                 <strong>
@@ -162,20 +148,27 @@
                         </label>
                         <div class="col-md-6">
                             <input autocomplete="sale" class="form-control" id="currency" max="90" min="0" name="sale" placeholder="%" step="5" type="number" value="{{ old('sale') }}">
-                            @error('sale')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>
-                                    {{ $message }}
-                                </strong>
-                            </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="form-group row mb-0">
                         <div class="col-md-6 offset-md-4">
-                            <button class="btn btn-primary" type="submit" style="margin-bottom: 20px;">
+                            <button class="btn btn-primary" id="submit-form" type="submit" style="margin-bottom: 20px;">
                                 {{ __('Create') }}
                             </button>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="noImage" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <strong ">You need to upload product images first!</strong>
+                                    </div>
+                                    <div class=" modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

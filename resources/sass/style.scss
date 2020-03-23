@@ -198,3 +198,13 @@ table {
 .required-field {
   color: #ff0000;
 }
+
+#noImage .modal-body {
+  font-size: 1.2em;
+  text-align: center;
+  color: #dc3545;
+}
+
+body.modal-open {
+  overflow: visible;
+}
