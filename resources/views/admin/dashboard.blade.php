@@ -40,7 +40,13 @@
     };
 
     $('.data-table').DataTable({
-        "bPaginate": false,
+        "bPaginate": true,
+        "bLengthChange": false,
+        "pageLength": 5,
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [6, 7]
+        }]
     });
 
     $(".product-currency").inputmask("decimal", {
@@ -55,11 +61,10 @@
         removeMaskOnSubmit: true
     });
 
-    // $(".date").inputmask("dd/mm/yyyy");
-
     $('#datepicker').datepicker({
         format: 'dd/mm/yyyy',
-        maxDate: '0'
+        startDate: '-20y',
+        endDate: '+0d'
     });
 
     $("#submit-form").click(function() {

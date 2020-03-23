@@ -104,7 +104,7 @@
                         @endforeach
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label text-md-right" for="description">
-                                {{ __('Description') }} <strong class="required-field">*</strong>
+                                {{ __('Description') }}
                             </label>
                             <div class="col-md-6">
                                 <textarea rows="10" class="form-control @error('description') is-invalid @enderror" id="description" name="description" required>{{ old('description') ?? $product->description }}</textarea>
@@ -139,7 +139,7 @@
                             {{ __('Price') }}(VNĐ) <strong class="required-field">*</strong>
                         </label>
                         <div class="col-md-6">
-                            <input autocomplete="price" class="form-control product-currency @error('price') is-invalid @enderror" id="currency" name="price" placeholder="VNĐ" type="text" value="{{ old('price') ?? $product->price }}">
+                            <input autocomplete="price" class="form-control @error('price') is-invalid @enderror" id="datepicker" name="price" placeholder="VNĐ" type="text" value="{{ old('price') ?? $product->price }}">
                             @error('price')
                             <span class="invalid-feedback" role="alert">
                                 <strong>

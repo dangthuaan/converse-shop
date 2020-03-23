@@ -33,7 +33,7 @@ class ProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'name.unique' => 'This product has already been taken!'
+            'name.unique' => 'This product has already been taken!',
         ];
     }
 }

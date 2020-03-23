@@ -95,7 +95,7 @@
                                 @error('category')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
-                                        {{ $message }}
+                                        The {{ strtolower($parentCategory->name) }} field is required.
                                     </strong>
                                 </span>
                                 @enderror
@@ -104,10 +104,10 @@
                         @endforeach
                         <div class="form-group row">
                             <label class="col-md-4 col-form-label text-md-right" for="description">
-                                {{ __('Description') }} <strong class="required-field">*</strong>
+                                {{ __('Description') }}
                             </label>
                             <div class="col-md-6">
-                                <textarea rows="10" autocomplete="description" class="form-control" id="description" name="description" value="{{ old('description') }}"></textarea>
+                                <textarea rows="10" autocomplete="description" class="form-control" id="description" name="description">{{ old('description') }}</textarea>
                             </div>
                         </div>
                         <div class="form-group row">

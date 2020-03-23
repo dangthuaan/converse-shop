@@ -208,3 +208,9 @@ table {
 body.modal-open {
   overflow: visible;
 }
+
+.f_p_item:hover .f_p_img {
+  .p_icon {
+    right: 65px;
+  }
+}
