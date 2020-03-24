@@ -23,9 +23,6 @@
     <div class="container-fluid">
         <div class="row flex-row-reverse">
             <div class="col-lg-9">
-                <div class="product_top_bar">
-                    {{ $products->links('vendor.pagination.product-top') }}
-                </div>
                 <div class="latest_product_inner row">
                     @foreach ($products as $product)
                     <div class="col-lg-3 col-md-3 col-sm-6">
@@ -37,7 +34,7 @@
                                         <i class="lnr lnr-cart"></i>
                                     </a>
                                     @if (in_array($product->id, $favoriteProducts))
-                                    <a href="#" class="remove-from-favorite" data-product-id="{{ $product->id }}">
+                                    <a href="#" class="text-center remove-from-favorite" data-product-id="{{ $product->id }}">
                                         <i class="lnr lnr-heart"></i>
                                     </a>
                                     @else
@@ -135,7 +132,6 @@
                 </div>
             </div>
         </div>
-        {{ $products->links('vendor.pagination.product-bottom') }}
     </div>
 </section>
 <!--================End Category Product Area =================-->

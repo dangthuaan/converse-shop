@@ -16,13 +16,13 @@
 <hr>
 <ul class="nav nav-tabs" id="myTab" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#in-progress" role="tab" aria-controls="profile" aria-selected="false">In Progress</a>
+        <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#in-progress" role="tab" aria-controls="profile" aria-selected="false"><i class="fas fa-sync-alt" style="color: orange;"></i> In Progress</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#delivered" role="tab" aria-controls="contact" aria-selected="false">Delivered</a>
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#delivered" role="tab" aria-controls="contact" aria-selected="false"><i style="color: green;" class="fas fa-clipboard-check"></i> Delivered</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="contact" aria-selected="false">Closed</a>
+        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#closed" role="tab" aria-controls="contact" aria-selected="false"><i style="color: red;" class="fas fa-times-circle"></i> Closed</a>
     </li>
 </ul>
 <div class="tab-content" id="myTabContent">
@@ -35,7 +35,6 @@
                     <th>Ordered By (Customer)</th>
                     <th>Customer's email</th>
                     <th>Total Price</th>
-                    <th>Status</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -47,7 +46,6 @@
                     <td>{{$order->user ? $order->user->name : ''}}</td>
                     <td>{{$order->user ? $order->user->email : ''}}</td>
                     <td class="product-currency">{{$order->total_price}}</td>
-                    <td style="color: orange;"><i class="fas fa-sync-alt"></i><strong> In progress</strong></td>
                     <td><button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#orderDetail{{ $order->id }}" data-order-id="{{ $order->id }}">Detail</button>
                         <!-- Modal -->
                         <div class="modal fade" id="orderDetail{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="orderDetailLabel" aria-hidden="true">
@@ -126,7 +124,6 @@
                     <th>Ordered By</th>
                     <th>Customer's email</th>
                     <th>Total Price</th>
-                    <th>Status</th>
                     <th></th>
                     <th></th>
                 </tr>
@@ -144,7 +141,6 @@
                     <th>Ordered By (Customer)</th>
                     <th>Customer's email</th>
                     <th>Total Price</th>
-                    <th>Status</th>
                     <th></th>
                 </tr>
             </thead>
@@ -155,7 +151,6 @@
                     <td>{{$order->user ? $order->user->name : ''}}</td>
                     <td>{{$order->user ? $order->user->email : ''}}</td>
                     <td class="product-currency">{{$order->total_price}}</td>
-                    <td style="color: green;"><i class="fas fa-clipboard-check"></i><strong> Delivered</strong></td>
                     <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#orderDetail{{ $order->id }}" data-order-id="{{ $order->id }}">Detail</button>
                         <!-- Modal -->
                         <div class="modal fade" id="orderDetail{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="orderDetailLabel" aria-hidden="true">
@@ -209,7 +204,6 @@
                     <th>Ordered By</th>
                     <th>Customer's email</th>
                     <th>Total Price</th>
-                    <th>Status</th>
                     <th></th>
                 </tr>
             </tfoot>
@@ -225,7 +219,6 @@
                     <th>Ordered By (Customer)</th>
                     <th>Customer's email</th>
                     <th>Total Price</th>
-                    <th>Status</th>
                     <th></th>
                 </tr>
             </thead>
@@ -236,7 +229,6 @@
                     <td>{{$order->user ? $order->user->name : ''}}</td>
                     <td>{{$order->user ? $order->user->email : ''}}</td>
                     <td class="product-currency">{{$order->total_price}}</td>
-                    <td style="color: red;"><i class="fas fa-times-circle"></i><strong> Closed</strong></td>
                     <td><button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#orderDetail{{ $order->id }}" data-order-id="{{ $order->id }}">Detail</button>
                         <!-- Modal -->
                         <div class="modal fade" id="orderDetail{{ $order->id }}" tabindex="-1" role="dialog" aria-labelledby="orderDetailLabel" aria-hidden="true">
@@ -290,7 +282,6 @@
                     <th>Ordered By</th>
                     <th>Customer's email</th>
                     <th>Total Price</th>
-                    <th>Status</th>
                     <th></th>
                 </tr>
             </tfoot>

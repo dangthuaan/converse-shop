@@ -30,7 +30,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('categories')->paginate(config('pagination.product_page_size'));
+        $products = Product::with('categories')->orderBy('created_at', 'desc')->paginate(config('pagination.product_page_size'));
 
         $parentCategory = Category::with('parent')->get()->pluck('parent.name', 'id');
 
