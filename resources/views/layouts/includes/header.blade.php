@@ -13,7 +13,9 @@
     <div class="top_menu row m0">
         <div class="container-fluid">
             <div class="float-left">
+                @if (auth()->check() && auth()->user()->isAdmin())
                 <p>{{ __('<<Phan quyen nguoi dung>>') }}</p>
+                @endif
             </div>
             <div class="float-right">
                 <ul class="right_side">
@@ -68,7 +70,7 @@
                                     <a href="{{ route('client.products.index') }}" class="nav-link">Shop</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="contact.html">Contact</a>
+                                    <a class="nav-link" href="{{ route('client.contact.index') }}">Contact</a>
                                 </li>
                             </ul>
                         </div>

@@ -115,7 +115,7 @@
                                 {{ __('Publish date') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
-                                <input autocomplete="publish_date" class="form-control @error('publish_date') is-invalid @enderror" id="datepicker" name="publish_date" type="text" placeholder="dd/mm/yyyy" value="{{ old('publish_date') }}">
+                                <input autocomplete="publish_date" class="form-control @error('publish_date') is-invalid @enderror" id="datepicker" name="publish_date" type="text" placeholder="d/m/yyyy" value="{{ old('publish_date') }}">
                                 </input>
                                 @error('publish_date')
                                 <span class="invalid-feedback" role="alert">

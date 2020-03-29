@@ -50,25 +50,25 @@
                             </label>
                             <div class="col-md-6">
                                 <input autocomplete="name" class="form-control @error('name') is-invalid @enderror" id="category-text" name="name" type="text" value="{{$categories->name}}">
-                            </input>
-                            @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
+                                </input>
+                                @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row mb-0">
-                        <div class="col-md-6 offset-md-4">
-                            <button class="btn btn-primary" type="submit">
-                                {{ __('Edit') }}
-                            </button>
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button class="btn btn-primary" type="submit">
+                                    {{ __('Update') }}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 @endsection

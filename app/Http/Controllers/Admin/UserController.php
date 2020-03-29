@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\User;
 use App\Services\UserService;
 use App\Http\Requests\BanRequest;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -29,31 +30,71 @@ class UserController extends Controller
     }
 
     /**
-     * Ban a specific user.
+     * Confirm ban user.
      *
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function banUser(BanRequest $request)
+    public function confirmBan($id)
     {
-        $bannedFlag = $request->is_ban;
-        $userId = $request->user_id;
+        $user = User::findOrFail($id);
 
-        $bannedData = [
-            'is_ban' => !$bannedFlag,
-        ];
+        return view('admin.users.confirmBan', compact('user'));
+    }
 
-        $banUser = $this->userService->banUser($userId, $bannedData);
+    /**
+     * Confirm ban user.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function confirmUnBan($id)
+    {
+        $user = User::findOrFail($id);
 
-        $status = false;
+        return view('admin.users.confirmUnBan', compact('user'));
+    }
+
+    /**
+     * Ban a specific user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     *
+     */
+    public function banUser(Request $request, $id)
+    {
+        $banReason = $request->ban_reason;
+
+        $banUser = $this->userService->banUser($id);
 
         if ($banUser) {
-            $status = true;
+            $this->userService->sendBanUserEmail($id, $banReason);
+            return redirect('admin/users')->with('success', 'User has been banned!');
         }
 
-        $result = [
-            'status' => $status,
-        ];
+        return back()->with('error', 'Ban failed!');
+    }
 
-        return response()->json($result);
+    /**
+     * Un-Ban a specific user.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function unBanUser(Request $request, $id)
+    {
+        $unBanReason = $request->un_ban_reason;
+
+        $unBanUser = $this->userService->unBanUser($id);
+
+        if ($unBanUser) {
+            $this->userService->sendUnBanUserEmail($id, $unBanReason);
+            return redirect('admin/users')->with('success', 'User has been un-banned!');
+        }
+
+        return back()->with('error', 'Un-Ban failed!');
     }
 }

@@ -17,7 +17,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'is_ban'
+        'name', 'role', 'email', 'password', 'is_ban'
     ];
 
     /**
@@ -52,5 +52,35 @@ class User extends Authenticatable implements MustVerifyEmail
     public function favorites()
     {
         return $this->hasMany('App\Favorite');
+    }
+
+    /**
+     * Scope if user is Admin.
+     *
+     * @return Boolean
+     */
+    public function scopeIsAdmin()
+    {
+        return $this->role == 1;
+    }
+
+    /**
+     * Scope if user is Manager.
+     *
+     * @return Boolean
+     */
+    public function scopeIsManager()
+    {
+        return $this->role == 2;
+    }
+
+    /**
+     * Scope if user is Normal User.
+     *
+     * @return Boolean
+     */
+    public function scopeIsNormalUser()
+    {
+        return $this->role == 3;
     }
 }

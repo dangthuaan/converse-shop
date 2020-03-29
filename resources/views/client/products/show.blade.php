@@ -10,7 +10,7 @@
                 <div class="page_link">
                     <a href="{{ route('client.index') }}">Home</a>
                     <a href="{{ route('client.products.index') }}">Product</a>
-                    <a href="#">{{ $product->name }}</a>
+                    <a href="">{{ $product->name }}</a>
                 </div>
             </div>
         </div>
@@ -19,7 +19,7 @@
 <!--================End Home Banner Area =================-->
 
 <!--================Single Product Area =================-->
-<div class="product_image_area">
+<div class="product_image_area" style="margin-top: -50px;">
     <div class="container">
         <div class="row s_product_inner">
             <div class="col-lg-6">
@@ -144,31 +144,7 @@
             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                 <div class="row">
                     <div class="col-lg-12" id="comment">
-                        @include('client.products.comments.comment', ['comments' => $product->comments, 'product_id' => $product->id])
-                    </div>
-                    <div class="col-lg-12 margin_top">
-                        <div class="review_box">
-                            <h4>
-                                Post a comment
-                            </h4>
-                            <form class="row contact_form" id="comment_form">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <textarea class="form-control @error('message') is-invalid @enderror content" name="content" placeholder="Message" rows="1" required></textarea>
-                                    </div>
-                                    @error('content')
-                                    <span class="text-danger" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-                                <div class="col-md-12 text-right">
-                                    <button data-product-id="{{ $product->id }}" class="submit_comment btn submit_btn" type="submit">
-                                        Submit Now
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                        <div class="fb-comments" data-order-by="reverse_time" data-href="{{ asset('/comments#configurator') }}" data-width="1078" data-numposts="5"></div>
                     </div>
                 </div>
             </div>

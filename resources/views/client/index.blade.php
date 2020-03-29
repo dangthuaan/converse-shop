@@ -30,18 +30,18 @@
                         <h2 style="font-weight: 700;">Color of the Month</h2>
                         <p>shop now</p>
                     </div>
-                    <a class="hot_deal_link" href="#"></a>
+                    <a class="hot_deal_link" href="{{ asset('/products?categories=red') }}"></a>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="hot_deal_box">
-                    <img class="img-fluid" src="{{ asset('/images/color-yellow.jpg') }}" alt="">
+                    <img class="img-fluid" src="{{ asset('/images/color-black.jpg') }}" alt="">
                     <div class="content">
                         <h2 style="font-weight: 700;">Start your year with new colors</h2>
                         <p>shop now</p>
                     </div>
-                    <a class="hot_deal_link" href="#"></a>
+                    <a class="hot_deal_link" href="{{ asset('/products?categories=black') }}"></a>
                 </div>
             </div>
         </div>

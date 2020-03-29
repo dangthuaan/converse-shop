@@ -18,7 +18,7 @@
             <div class="col-lg-12">
                 <div class="login_form_inner reg_form">
                     <h3>Account Profile - Change Password</h3>
-                    <form class="row login_form" action="{{ route('client.user.updatePassword', $user->id) }}" method="post" id="contactForm" novalidate="novalidate">
+                    <form class="row login_form" action="{{ route('client.user.updatePassword', $user->id) }}" method="post" id="contactForm">
                         @csrf
                         @method('put')
                         <div class="col-md-12 form-group">

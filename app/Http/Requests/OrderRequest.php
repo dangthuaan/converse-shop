@@ -14,7 +14,8 @@ class OrderRequest extends FormRequest
     public function rules()
     {
         return [
-            'total_price' => 'required|integer',
+            'address' => 'required|string',
+            'phone_number' => 'required|numeric|digits_between:8,10',
         ];
     }
 }

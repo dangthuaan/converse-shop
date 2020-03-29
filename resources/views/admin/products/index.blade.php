@@ -114,15 +114,7 @@
             <td style="text-align: center;">
                 <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-primary">Edit</a>
 
-                <form class="action-form" action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <div class="col-md-6 offset-md-1">
-                        <button type="submit" class="btn btn-sm btn-danger">
-                            {{ __('Delete') }}
-                        </button>
-                    </div>
-                </form>
+                <a href="{{ route('admin.products.confirmDelete', $product->id) }}" class="btn btn-sm btn-danger">Delete</a>
             </td>
         </tr>
         @endforeach

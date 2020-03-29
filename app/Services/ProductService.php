@@ -99,7 +99,7 @@ class ProductService
             $changedProduct = $product->getChanges();
             if (isset($changedProduct['price']) || isset($changedProduct['sale'])) {
                 foreach ($userFavorites as $userFavorite) {
-                    Mail::to($userFavorite->user)->send(new ProductUpdate());
+                    Mail::to($userFavorite->user)->send(new ProductUpdate($product));
                 }
             }
         } catch (\Exception $e) {

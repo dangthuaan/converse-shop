@@ -23,13 +23,14 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('products')->paginate(config('pagination.order_page_size'));
+        $orders = Order::with('products')->orderBy('created_at', 'desc')->paginate(config('pagination.order_page_size'));
 
-        $inProgressOrders = Order::with('products')->where('status', 1)->paginate(1, ['*'], 'in-progress');
-        $deliveredOrders = Order::with('products')->where('status', 2)->paginate(1, ['*'], 'delivered');
-        $closedOrders = Order::with('products')->where('status', 3)->paginate(1, ['*'], 'closed');
+        $newOrders = Order::with('products')->where('status', 1)->orderBy('created_at', 'desc')->paginate(config('pagination.order_page_size'));
+        $inProgressOrders = Order::with('products')->where('status', 2)->orderBy('created_at', 'desc')->paginate(config('pagination.order_page_size'));
+        $deliveredOrders = Order::with('products')->where('status', 3)->orderBy('created_at', 'desc')->paginate(config('pagination.order_page_size'));
+        $closedOrders = Order::with('products')->where('status', 4)->orderBy('created_at', 'desc')->paginate(config('pagination.order_page_size'));
 
-        return view('admin.orders.index', compact('orders', 'inProgressOrders', 'deliveredOrders', 'closedOrders'));
+        return view('admin.orders.index', compact('orders', 'newOrders', 'inProgressOrders', 'deliveredOrders', 'closedOrders'));
     }
 
     /**
@@ -40,9 +41,7 @@ class OrderController extends Controller
      */
     public function deliverOrder($id)
     {
-        $currentUser = auth()->user();
         $deliverOrder = $this->orderService->deliverOrder($id);
-        $this->orderService->sendOrderSuccessEmail($currentUser);
 
         if ($deliverOrder) {
             return redirect('admin/orders')->with('success', 'Delivered success!');
@@ -52,14 +51,47 @@ class OrderController extends Controller
     }
 
     /**
-     * Update order status(close).
+     * Update order status(deliver).
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function closeOrder($id)
+    public function confirmDeliver($id)
     {
-        $closeOrder = $this->orderService->closeOrder($id);
+        $confirmOrder = $this->orderService->confirmOrder($id);
+
+        if ($confirmOrder) {
+            return redirect('admin/orders')->with('success', 'Delivered success!');
+        }
+
+        return back()->with('error', 'Delivery failed!');
+    }
+
+    /**
+     * Confirm close order.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function confirmClose($id)
+    {
+        $order = Order::findOrFail($id);
+
+        return view('admin.orders.confirmClose', compact('order'));
+    }
+
+    /**
+     * Update order status(close).
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function closeOrder(Request $request, $id)
+    {
+        $closeReason = $request->close_reason;
+
+        $closeOrder = $this->orderService->closeOrder($id, $closeReason);
 
         if ($closeOrder) {
             return redirect('admin/orders')->with('success', 'Order Closed!');

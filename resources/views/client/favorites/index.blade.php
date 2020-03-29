@@ -7,13 +7,13 @@
         <div class="container">
             <div class="banner_content">
                 <h2>
-                    My Favorites
+                    My Favorite products
                 </h2>
                 <div class="page_link">
-                    <a href="index.html">
+                    <a href="{{ route('client.index') }}">
                         Home
                     </a>
-                    <a href="cart.html">
+                    <a href="">
                         Cart
                     </a>
                 </div>
@@ -23,7 +23,8 @@
 </section>
 <!--================End Home Banner Area =================-->
 <!--================Cart Area =================-->
-<section class="cart_area">
+@if ($favoriteProducts->count() > 0)
+<section class="cart_area" style="margin-top: -50px;">
     <div class="container">
         <div class="cart_inner">
             <div class="table-responsive">
@@ -33,8 +34,8 @@
                             <th scope="col">
                                 {{ __('Product') }}
                             </th>
-                            <th scope="col">
-                                Price
+                            <th scope="col" style="width: 200px;">
+                                Price (VNĐ)
                             </th>
                             <th scope="col">
                                 Remove
@@ -42,7 +43,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($favoriteProducts)
                         @foreach ($favoriteProducts as $favoriteProduct)
                         <tr>
                             <td>
@@ -63,11 +63,12 @@
                             <td>
                                 <h5>
                                     @if ($favoriteProduct->sale != 0)
-                                    <strike>
+                                    <strike class="currency">
                                         {{ $favoriteProduct->price }}
-                                    </strike> | - {{$favoriteProduct->sale}}% {{ $favoriteProduct->price - $favoriteProduct->price * ($favoriteProduct->sale / 100) }}
+                                    </strike> | - {{$favoriteProduct->sale}}%
+                                    <span class="currency" style="color:red">{{ $favoriteProduct->price - $favoriteProduct->price * ($favoriteProduct->sale / 100) }}</span>
                                     @else
-                                    {{ $favoriteProduct->price }}
+                                    <span class="currency">{{ $favoriteProduct->price }}</span>
                                     @endif
                                 </h5>
                             </td>
@@ -81,12 +82,23 @@
                             </td>
                         </tr>
                         @endforeach
-                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </section>
+@else
+<section class="order_details" style="margin-top: -50px">
+    <div class="container">
+        <h3 class="title_confirmation" style="color: red">
+            Favorite list is empty.
+        </h3>
+        <div class="confirmation_btn_inner">
+            <a class="main_btn" href="{{ asset('/products') }}">Continue Shopping</a>
+        </div>
+    </div>
+</section>
+@endif
 <!--================End Cart Area =================-->
 @endsection

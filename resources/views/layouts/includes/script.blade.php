@@ -20,4 +20,6 @@
 <script src="{{ asset('js/additional-methods.min.js') }}"></script>
 <script src="{{ asset('js/inputmask.numeric.extensions.js') }}"></script>
 <script src="{{ asset('js/jquery.inputmask.bundle.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 <script src="{{ asset('js/main.js') }}"></script>

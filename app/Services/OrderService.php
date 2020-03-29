@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Product;
 use App\Order;
+use App\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmation;
 use App\Mail\OrderSuccess;
+use App\Mail\OrderClose;
 
 class OrderService
 {
@@ -87,14 +89,14 @@ class OrderService
 
         $orderData = [
             'user_id' => $currentUserId,
-            'total_price' => $product->price,
+            'total_price' => $product->price - ($product->price * $product->sale) / 100,
             'quantity' => $quantity,
         ];
 
         try {
             if (session()->has('order_session')) {
                 $orderData['total_price'] = session('order_session.total_price')
-                    + $product->price;
+                    + ($product->price - ($product->price * $product->sale / 100));
             }
             session(['order_session' => $orderData]);
         } catch (\Throwable $th) {
@@ -152,14 +154,14 @@ class OrderService
 
         $orderData = [
             'user_id' => $currentUserId,
-            'total_price' => $product->price,
+            'total_price' => $product->price - ($product->price * $product->sale) / 100,
             'quantity' => $quantity,
         ];
 
         try {
             if (session()->has('order_session')) {
                 $orderData['total_price'] = session('order_session.total_price')
-                    + $product->price;
+                    + ($product->price - ($product->price * $product->sale) / 100);
             }
             session(['order_session' => $orderData]);
         } catch (\Throwable $th) {
@@ -211,7 +213,7 @@ class OrderService
         $productSession[$id]['quantity']++;
         session(['product_session' => $productSession]);
 
-        $orderSession['total_price'] += $productSession[$id]['price'];
+        $orderSession['total_price'] += $productSession[$id]['price'] - ($productSession[$id]['price'] * $productSession[$id]['sale']) / 100;
         $orderSession['quantity']++;
         session(['order_session' => $orderSession]);
     }
@@ -230,7 +232,7 @@ class OrderService
             $productSession[$id]['quantity']--;
             session(['product_session' => $productSession]);
 
-            $orderSession['total_price'] -= $productSession[$id]['price'];
+            $orderSession['total_price'] -= $productSession[$id]['price'] - ($productSession[$id]['price'] * $productSession[$id]['sale']) / 100;
             $orderSession['quantity']--;
             session(['order_session' => $orderSession]);
         }
@@ -241,7 +243,7 @@ class OrderService
      *
      * @param  int $userId
      */
-    public function storeOrderProduct($userId)
+    public function storeOrderProduct($userId, $data)
     {
         $productSession = session('product_session');
         $orderSession = session('order_session');
@@ -254,11 +256,12 @@ class OrderService
             'total_price' => $orderSession['total_price'],
             'quantity' => $orderSession['quantity'],
             'status' => config('order.new_order_status'),
+            'address' => $data['address'],
+            'phone_number' => $data['phone_number'],
         ];
 
         try {
             $order = Order::create($orderData);
-
             foreach ($products as $product) {
                 $productData = [
                     'product_id' => $product->id,
@@ -297,14 +300,16 @@ class OrderService
     }
 
     /**
-     * Send order success email.
+     * Update Order in progress status.
      *
-     * @param  int $user
+     * @param  int $id
      */
-    public function sendOrderSuccessEmail($user)
+    public function deliverOrder($id)
     {
+        $order = Order::findOrFail($id);
         try {
-            Mail::to($user)->send(new OrderSuccess());
+            $order->update(['status' => 2]);
+            $this->sendOrderSuccessEmail(User::findOrFail($order->user_id));
         } catch (\Throwable $th) {
             Log::error($th);
 
@@ -319,11 +324,29 @@ class OrderService
      *
      * @param  int $id
      */
-    public function deliverOrder($id)
+    public function confirmOrder($id)
     {
         $order = Order::findOrFail($id);
         try {
-            $order->increment('status');
+            $order->update(['status' => 3]);
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Send order success email.
+     *
+     * @param  int $user
+     */
+    public function sendOrderSuccessEmail($userId)
+    {
+        try {
+            Mail::to(User::findOrFail($userId))->send(new OrderSuccess());
         } catch (\Throwable $th) {
             Log::error($th);
 
@@ -338,11 +361,30 @@ class OrderService
      *
      * @param  int $id
      */
-    public function closeOrder($id)
+    public function closeOrder($id, $closeReason)
     {
         $order = Order::findOrFail($id);
         try {
-            $order->update(['status' => 3]);
+            $order->update(['status' => 4]);
+            $this->sendOrderCloseEmail(User::findOrFail($order->user_id), $closeReason);
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Send order close email.
+     *
+     * @param  int $user
+     */
+    public function sendOrderCloseEmail($userId, $reason)
+    {
+        try {
+            Mail::to(User::findOrFail($userId))->send(new OrderClose($reason));
         } catch (\Throwable $th) {
             Log::error($th);
 

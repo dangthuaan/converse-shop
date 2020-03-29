@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Services\ProductService;
 use App\Traits\UploadTrait;
 
@@ -71,7 +72,7 @@ class ProductController extends Controller
             'sale'
         ]);
 
-        $data['publish_date'] = Carbon::createFromFormat('m/d/Y', $request->publish_date)->format('Y-m-d');
+        $data['publish_date'] = Carbon::parse($request->publish_date)->toDateString();
 
         $data['user_id'] = auth()->id();
 
@@ -111,7 +112,7 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductRequest $request, $id)
+    public function update(UpdateProductRequest $request, $id)
     {
         $data = $request->only([
             'image',
@@ -124,13 +125,15 @@ class ProductController extends Controller
             'sale'
         ]);
 
-        $data['publish_date'] = Carbon::createFromFormat('m/d/Y', $request->publish_date)->format('Y-m-d');
+        $data['publish_date'] = Carbon::parse($request->publish_date)->toDateString();
 
         $userFavorites = Favorite::with('user')->where('product_id', $id)->get();
 
         $data['user_id'] = auth()->id();
 
-        $data['image'] = $this->productService->saveImage($data['image']);
+        if (isset($data['image'])) {
+            $data['image'] = $this->productService->saveImage($data['image']);
+        }
 
         $data['category'] = $this->productService->getCategoryId($data['category']);
 
@@ -141,6 +144,19 @@ class ProductController extends Controller
         }
 
         return back()->with('error', 'Update failed!');
+    }
+
+    /**
+     * Confirm deleting category.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function confirmDelete($id)
+    {
+        $product = $this->productService->getProductById($id);
+
+        return view('admin.products.confirmDelete', compact('product'));
     }
 
     /**
