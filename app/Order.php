@@ -11,7 +11,9 @@ class Order extends Model
         'user_id',
         'total_price',
         'quantity',
-        'status'
+        'status',
+        'address',
+        'phone_number'
     ];
 
     public function products()
@@ -30,9 +32,9 @@ class Order extends Model
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeNewOrder($query)
+    public function scopeIsNewOrder()
     {
-        return $query->where('status', 1);
+        return $this->status == 1;
     }
 
     /**
@@ -42,7 +44,7 @@ class Order extends Model
      */
     public function scopeIsInProgressOrder()
     {
-        return $this->status == 1;
+        return $this->status == 2;
     }
 
     /**
@@ -52,7 +54,7 @@ class Order extends Model
      */
     public function scopeIsDeliveredOrder()
     {
-        return $this->status == 2;
+        return $this->status == 3;
     }
 
     /**
@@ -62,6 +64,6 @@ class Order extends Model
      */
     public function scopeIsClosedOrder()
     {
-        return $this->status == 3;
+        return $this->status == 4;
     }
 }

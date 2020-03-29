@@ -78,6 +78,9 @@ class CategoryService
         $category = Category::findOrFail($id);
 
         try {
+            if (is_null($category->parent_id)) {
+                Category::where('parent_id', $id)->delete();
+            }
             $category->delete();
         } catch (\Exception $e) {
             Log::error($e);

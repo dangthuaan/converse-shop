@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('total_price');
             $table->tinyInteger('status')
                 ->default(1)
-                ->comment('1: new, 2: in progress, 3: delivered');
+                ->comment('1: new, 2: in progress, 3: delivered, 4: closed');
             $table->timestamps();
         });
     }

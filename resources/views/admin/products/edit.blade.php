@@ -31,7 +31,7 @@
                                 {{ __('Product image') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
-                                <input type="file" required id="upload-image" name="image[]" multiple>
+                                <input type="file" name="image[]" multiple>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -107,7 +107,7 @@
                                 {{ __('Description') }}
                             </label>
                             <div class="col-md-6">
-                                <textarea rows="10" class="form-control @error('description') is-invalid @enderror" id="description" name="description" required>{{ old('description') ?? $product->description }}</textarea>
+                                <textarea rows="10" class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ old('description') ?? $product->description }}</textarea>
                                 @error('description')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>
@@ -122,7 +122,7 @@
                                 {{ __('Publish date') }} <strong class="required-field">*</strong>
                             </label>
                             <div class="col-md-6">
-                                <input autocomplete="publish_date" class="form-control @error('publish_date') is-invalid @enderror" id="datepicker" name="publish_date" type="text" placeholder="dd/mm/yyyy" value="{{ old('publish_date') ?? $product->publish_date }}">
+                                <input autocomplete="publish_date" class="form-control @error('publish_date') is-invalid @enderror" id="datepicker" name="publish_date" type="text" placeholder="d/m/yyyy" value="{{ old('publish_date') ?? $product->publish_date }}">
                                 </input>
                                 @error('publish_date')
                                 <span class="invalid-feedback" role="alert">
@@ -139,7 +139,7 @@
                             {{ __('Price') }}(VNĐ) <strong class="required-field">*</strong>
                         </label>
                         <div class="col-md-6">
-                            <input autocomplete="price" class="form-control @error('price') is-invalid @enderror" id="datepicker" name="price" placeholder="VNĐ" type="text" value="{{ old('price') ?? $product->price }}">
+                            <input autocomplete="price" class="product-currency form-control @error('price') is-invalid @enderror" name="price" placeholder="VNĐ" type="text" value="{{ old('price') ?? $product->price }}">
                             @error('price')
                             <span class="invalid-feedback" role="alert">
                                 <strong>
@@ -159,23 +159,9 @@
                     </div>
                     <div class="form-group row mb-0">
                         <div class="col-md-6 offset-md-4" style="margin-bottom: 20px;">
-                            <button class="btn btn-primary" id="submit-form" type="submit">
+                            <button class="btn btn-primary" type="submit">
                                 {{ __('Update') }}
                             </button>
-                        </div>
-                        <!-- Modal -->
-                        <div class="modal fade" id="noImage" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <div class="modal-body">
-                                        <strong ">You need to upload product images first!</strong>
-                                    </div>
-                                    <div class=" modal-footer">
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </form>

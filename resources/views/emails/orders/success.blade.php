@@ -1,5 +1,5 @@
 @component('mail::message')
-# Order success!
+# Order has been shipping!
 
 <h1>YAY! Your order has shipped.</h1>
 <p></p>

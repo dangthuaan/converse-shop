@@ -27,18 +27,20 @@ class ProductController extends Controller
     {
         $products = Product::with('categories')->paginate(config('pagination.product_page_size'));
 
+        $parentCategories = Category::with('children')->whereNull('parent_id')->get();
+
         $favoriteProducts = Favorite::where('user_id', auth()->id())->pluck('product_id')->toArray();
 
-        if ($request->has('size')) {
-            $sizeName = $request->size;
-            $sizeArray = explode(',', $sizeName);
+        if ($request->has('categories')) {
+            $categoriesName = $request->get('categories');
+            $categoriesArray = explode(',', $categoriesName);
 
-            $products = Product::whereHas('categories', function (Builder $query) use ($sizeArray) {
-                $query->whereIn('name', $sizeArray);
+            $products = Product::whereHas('categories', function (Builder $query) use ($categoriesArray) {
+                $query->whereIn('name', $categoriesArray);
             })->paginate(config('pagination.product_page_size'));
         }
 
-        return view('client.products.index', compact('products', 'favoriteProducts'));
+        return view('client.products.index', compact('products', 'favoriteProducts', 'parentCategories'));
     }
 
     /**

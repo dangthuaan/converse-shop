@@ -24,6 +24,8 @@
 <script src="https://unpkg.com/inputmask@4.0.4/dist/inputmask/inputmask.js"></script>
 <script src="https://unpkg.com/inputmask@4.0.4/dist/inputmask/inputmask.date.extensions.js"></script>
 <script src="{{ asset('js/main.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 @yield('js')
 <script>
     Dropzone.options.dropzone = {
@@ -42,10 +44,30 @@
     $('.data-table').DataTable({
         "bPaginate": true,
         "bLengthChange": false,
-        "pageLength": 5,
+        "pageLength": 10,
         "columnDefs": [{
             "orderable": false,
             "targets": [6, 7]
+        }]
+    });
+
+    $('.order-table').DataTable({
+        "bPaginate": true,
+        "bLengthChange": false,
+        "pageLength": 10,
+        "columnDefs": [{
+            "orderable": false,
+            "targets": [4, 5]
+        }]
+    });
+
+    $('.order-table-extend').DataTable({
+        "bPaginate": true,
+        "bLengthChange": false,
+        "pageLength": 10,
+        "columnDefs": [{
+            "orderable": false,
+            "targets": 4
         }]
     });
 
@@ -62,7 +84,7 @@
     });
 
     $('#datepicker').datepicker({
-        format: 'dd/mm/yyyy',
+        format: 'd/m/yyyy',
         startDate: '-20y',
         endDate: '+0d'
     });

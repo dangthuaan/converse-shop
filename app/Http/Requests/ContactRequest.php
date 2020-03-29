@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CommentRequest extends FormRequest
+class ContactRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,10 @@ class CommentRequest extends FormRequest
     public function rules()
     {
         return [
-            'content' => 'required|min:3|max:2000',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string',
         ];
     }
 }

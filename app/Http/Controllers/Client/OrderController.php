@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrderService;
+use App\Http\Requests\OrderRequest;
 use App\Product;
 
 class OrderController extends Controller
@@ -158,15 +159,21 @@ class OrderController extends Controller
     /**
      * Checkout order and Store order data in database.
      *
+     * @param  \App\Http\Requests\OrderRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function checkout()
+    public function checkout(OrderRequest $request)
     {
+        $contactData = $request->only([
+            'address',
+            'phone_number'
+        ]);
+
         $currentUser = auth()->user();
         $currentUserId = $currentUser->id;
 
         if (session('order_session')) {
-            $storeOrderProduct = $this->orderService->storeOrderProduct($currentUserId);
+            $storeOrderProduct = $this->orderService->storeOrderProduct($currentUserId, $contactData);
         }
 
         if (!empty($storeOrderProduct)) {

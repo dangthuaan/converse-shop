@@ -1,9 +1,10 @@
 @component('mail::message')
-# Product price updated!
+# Favorite product updated!
 
-<h1>Your favorite product price and sale has been updated! Let's check it out!</h1>
+<p style="size: 1.2em">Your favorite product [<strong>{{ $product->name }}</strong>]'s price/sale has been updated! Let's check it out!</p>
 <p></p>
 
 <br>
+We hope you enjoy it! ,<br>
 {{ config('app.name') }}
 @endcomponent

@@ -52,9 +52,24 @@ $(document).ready(function () {
             cache: false,
             success: function (result) {
                 if (result.status) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Success! Product has been added to your shopping cart!'
+                    })
+
                     $('.cart-number').text(result.quantity);
-                    alert('Order success!');
-                    location.reload();
                 }
             },
             error: function () {
@@ -81,9 +96,24 @@ $(document).ready(function () {
             cache: false,
             success: function (result) {
                 if (result.status) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Success! Product has been added to your shopping cart!'
+                    })
+
                     $('.cart-number').text(result.quantity);
-                    alert('Order success!');
-                    location.reload();
                 }
             },
             error: function () {
@@ -108,7 +138,23 @@ $(document).ready(function () {
             cache: false,
             success: function (result) {
                 if (result.status) {
-                    alert('Added to favorites!');
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 4000,
+                        timerProgressBar: true,
+                        onOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Success! Product has been added to your favorites list!'
+                    })
+
                     location.reload();
                 }
             },
@@ -134,7 +180,6 @@ $(document).ready(function () {
             cache: false,
             success: function (result) {
                 if (result.status) {
-                    alert('Removed from favorites!');
                     location.reload();
                 }
             },
@@ -146,31 +191,58 @@ $(document).ready(function () {
     });
 
     $('.product-remove').click(function () {
-        if (confirm('Are you sure remove this product from cart?')) {
-            var url = '/orders/remove';
-            var productId = $(this).data('product-id');
+        Swal.fire({
+            title: 'Are you sure remove this product from cart?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.value) {
+                var url = '/orders/remove';
+                var productId = $(this).data('product-id');
 
-            var data = {
-                'product_id': productId
-            };
+                var data = {
+                    'product_id': productId
+                };
 
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data,
-                cache: false,
-                success: function (result) {
-                    if (result.status) {
-                        $('.product-' + productId).remove();
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: data,
+                    cache: false,
+                    success: function (result) {
+                        if (result.status) {
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: 'top-end',
+                                showConfirmButton: false,
+                                timer: 4000,
+                                timerProgressBar: true,
+                                onOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Success! Product has been removed from cart!'
+                            })
+
+                            $('.product-' + productId).remove();
+                            location.reload();
+                        }
+                    },
+                    error: function () {
+                        alert('Something went wrong!');
                         location.reload();
                     }
-                },
-                error: function () {
-                    alert('Something went wrong!');
-                    location.reload();
-                }
-            });
-        }
+                });
+            }
+        })
     });
 
     $('.increase').click(function () {
@@ -245,108 +317,6 @@ $(document).ready(function () {
         }
     });
 
-    $("#comment_form").submit(function (event) {
-        event.preventDefault();
-    }).validate({
-        rules: {
-            content: {
-                required: true,
-                minlength: 10,
-            },
-        },
-        errorPlacement: function (label, element) {
-            label.addClass('error');
-            label.insertAfter(element);
-        },
-        wrapper: 'span',
-        submitHandler: function (form) {
-            var url = "/comments";
-            var content = $(form).find('textarea[name="content"]').val();
-            var productId = $('.submit_comment').data("product-id");
-
-            var data = {
-                'product_id': productId,
-                'content': content,
-            };
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: data,
-                cache: false,
-                success: function (result) {
-                    if (result.status) {
-                        $("#comment").load(location.href + " #comment>*", "");
-                        $(form).find("textarea[name='content']").val('');
-                    }
-                },
-                error: function () {
-                    alert("Something went wrong!");
-                    location.reload();
-                }
-            });
-            return false;
-        }
-    });
-
-    $('#comment').on('click', '.reply_btn', function (event) {
-        event.preventDefault();
-
-        $('.hide_reply_form').hide();
-
-        var $this = $(this).parent().parent().parent().next('#comment_reply');
-        $("#comment_reply").not($this).hide();
-        $this.show();
-        $this.children().attr('id', 'active_reply');
-    });
-
-    $('#comment').on('click', '.submit_reply', function () {
-        $(this).parent().parent().on('submit', function (event) {
-            event.preventDefault();
-        }).validate({
-            rules: {
-                reply_content: {
-                    required: true,
-                    minlength: 10,
-                },
-            },
-            errorPlacement: function (label, element) {
-                label.addClass('error');
-                label.insertAfter(element);
-            },
-            wrapper: 'span',
-            submitHandler: function (form) {
-                var url = "/comments/reply";
-                var content = $(form).find('.reply_content').val();
-                var productId = $('#active_reply').find('.submit_reply').data("product-id");
-                var parentId = $('#active_reply').find('.submit_reply').data("parent-id");
-
-                var data = {
-                    'product_id': productId,
-                    'parent_id': parentId,
-                    'content': content,
-                };
-
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: data,
-                    cache: false,
-                    success: function (result) {
-                        if (result.status) {
-                            $("#comment").load(location.href + " #comment>*", "");
-                            $("textarea[name='reply_content']").val('');
-                        }
-                    },
-                    error: function () {
-                        alert("Something went wrong!");
-                        location.reload();
-                    }
-                });
-            }
-        });
-    });
-
     $(".currency").inputmask("decimal", {
         alias: 'numeric',
         rightAlign: false,
@@ -373,15 +343,17 @@ $(document).ready(function () {
     var checkUrl = function () {
         var pathname = window.location.href;
         var url = new URL(pathname);
-        var size = url.searchParams.get("size");
-        var sizeArray = size.split(",");
+        var categories = url.searchParams.get("categories");
+        var categoriesArray = categories.split(",");
 
-        $.each(sizeArray, function (index, value) {
-            $("." + value).toggleClass("selected");
+        $.each(categoriesArray, function (index, value) {
+            $(".categories").find('span').filter(function () {
+                return $(this).text() === value;
+            }).parent().toggleClass("selected");
         });
     };
 
-    //Product size filter
+    //Product filter
     var path = window.location.search;
     var urlParams = new URLSearchParams(path);
 
@@ -393,7 +365,7 @@ $(document).ready(function () {
         return [];
     };
 
-    var createNewSizeParamInUrl = function (paramString, sizeName) {
+    var createNewCategoriesParamInUrl = function (paramString, sizeName) {
         if (paramString.length) {
             paramString += ",";
         }
@@ -401,38 +373,39 @@ $(document).ready(function () {
         return paramString + sizeName;
     };
 
-    var removeSizeParamInUrl = function (urlSizeParamArray, sizeName) {
-        var removalSizeParamArray = jQuery.grep(urlSizeParamArray, function (value) {
+    var removeCategoriesParamInUrl = function (urlCategoriesParamArray, sizeName) {
+        var removalCategoriesParamArray = jQuery.grep(urlCategoriesParamArray, function (value) {
             return value != sizeName;
         });
 
-        return removalSizeParamArray.toString();
+        return removalCategoriesParamArray.toString();
     };
 
-    $('.size').on('click', function () {
-        var sizeName = $(this).text();
-        var sizeParamPosition = -1;
+    $('.categories').on('click', function () {
+        var parentCategoryName = $(this).parent().parent().prev().text().toLowerCase();
+        var categoriesName = $(this).find('span').text();
+        var categoriesParamPosition = -1;
         var paramString = "";
-        var urlSizeParamArray = [];
+        var urlCategoriesParamArray = [];
 
-        if (urlParams.has("size") && urlParams.get("size").length) {
-            var paramString = urlParams.get("size");
-            urlSizeParamArray = getParamArrayFromUrl(paramString);
-            sizeParamPosition = jQuery.inArray(sizeName, urlSizeParamArray);
+        if (urlParams.has("categories") && urlParams.get("categories").length) {
+            var paramString = urlParams.get("categories");
+            urlCategoriesParamArray = getParamArrayFromUrl(paramString);
+            categoriesParamPosition = jQuery.inArray(categoriesName, urlCategoriesParamArray);
         }
 
-        var newSizeParamInUrl = "";
+        var newCategoriesParamInUrl = "";
 
-        if (sizeParamPosition < 0) {
-            newSizeParamInUrl = createNewSizeParamInUrl(paramString, sizeName);
+        if (categoriesParamPosition < 0) {
+            newCategoriesParamInUrl = createNewCategoriesParamInUrl(paramString, categoriesName);
         } else {
-            newSizeParamInUrl = removeSizeParamInUrl(urlSizeParamArray, sizeName);
+            newCategoriesParamInUrl = removeCategoriesParamInUrl(urlCategoriesParamArray, categoriesName);
         }
 
-        if (!newSizeParamInUrl) {
+        if (!newCategoriesParamInUrl) {
             window.location.href = "/products";
         } else {
-            newUrl = "/products?size=" + newSizeParamInUrl;
+            newUrl = "/products?categories=" + newCategoriesParamInUrl;
             window.location.href = newUrl;
         }
     });

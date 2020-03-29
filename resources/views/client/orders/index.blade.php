@@ -10,10 +10,10 @@
                     Shopping Cart
                 </h2>
                 <div class="page_link">
-                    <a href="index.html">
+                    <a href="{{ route('client.index') }}">
                         Home
                     </a>
-                    <a href="cart.html">
+                    <a href="">
                         Cart
                     </a>
                 </div>
@@ -23,24 +23,24 @@
 </section>
 <!--================End Home Banner Area =================-->
 <!--================Cart Area =================-->
-<section class="cart_area">
+@if (!empty($product_session))
+<section class="cart_area" style="margin-top: -100px">
     <div class="container">
         <div class="cart_inner">
             <div class="table-responsive">
                 <table class="table">
                     <thead>
-                        @if ($product_session)
                         <tr>
                             <th scope="col">
                                 {{ __('Product') }}
                             </th>
-                            <th scope="col">
+                            <th scope="col" style="width: 150px;">
                                 Price (VNĐ)
                             </th>
-                            <th scope="col">
+                            <th scope="col" style="width: 150px;">
                                 Quantity
                             </th>
-                            <th scope="col">
+                            <th scope="col" style="width: 150px;">
                                 Total (VNĐ)
                             </th>
                             <th scope="col">
@@ -97,7 +97,7 @@
                             </td>
                             <td>
                                 <h5 class="currency">
-                                    {{ $product_session[$id]['price'] * $product_session[$id]['quantity']  }}
+                                    {{ ($product_session[$id]['price'] - $product_session[$id]['price'] * $product_session[$id]['sale']/ 100) * $product_session[$id]['quantity']  }}
                                 </h5>
                             </td>
                             <td>
@@ -117,14 +117,13 @@
                             <td>
                             </td>
                             <td>
-                                <h5>
+                                <h3>
                                     Total
-                                </h5>
+                                </h3>
                             </td>
-                            <td>
-                                <h5 class="currency">
+                            <td style="width: 130px;">
+                                <h5 class="product-currency">
                                     ${{ $order_session['total_price'] }}
-                                </h5> (VNĐ)
                             </td>
                         </tr>
                         <tr class="out_button_area">
@@ -145,23 +144,23 @@
                                 </div>
                             </td>
                         </tr>
-                        @else
-                        <section class="order_details">
-                            <div class="container">
-                                <h3 class="title_confirmation">
-                                    Sorry. You have no order yet.
-                                </h3>
-                                <div class="confirmation_btn_inner">
-                                    <a class="main_btn" href="{{ asset('/products') }}">Continue Shopping</a>
-                                </div>
-                            </div>
-                        </section>
-                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </section>
+@else
+<section class="order_details" style="margin-top: -50px">
+    <div class="container">
+        <h3 class="title_confirmation">
+            Sorry. You have no order yet.
+        </h3>
+        <div class="confirmation_btn_inner">
+            <a class="main_btn" href="{{ asset('/products') }}">Continue Shopping</a>
+        </div>
+    </div>
+</section>
+@endif
 <!--================End Cart Area =================-->
 @endsection

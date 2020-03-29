@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\User;
+use App\Mail\BanUser;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
 class UserService
@@ -44,15 +46,71 @@ class UserService
      * Ban a user.
      *
      * @param  int  $id
-     * @param  array $data
      * @return Boolean
      */
-    public function banUser($id, $data)
+    public function banUser($id)
     {
         $user = User::findOrFail($id);
 
         try {
-            $user->update($data);
+            $user->increment('is_ban');
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Send ban user reason email.
+     *
+     * @param  int $user
+     */
+    public function sendBanUserEmail($userId, $reason)
+    {
+        try {
+            Mail::to(User::findOrFail($userId))->send(new BanUser($reason));
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Un-Ban a user.
+     *
+     * @param  int  $id
+     * @return Boolean
+     */
+    public function unBanUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        try {
+            $user->decrement('is_ban', 1);
+        } catch (\Throwable $th) {
+            Log::error($th);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Send un-ban user reason email.
+     *
+     * @param  int $user
+     */
+    public function sendUnBanUserEmail($userId, $reason)
+    {
+        try {
+            Mail::to(User::findOrFail($userId))->send(new BanUser($reason));
         } catch (\Throwable $th) {
             Log::error($th);
 
